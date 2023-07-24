@@ -1,10 +1,10 @@
-import { AppShell } from '@mantine/core'
-import { Outlet } from 'react-router-dom'
+import { AppShell } from '@mantine/core';
+import { Outlet } from 'react-router-dom';
 
-import Navbar from '../components/navbar/navbar'
-import Header from '../components/header/header'
-import Footer from '../components/footer/footer'
-import Bread from '../components/bread/bread'
+import Navbar from '../components/navbar/navbar';
+import Header from '../components/header/header';
+import Footer from '../components/footer/footer';
+import Bread from '../components/bread/bread';
 
 export default function Layout() {
   return (
@@ -13,14 +13,17 @@ export default function Layout() {
       navbar={<Navbar />}
       header={<Header />}
       footer={<Footer />}
-      styles={theme => ({
-        main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+      styles={(theme) => ({
+        main: {
+          backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+        },
       })}
     >
       <Bread></Bread>
-       <div className="content">
+      <div className="content">
         <Outlet></Outlet>
       </div>
     </AppShell>
-  )
+  );
 }

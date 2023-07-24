@@ -1,24 +1,34 @@
-import { Avatar, Menu } from "@mantine/core"
-import {IconLogout} from '@tabler/icons-react'
-import UserAvatar  from "@/assets/images/Avatar.jpg"
+import { useNavigate } from 'react-router-dom';
+import { Avatar, Menu } from '@mantine/core';
+import { IconLogout } from '@tabler/icons-react';
 
-export default function UserInfo({className}) {  
-    return (
-     <div className={className}>
-        <div className={`${className}__name`}>
-            <span className="full-name">Hi, Kim Chi Nguyen</span>
-            <span className="email">kimchi.nguyen@gmail.com</span>
-        </div>
-        <Menu>
-            <Menu.Target>
-                <Avatar src={UserAvatar} radius="xl" alt="avatar" ></Avatar>
-            </Menu.Target>
-      <Menu.Dropdown>
-        <Menu.Item icon={<IconLogout size='1rem' />}>
-          Logout
-        </Menu.Item>
-      </Menu.Dropdown>
+import useAuthStore from '@/store/authStore';
+import { UserInfoProps } from './types';
+
+export default function UserInfo({ className }: UserInfoProps) {
+  const { logout, userProfile } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+  return (
+    <div className={className}>
+      <div className={`${className}__name`}>
+        <span className="full-name">{userProfile.name}</span>
+        <span className="email">{userProfile.email}</span>
+      </div>
+      <Menu>
+        <Menu.Target>
+          <Avatar src={userProfile.photo} radius="xl" alt="avatar"></Avatar>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item icon={<IconLogout size="1rem" />} onClick={handleLogout}>
+            Logout
+          </Menu.Item>
+        </Menu.Dropdown>
       </Menu>
-     </div>
-    )
-  }
+    </div>
+  );
+}
