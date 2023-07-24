@@ -1,17 +1,14 @@
 import { Navbar } from '@mantine/core'
-import { IconSettings } from '@tabler/icons-react'
 
-import MainLink from './navbar/NavigationLink'
+import MainLink from '../navigation/NavigationLink'
+import {options} from './options'
 
-const data = [
-  { icon: <IconSettings size="1rem" />, url: '/settings', label: 'Settings' },
-]
 
 export default function DashboardNavbar() {
-  const links = data.map(link => <MainLink {...link} key={link.label} />)
+  const links = options.map(link => <MainLink {...link} key={link.label} />)
 
   return (
-    <Navbar p="xs" width={{ base: 300 }}>
+    <Navbar p="xs" width={{ base: 250 }} className='navbar'>
       <Navbar.Section>{/* Header with logo */}</Navbar.Section>
       <Navbar.Section grow mt="md">
         {links}
