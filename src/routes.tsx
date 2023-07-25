@@ -1,7 +1,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import LoginPage from './pages/login';
-import SessionTodayPage from './pages/session-today';
+import SessionTodayPage from './pages/sessions-today';
 import Layout from './layouts/layout';
 import { LogoutAction } from './pages/logout';
 import ErrorPage from './pages/error';
