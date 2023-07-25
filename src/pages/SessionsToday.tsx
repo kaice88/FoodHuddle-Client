@@ -1,3 +1,3 @@
 export default function SessionTodayPage() {
-  return <div>Sessions Today</div>;
+  return <div>Sessions Today</div>
 }

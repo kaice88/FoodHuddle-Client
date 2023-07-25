@@ -1,43 +1,43 @@
-import { useNavigate } from 'react-router-dom';
-import { Button, Center, Title } from '@mantine/core';
-import { IconLogin } from '@tabler/icons-react';
-import { useGoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom'
+import { Button, Center, Title } from '@mantine/core'
+import { IconLogin } from '@tabler/icons-react'
+import { useGoogleLogin } from '@react-oauth/google'
 
-import { useRequestSessionInfo } from '@/settings/react-query';
-import axios from '@/settings/axios';
-import Logo from '@/components/logo/logo';
-import useAuthStore from '../store/authStore';
-import * as ROUTES from '@/constants/routes';
+import useAuthStore from '../store/authStore'
+import { useRequestProcessor } from '@/settings/react-query'
+import axios from '@/settings/axios'
+import Logo from '@/components/Logo'
+import * as ROUTES from '@/constants/routes'
 
 export default function LoginPage() {
-  const { mutation } = useRequestSessionInfo();
-  const { login } = useAuthStore();
-  const navigate = useNavigate();
+  const { mutation } = useRequestProcessor()
+  const { login } = useAuthStore()
+  const navigate = useNavigate()
 
   const handleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      getUserProfile(tokenResponse.access_token);
+      getUserProfile(tokenResponse.access_token)
     },
-  });
+  })
 
   const authMutation = mutation(
     'userProfile',
     (token) => {
       return axios.post('/v1/auth/google/callback', {
         accessToken: token,
-      });
+      })
     },
     {
       onSuccess: (data) => {
-        login(data.data.accessToken, data.data.profile, data.data.expiresIn);
-        navigate(ROUTES.SESSIONS_TODAY);
+        login(data.data.accessToken, data.data.profile, data.data.expiresIn)
+        navigate(ROUTES.SESSIONS_TODAY)
       },
     },
-  );
+  )
 
   const getUserProfile = async (token: string) => {
-    authMutation.mutate(token);
-  };
+    authMutation.mutate(token)
+  }
 
   return (
     <Center className="auth">
@@ -63,5 +63,5 @@ export default function LoginPage() {
         FoodHuddle v1 @
       </Title>
     </Center>
-  );
+  )
 }
