@@ -3,30 +3,41 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import LoginPage from './pages/login';
 import SessionTodayPage from './pages/session-today';
 import Layout from './layouts/layout';
+import { LogoutAction } from './pages/logout';
 import ErrorPage from './pages/error';
-import { checkAuthLoader, getToken } from './utils/auth';
+import { checkAuthLoader, getAuthToken } from './utils/auth';
+import * as ROUTES from '@/constants/routes';
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: getToken() ? <Navigate to="/sessions-today"></Navigate> : <LoginPage></LoginPage>,
+    path: ROUTES.LOGIN,
+    element: getAuthToken() ? (
+      <Navigate to={ROUTES.SESSIONS_TODAY}></Navigate>
+    ) : (
+      <LoginPage></LoginPage>
+    ),
   },
   {
-    path: '/',
+    path: ROUTES.LOGOUT,
+    element: <Navigate to={ROUTES.LOGIN}></Navigate>,
+    action: LogoutAction,
+  },
+  {
+    path: ROUTES.HOME,
     element: <Layout />,
     loader: checkAuthLoader,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <Navigate to="/sessions-today"></Navigate>,
+        element: <Navigate to={ROUTES.SESSIONS_TODAY}></Navigate>,
       },
       {
-        path: 'sessions-today',
+        path: ROUTES.SESSIONS_TODAY,
         element: <SessionTodayPage></SessionTodayPage>,
       },
       {
-        path: 'sessions-history',
+        path: ROUTES.SESSIONS_HISTORY,
         element: <SessionTodayPage></SessionTodayPage>,
       },
     ],

@@ -7,11 +7,11 @@ import { useRequestSessionInfo } from '@/settings/react-query';
 import axios from '@/settings/axios';
 import Logo from '@/components/logo/logo';
 import useAuthStore from '../store/authStore';
+import * as ROUTES from '@/constants/routes';
 
 export default function LoginPage() {
   const { mutation } = useRequestSessionInfo();
   const { login } = useAuthStore();
-
   const navigate = useNavigate();
 
   const handleLogin = useGoogleLogin({
@@ -29,8 +29,8 @@ export default function LoginPage() {
     },
     {
       onSuccess: (data) => {
-        login(data.data.accessToken, data.data.profile);
-        navigate('/sessions-today');
+        login(data.data.accessToken, data.data.profile, data.data.expiresIn);
+        navigate(ROUTES.SESSIONS_TODAY);
       },
     },
   );
