@@ -1,10 +1,11 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import LoginPage from './pages/login';
-import SessionTodayPage from './pages/session-today';
+import SessionTodayPage from './pages/sessions-today';
 import Layout from './layouts/layout';
 import ErrorPage from './pages/error';
 import { checkAuthLoader, getToken } from './utils/auth';
+import Index from './pages/sessionPage';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,11 @@ export const router = createBrowserRouter([
       {
         path: 'sessions-today',
         element: <SessionTodayPage></SessionTodayPage>,
+      },
+      {
+        path: '/sessions-today/:id',
+        element: <Index></Index>,
+        errorElement: <ErrorPage />,
       },
       {
         path: 'sessions-history',

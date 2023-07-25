@@ -1,0 +1,15 @@
+.menu_item{
+    .custom-navlink{
+        background-color: $orange-background;
+        color: $orange ;
+        &:hover{
+        background-color: $orange-background;
+        }
+    }
+    button{
+        &:hover{
+            color: $orange;
+            background-color: transparent;
+        }
+    }
+}
