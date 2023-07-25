@@ -1,24 +1,80 @@
-
 :root {
-    --white: #fff;
+  --white: #fff;
 }
+$green: #23a218;
 $white: #fff;
 $black: #000;
 $orange: #ff6b00;
-$watermelon: #F6415E;
-$bashful-pink: #C5458C;
-$dark-lavender:#7E5498;
-$duck:#415481;
-$picker-bluewood:#2F4858;
+$watermelon: #f6415e;
+$bashful-pink: #c5458c;
+$dark-lavender: #7e5498;
+$duck: #415481;
+$picker-bluewood: #2f4858;
 
+$font-family-base: "Open Sans", sans-serif;
 
 $font-size-small: 12px;
 $font-size-base: 14px;
 $font-size-medium: 16px;
 $font-size-large: 18px;
 
-
 $font-weight-light: 300;
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-semi-bold: 600;
+
+$sidebar-width: 279px;
+$sidebar-width-collapsed: 80px;
+$sidebar-background: $white;
+
+$header-height: 59px;
+$header-background: $white;
+
+$footer-height: 44px;
+$footer-background: $white;
+
+$breadcrumb-height: 46px;
+
+$content-gutter: 16px;
+$content-margin: $content-gutter;
+$content-padding: $content-gutter;
+
+$z-indexes: (
+  base: 1,
+  under: -1,
+  upper: 2,
+  header: 1000,
+  sidebar: 1000,
+  sidebar-mobile: 2000,
+  breadcrumb: 999,
+  calendar-picker: 999,
+  loader: 1001,
+  loader-inner: 1002,
+  loader-single-page: 999,
+  dashboard-filter: 999,
+  wrapper-backdrop: 1999,
+);
+
+$breakpoints: (
+  "desktop": (
+    max-width: 1199.98px,
+  ),
+  "small-desktop": (
+    max-width: 1600px,
+  ),
+  "extra-smalldesktop": (
+    max-width: 1200px,
+  ),
+  "tablet": (
+    max-width: 991.98px,
+  ),
+  "phone": (
+    max-width: 767.98px,
+  ),
+  "smallphone": (
+    max-width: 575.98px,
+  ),
+  "extra-smallphone": (
+    max-width: 320px,
+  ),
+);
