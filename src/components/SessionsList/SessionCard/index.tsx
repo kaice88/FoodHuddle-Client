@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 import StatusBadge from "../../StatusBadge";
 import type { SessionProps } from "./types";
+import CopyClipBoard from "@/components/CopyClipboard";
 
 const getStatusClassName = (status: SessionStatuses): string => {
   if (status === SessionStatuses.OPEN) {
@@ -49,9 +50,11 @@ function Session({ session }: SessionProps) {
             <IconUsers color="orange" size="1rem" />
             {session.number_of_joiners}
           </div>
-          <ActionIcon color="dark">
-            <IconLink size="1rem" />
-          </ActionIcon>
+          <CopyClipBoard
+            text={`${window.location.origin.toString()}/sessions-today/${
+              session.id
+            }`}
+          />
         </div>
       </div>
     </div>
