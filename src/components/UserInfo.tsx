@@ -1,13 +1,12 @@
-import { Form } from 'react-router-dom';
-import { Avatar, Menu } from '@mantine/core';
-import { IconLogout } from '@tabler/icons-react';
+import { Form } from 'react-router-dom'
+import { Avatar, Menu } from '@mantine/core'
+import { IconLogout } from '@tabler/icons-react'
 
-import { UserInfoProps } from './types';
-import * as ROUTES from '@/constants/routes';
-import useAuthStore from '@/store/authStore';
+import * as ROUTES from '@/constants/routes'
+import useAuthStore from '@/store/authStore'
 
-export default function UserInfo({ className }: UserInfoProps) {
-  const { userProfile } = useAuthStore();
+export default function UserInfo({ className }) {
+  const { userProfile } = useAuthStore()
   return (
     <div className={className}>
       <div className={`${className}__name`}>
@@ -27,5 +26,5 @@ export default function UserInfo({ className }: UserInfoProps) {
         </Menu.Dropdown>
       </Menu>
     </div>
-  );
+  )
 }

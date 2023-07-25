@@ -1,9 +1,7 @@
-import { Flex, Paper, Text } from '@mantine/core';
-
-import { useMantineTheme } from '@mantine/core';
+import { Flex, Paper, Text, useMantineTheme } from '@mantine/core'
 
 const FeeItem = ({ title, value }) => {
-  const theme = useMantineTheme();
+  const theme = useMantineTheme()
 
   return (
     <Flex gap="lg">
@@ -12,15 +10,15 @@ const FeeItem = ({ title, value }) => {
       </Text>
       <Text>{value}</Text>
     </Flex>
-  );
-};
+  )
+}
 
 export default function FeeInfo() {
   return (
-    <Paper shadow="xs" p="md" className="fee-info">
+    <Paper shadow="md" p="md" className="fee-info">
       <FeeItem title="Shipping fee" value="100.000"></FeeItem>
       <FeeItem title="Discount" value="100.000"></FeeItem>
       <FeeItem title="Another fee" value="100.000"></FeeItem>
     </Paper>
-  );
+  )
 }

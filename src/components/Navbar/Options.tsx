@@ -1,11 +1,11 @@
-import { ReactElement } from 'react';
-import { IconList, IconHistory } from '@tabler/icons-react';
-import { ThemeIcon } from '@mantine/core';
+import type { ReactElement } from 'react'
+import { IconHistory, IconList } from '@tabler/icons-react'
+import { ThemeIcon } from '@mantine/core'
 
 interface Option {
-  icon: ReactElement;
-  url: string;
-  label: string;
+  icon: ReactElement
+  url: string
+  label: string
 }
 
 export const options: Option[] = [
@@ -28,4 +28,4 @@ export const options: Option[] = [
     url: 'sessions-history',
     label: 'Sessions History',
   },
-];
+]
