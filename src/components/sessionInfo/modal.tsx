@@ -9,7 +9,7 @@ import { REQUEST_GET_SESSION_INFO } from '@/constants/apis';
 import { Image } from 'antd';
 import { IconCheck, IconX, IconSquarePlus } from '@tabler/icons-react';
 import { REQUEST_POST_SESSION_INFO } from '@/constants/apis';
-import { FormValue } from './types';
+import { FormValue, FormatDataSessionInfo } from './types';
 import axiosInstance from '@/settings/axios';
 import { notificationShow } from '../notifications/notification';
 import { loadingShow } from '../loading/loading';
@@ -21,19 +21,24 @@ const SessionInfo: React.FC = () => {
   const { query, mutation } = useRequestProcessor();
   const fetchQuerySessionInfo = query(
     ['paymentInfo'],
-    async () => await (await axiosInstance.get(REQUEST_GET_SESSION_INFO)).data,
+    () => axiosInstance.get(REQUEST_GET_SESSION_INFO),
     { enabled: false },
   );
   useEffect(() => {
     const handlefetchSessionInfo = async () => {
-      const response = await fetchQuerySessionInfo.refetch();
-      if (response.isSuccess) {
-        console.log('get-pay-info');
-        setPaymentInfo(response.data);
-      }
-      if (response.isError) {
-        console.log('get-pay-info-eror');
-        notificationShow('error', 'ERROR', response.error.message);
+      try {
+        const response = await fetchQuerySessionInfo.refetch();
+        console.log('start', response);
+        if (response.isSuccess) {
+          console.log('get-pay-info');
+          // setPaymentInfo(fetchQuerySessionInfo.data);
+        }
+        if (response.isError) {
+          console.log('get-pay-info-eror');
+          notificationShow('error', 'ERROR', response.error.message);
+        }
+      } catch (error) {
+        console.log('err');
       }
     };
     handlefetchSessionInfo();
@@ -41,7 +46,8 @@ const SessionInfo: React.FC = () => {
 
   const fetchMutationSessionInfo = mutation(
     ['sessionInfo'],
-    (data: FormValue) => axiosInstance.post(REQUEST_POST_SESSION_INFO, data),
+    async (dataForm: FormatDataSessionInfo) =>
+      await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
     {
       enabled: false,
     },
@@ -78,29 +84,18 @@ const SessionInfo: React.FC = () => {
       qr_images: values.qrImages,
       status: values.status,
     };
-    console.log(dataForm);
     fetchMutationSessionInfo.mutate(dataForm);
-    const titleNavigate = form.getInputProps('title').value;
-    navigate(`/sessions-today/${titleNavigate}`);
-    notificationShow('success', 'Success: ', 'Create the new session sucessfully');
-    // close();
   };
-
   if (fetchMutationSessionInfo.isSuccess) {
-    console.log(11111111);
-    // const {id} = data
+    // const {id} = fetchMutationSessionInfo.data
     notificationShow('success', 'Success: ', 'Create the new session sucessfully');
-    const titleNavigate = form.getInputProps('title').value;
-    navigate(`/sessions-today/${titleNavigate}`);
+    // navigate(`/sessions-today/${titleNavigate}`);
   }
+  console.log(fetchQuerySessionInfo);
 
   if (fetchMutationSessionInfo.isError) {
-    console.log(11111111);
-    // const {id} = fetchMutationSessionInfo.data
-    notificationShow('success', 'Error: ', fetchMutationSessionInfo.error.message);
-    navigate(`/sessions-today/${'..'}`);
+    notificationShow('error', 'Error: ', fetchMutationSessionInfo.error.message);
   }
-
   const handleOnChangeUploadFile = (value: File[]) => {
     console.log('setvalue---------QRCODE', value);
     form.setFieldValue('qrImages', value);

@@ -33,12 +33,12 @@ const UploadImages: React.FC = ({ handleOnChange }) => {
 
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
+
     const newFiles =
-      !isEmpty(fileList) &&
+      !isEmpty(newFileList) &&
       newFileList.map((item) => {
         return item.originFileObj;
       });
-    console.log(newFiles);
     handleOnChange(newFiles);
   };
 
