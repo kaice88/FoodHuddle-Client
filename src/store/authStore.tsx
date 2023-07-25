@@ -12,6 +12,7 @@ const useAuthStore = create<AuthStoreState>((set) => ({
     ? JSON.parse(localStorage.getItem('userProfile')!)
     : {},
   accessToken: localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : '',
+
   setLocalStorage: (accessToken, userProfile, expiresIn) => {
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
     localStorage.setItem('accessToken', accessToken);
@@ -19,6 +20,7 @@ const useAuthStore = create<AuthStoreState>((set) => ({
     expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn);
     localStorage.setItem('expiration', expiration.toISOString());
   },
+
   login: (accessToken, userProfile, expiresIn) => {
     set((state) => {
       state.setLocalStorage(accessToken, userProfile, expiresIn);

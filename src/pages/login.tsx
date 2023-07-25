@@ -3,14 +3,14 @@ import { Button, Center, Title } from '@mantine/core';
 import { IconLogin } from '@tabler/icons-react';
 import { useGoogleLogin } from '@react-oauth/google';
 
-import { useRequestSessionInfo } from '@/settings/react-query';
+import { useRequestProcessor } from '@/settings/react-query';
 import axios from '@/settings/axios';
 import Logo from '@/components/logo/logo';
 import useAuthStore from '../store/authStore';
 import * as ROUTES from '@/constants/routes';
 
 export default function LoginPage() {
-  const { mutation } = useRequestSessionInfo();
+  const { mutation } = useRequestProcessor();
   const { login } = useAuthStore();
   const navigate = useNavigate();
 

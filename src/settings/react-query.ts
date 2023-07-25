@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 
-export function useRequestSessionInfo() {
+export function useRequestProcessor() {
 
   function query(key: any, queryFunction: any, options = {}) {
     return useQuery({
