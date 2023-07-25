@@ -1,15 +1,12 @@
 import { useDisclosure } from '@mantine/hooks';
 import SessionInfo from '../components/sessionInfo/modal';
 import { Modal, Button, Group, Box, Text, Flex } from '@mantine/core';
-import { IconCheck, IconX, IconSquarePlus } from '@tabler/icons-react';
-import { useState } from 'react';
-import { notificationShow } from '@/components/notifications/notification';
+import { IconSquarePlus } from '@tabler/icons-react';
 import { loadingShow } from '@/components/loading/loading';
 
 export default function SessionTodayPage() {
   //......Modal......................................
   const [opened, { open, close }] = useDisclosure(false);
-  const [isLoading, setIsLoading] = useState(false);
   const titleModal = (
     <Flex justify="center" align="flex-start" direction="column">
       <Text fw={700} fz="lg">
@@ -18,21 +15,31 @@ export default function SessionTodayPage() {
       <div style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}></div>
     </Flex>
   );
-  // const handleLoading = (isLoading: Boolean) => {
-  //   setIsLoading(isLoading);
-  // };
-  console.log(isLoading);
-  // handleLoading={(loading) => handleLoading(loading)}
+
   return (
     <div>
-      {/* {isLoading && loadingShow()} */}
       <Modal opened={opened} onClose={close} title={titleModal} centered size={700}>
         <Box maw={600} mx="auto">
           <SessionInfo />
         </Box>
       </Modal>
       <Group position="center">
-        <Button onClick={open} color="orange" leftIcon={<IconSquarePlus size="0.9rem" />}>
+        <Button
+          onClick={open}
+          color="orange"
+          size="20px"
+          leftIcon={<IconSquarePlus size="0.9rem" />}
+          styles={(theme) => ({
+            root: {
+              backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.4),
+              color: theme.colors.red[0],
+              ...theme.fn.hover({
+                backgroundColor: theme.colors.darkLavender[0],
+              }),
+              padding: '10px',
+            },
+          })}
+        >
           Open centered Modal
         </Button>
       </Group>

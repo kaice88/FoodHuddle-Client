@@ -1,17 +1,13 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRequestProcessor } from '@/settings/reactQuery';
 import { TextInput, Button, Group, Textarea, Flex, Text } from '@mantine/core';
-import isEmpty from 'lodash/isEmpty';
 import { useForm } from '@mantine/form';
-import { Image } from 'antd';
-import { IconCheck, IconX, IconSquarePlus } from '@tabler/icons-react';
 import { REQUEST_POST_SESSION_INFO, REQUEST_GET_HOST_PAYMENT_INFO } from '@/constants/apis';
 import { FormValue, FormatDataSessionInfo } from './types';
 import axiosInstance from '@/settings/axios';
 import { notificationShow } from '../notifications/notification';
-import { loadingShow } from '../loading/loading';
 import UploadImages from '../uploadFile/uploadFile';
 
 const SessionInfo: React.FC = () => {
@@ -22,13 +18,11 @@ const SessionInfo: React.FC = () => {
     () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
     {
       enabled: false,
-      onSuccess: (data, variables, context) => {
-        form.setFieldValue('hostPaymentInfo', data.hostPaymentInfor);
+      onSuccess: (data) => {
+        form.setFieldValue('hostPaymentInfo', data.data.hostPaymentInfor);
       },
-      onError: (error, variables, context) => {
-        console.log('error-fetch');
+      onError: (error) => {
         notificationShow('error', 'ERROR', error.message);
-        console.log(`rolling back optimistic update with id ${context}`);
       },
     },
   );
@@ -44,18 +38,18 @@ const SessionInfo: React.FC = () => {
     async (dataForm: FormatDataSessionInfo) =>
       await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
     {
-      onError: (error, variables, context) => {
+      onError: (error) => {
         console.log('erorrr-mutation');
         notificationShow('error', 'Error: ', error.message);
       },
-      onSuccess: (data, variables, context) => {
-        const { id } = data;
-        notificationShow('success', 'Success: ', 'Create the new session sucessfully');
+      onSuccess: (data) => {
+        console.log(data);
+        const { id, message } = data.data;
+        notificationShow('success', 'Success: ', message);
         navigate(`/sessions-today/${id}`);
       },
     },
   );
-  // handleLoading(fetchQuerySessionInfo.isLoading);
   // //......RESET FORM VALUE......................................
   const resetForm = () => {
     form.reset();
@@ -84,13 +78,12 @@ const SessionInfo: React.FC = () => {
       shop_link: values.shopLink,
       description: values.description,
       host_payment_info: values.hostPaymentInfo,
-      qr_images: values.qrImages,
+      qr_images: '',
       status: values.status,
     };
     fetchMutationSessionInfo.mutate(dataForm);
   };
   const handleOnChangeUploadFile = (value: File[]) => {
-    console.log('setvalue---------QRCODE', value);
     form.setFieldValue('qrImages', value);
   };
 
@@ -148,14 +141,35 @@ const SessionInfo: React.FC = () => {
         </Flex>
       </Flex>
       <Group position="right" mt="md">
-        <Button type="submit" variant="outline" color="yellow" size="xs" onClick={resetForm}>
+        <Button
+          onClick={resetForm}
+          size="15px"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: theme.fn.lighten(theme.colors.duck[0], 0.9),
+              color: theme.colors.duck[0],
+              ...theme.fn.hover({
+                backgroundColor: theme.fn.lighten(theme.colors.duck[0], 0.8),
+              }),
+              padding: '10px',
+            },
+          })}
+        >
           Reset
         </Button>
         <Button
           type="submit"
-          variant="outline"
-          size="xs"
-          // disabled={!isEmpty(form.errors) || !form.isDirty()}
+          size="15px"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.9),
+              color: theme.colors.orange[0],
+              ...theme.fn.hover({
+                backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.8),
+              }),
+              padding: '10px',
+            },
+          })}
         >
           Submit
         </Button>
