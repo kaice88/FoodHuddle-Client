@@ -16,7 +16,6 @@ export function useRequestProcessor() {
       mutationKey: key,
       mutationFn: mutationFunction,
       ...options,
-      onSuccess: () => queryClient.invalidateQueries(key),
     });
   }
 

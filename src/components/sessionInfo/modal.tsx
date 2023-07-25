@@ -5,10 +5,9 @@ import { useRequestProcessor } from '@/settings/reactQuery';
 import { TextInput, Button, Group, Textarea, Flex, Text } from '@mantine/core';
 import isEmpty from 'lodash/isEmpty';
 import { useForm } from '@mantine/form';
-import { REQUEST_GET_SESSION_INFO } from '@/constants/apis';
 import { Image } from 'antd';
 import { IconCheck, IconX, IconSquarePlus } from '@tabler/icons-react';
-import { REQUEST_POST_SESSION_INFO } from '@/constants/apis';
+import { REQUEST_POST_SESSION_INFO, REQUEST_GET_HOST_PAYMENT_INFO } from '@/constants/apis';
 import { FormValue, FormatDataSessionInfo } from './types';
 import axiosInstance from '@/settings/axios';
 import { notificationShow } from '../notifications/notification';
@@ -16,30 +15,26 @@ import { loadingShow } from '../loading/loading';
 import UploadImages from '../uploadFile/uploadFile';
 
 const SessionInfo: React.FC = () => {
-  const [paymentInfo, setPaymentInfo] = useState<any>('');
   const navigate = useNavigate();
   const { query, mutation } = useRequestProcessor();
   const fetchQuerySessionInfo = query(
     ['paymentInfo'],
-    () => axiosInstance.get(REQUEST_GET_SESSION_INFO),
-    { enabled: false },
+    () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
+    {
+      enabled: false,
+      onSuccess: (data, variables, context) => {
+        form.setFieldValue('hostPaymentInfo', data.hostPaymentInfor);
+      },
+      onError: (error, variables, context) => {
+        console.log('error-fetch');
+        notificationShow('error', 'ERROR', error.message);
+        console.log(`rolling back optimistic update with id ${context}`);
+      },
+    },
   );
   useEffect(() => {
     const handlefetchSessionInfo = async () => {
-      try {
-        const response = await fetchQuerySessionInfo.refetch();
-        console.log('start', response);
-        if (response.isSuccess) {
-          console.log('get-pay-info');
-          // setPaymentInfo(fetchQuerySessionInfo.data);
-        }
-        if (response.isError) {
-          console.log('get-pay-info-eror');
-          notificationShow('error', 'ERROR', response.error.message);
-        }
-      } catch (error) {
-        console.log('err');
-      }
+      await fetchQuerySessionInfo.refetch();
     };
     handlefetchSessionInfo();
   }, []);
@@ -49,21 +44,29 @@ const SessionInfo: React.FC = () => {
     async (dataForm: FormatDataSessionInfo) =>
       await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
     {
-      enabled: false,
+      onError: (error, variables, context) => {
+        console.log('erorrr-mutation');
+        notificationShow('error', 'Error: ', error.message);
+      },
+      onSuccess: (data, variables, context) => {
+        const { id } = data;
+        notificationShow('success', 'Success: ', 'Create the new session sucessfully');
+        navigate(`/sessions-today/${id}`);
+      },
     },
   );
+  // handleLoading(fetchQuerySessionInfo.isLoading);
   // //......RESET FORM VALUE......................................
   const resetForm = () => {
     form.reset();
   };
-
   //......Config form.................................................
   const form = useForm<FormValue>({
     initialValues: {
       title: '',
       shopLink: '',
       description: '',
-      hostPaymentInfo: paymentInfo,
+      hostPaymentInfo: '',
       qrImages: [],
       status: 'OPEN',
     },
@@ -74,7 +77,7 @@ const SessionInfo: React.FC = () => {
       hostPaymentInfo: (value) => (value ? null : 'Payment Infomation is required'),
     },
   });
-
+  //.....Handle submit.............................................
   const handleSubmitNewSession = async (values: FormValue) => {
     const dataForm = {
       title: values.title,
@@ -86,108 +89,78 @@ const SessionInfo: React.FC = () => {
     };
     fetchMutationSessionInfo.mutate(dataForm);
   };
-  if (fetchMutationSessionInfo.isSuccess) {
-    // const {id} = fetchMutationSessionInfo.data
-    notificationShow('success', 'Success: ', 'Create the new session sucessfully');
-    // navigate(`/sessions-today/${titleNavigate}`);
-  }
-  console.log(fetchQuerySessionInfo);
-
-  if (fetchMutationSessionInfo.isError) {
-    notificationShow('error', 'Error: ', fetchMutationSessionInfo.error.message);
-  }
   const handleOnChangeUploadFile = (value: File[]) => {
     console.log('setvalue---------QRCODE', value);
     form.setFieldValue('qrImages', value);
   };
+
   return (
-    <>
-      {fetchQuerySessionInfo.isLoading && loadingShow()}
-      <form onSubmit={form.onSubmit((values) => handleSubmitNewSession(values))}>
-        <Flex
-          gap="md"
-          justify="center"
-          align="flex-start"
-          direction="row"
-          style={{ width: '100%' }}
-        >
+    <form onSubmit={form.onSubmit((values) => handleSubmitNewSession(values))}>
+      <Flex gap="md" justify="center" align="flex-start" direction="row" style={{ width: '100%' }}>
+        <Flex gap="md" justify="center" align="center" direction="column" style={{ width: '50%' }}>
+          <TextInput
+            withAsterisk
+            label="Title"
+            placeholder='Drink "Tra Sua"'
+            {...form.getInputProps('title')}
+            style={{ width: '100%' }}
+          />
+          <TextInput
+            withAsterisk
+            label="Link shop"
+            placeholder="https://shopeefood.vn/da-nang/tra-sua"
+            {...form.getInputProps('shopLink')}
+            style={{ width: '100%' }}
+          />
+          <Textarea
+            placeholder="Add more detailed descriptions about your session"
+            label="Description"
+            autosize
+            maxRows={4}
+            {...form.getInputProps('description')}
+            style={{ width: '100%' }}
+          />
+        </Flex>
+        <Flex gap="md" justify="center" align="center" direction="column" style={{ width: '50%' }}>
+          <Textarea
+            withAsterisk
+            placeholder="Payment method: TP Bank/Momo ...; Card name: 'A'; ..."
+            label="Payment info"
+            autosize
+            maxRows={4}
+            {...form.getInputProps('hostPaymentInfo')}
+            style={{ width: '100%' }}
+          />
           <Flex
+            style={{ width: '100%' }}
             gap="md"
-            justify="center"
-            align="center"
-            direction="column"
-            style={{ width: '50%' }}
+            justify="flex-start"
+            align="flex-start"
+            direction="row"
           >
-            <TextInput
-              withAsterisk
-              label="Title"
-              placeholder='Drink "Tra Sua"'
-              {...form.getInputProps('title')}
-              style={{ width: '100%' }}
-            />
-            <TextInput
-              withAsterisk
-              label="Link shop"
-              placeholder="https://shopeefood.vn/da-nang/tra-sua"
-              {...form.getInputProps('shopLink')}
-              style={{ width: '100%' }}
-            />
-            <Textarea
-              placeholder="Add more detailed descriptions about your session"
-              label="Description"
-              autosize
-              maxRows={4}
-              {...form.getInputProps('description')}
-              style={{ width: '100%' }}
-            />
-          </Flex>
-          <Flex
-            gap="md"
-            justify="center"
-            align="center"
-            direction="column"
-            style={{ width: '50%' }}
-          >
-            <Textarea
-              withAsterisk
-              placeholder="Payment method: TP Bank/Momo ...; Card name: 'A'; ..."
-              label="Payment info"
-              autosize
-              maxRows={4}
-              {...form.getInputProps('hostPaymentInfo')}
-              style={{ width: '100%' }}
-            />
-            <Flex
-              style={{ width: '100%' }}
-              gap="md"
-              justify="flex-start"
-              align="flex-start"
-              direction="row"
-            >
-              <Text size="sm" fw={600}>
-                QR code
-              </Text>
-              <Group position="center">
-                <UploadImages handleOnChange={handleOnChangeUploadFile} />
-              </Group>
-            </Flex>
+            <Text size="sm" fw={600}>
+              QR code
+            </Text>
+            <Group position="center">
+              <UploadImages handleOnChange={handleOnChangeUploadFile} />
+            </Group>
           </Flex>
         </Flex>
-        <Group position="right" mt="md">
-          <Button type="submit" variant="outline" color="yellow" size="xs" onClick={resetForm}>
-            Reset
-          </Button>
-          <Button
-            type="submit"
-            variant="outline"
-            size="xs"
-            // disabled={!isEmpty(form.errors) || !form.isDirty()}
-          >
-            Submit
-          </Button>
-        </Group>
-      </form>
-    </>
+      </Flex>
+      <Group position="right" mt="md">
+        <Button type="submit" variant="outline" color="yellow" size="xs" onClick={resetForm}>
+          Reset
+        </Button>
+        <Button
+          type="submit"
+          variant="outline"
+          size="xs"
+          // disabled={!isEmpty(form.errors) || !form.isDirty()}
+        >
+          Submit
+        </Button>
+      </Group>
+    </form>
   );
 };
 
