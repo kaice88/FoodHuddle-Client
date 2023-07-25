@@ -32,7 +32,7 @@ function Session({ session }: SessionProps) {
       <div className="session">
         {" "}
         <div className="session__info">
-          <Link className="session__title" to={`/sesions-day/${session.id}`}>
+          <Link className="session__title" to={`/sessions-today/${session.id}`}>
             {session.title}
           </Link>
           <div className="session__host">{session.host}</div>
