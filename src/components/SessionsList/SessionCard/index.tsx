@@ -38,7 +38,9 @@ function Session({ session }: SessionProps) {
           <div className="session__host">{session.host}</div>
         </div>
         <div
-          className={`session__status-${getStatusClassName(session.status)}`}
+          className={`session__status session__status-${getStatusClassName(
+            session.status
+          )}`}
         >
           <StatusBadge status={session.status} />
         </div>
