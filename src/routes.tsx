@@ -3,7 +3,6 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 import LoginPage from './pages/Login'
 import SessionTodayPage from './pages/SessionsToday'
 import Layout from './layouts/Layout'
-import { LogoutAction } from './pages/Logout'
 import ErrorPage from './pages/Error'
 import { checkAuthLoader, getAuthToken } from './utils/auth'
 import * as ROUTES from '@/constants/routes'
@@ -18,11 +17,6 @@ export const router = createBrowserRouter([
       : (
         <LoginPage></LoginPage>
         ),
-  },
-  {
-    path: ROUTES.LOGOUT,
-    element: <Navigate to={ROUTES.LOGIN}></Navigate>,
-    action: LogoutAction,
   },
   {
     path: ROUTES.HOME,

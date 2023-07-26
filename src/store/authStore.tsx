@@ -5,6 +5,7 @@ interface AuthStoreState {
   accessToken: string | null
   setLocalStorage: (accessToken: string, userProfile: object, expiresIn: number) => void
   login: (accessToken: string, userProfile: object, expiresIn: number) => void
+  logout: () => void
 }
 
 const useAuthStore = create<AuthStoreState>(set => ({
@@ -28,6 +29,15 @@ const useAuthStore = create<AuthStoreState>(set => ({
       return {
         accessToken,
         userProfile,
+      }
+    })
+  },
+  logout: () => {
+    set(() => {
+      localStorage.clear()
+      return {
+        accessToken: '',
+        userProfile: {},
       }
     })
   },
