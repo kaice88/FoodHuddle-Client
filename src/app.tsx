@@ -1,12 +1,12 @@
-import { MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
-import { RouterProvider } from 'react-router-dom';
-import { router } from './routes';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MantineProvider } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
+import { RouterProvider } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { router } from './routes'
 
 export default function App() {
   // Create a client
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient()
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider
@@ -23,9 +23,9 @@ export default function App() {
           },
         }}
       >
-        <Notifications></Notifications>
+        <Notifications position="top-right" zIndex={2077} />
         <RouterProvider router={router} />
       </MantineProvider>
     </QueryClientProvider>
-  );
+  )
 }
