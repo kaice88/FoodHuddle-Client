@@ -1,0 +1,109 @@
+.sessionList {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: $content-gutter;
+  width: 100%;
+}
+
+.sessionWrapper {
+  @include flexbox-centering();
+}
+
+.session {
+  @include flexbox-centering-vertical;
+  width: 960px;
+  justify-content: space-between;
+  @include transition();
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05),
+    -18px 14px 15px -5px rgba(0, 0, 0, 0.05),
+    13px 9px 10px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: $content-gutter;
+
+  &__info {
+    flex: 2 1 0;
+    @include flexbox-centering-vertical();
+    flex-direction: column;
+  }
+  &__title {
+    color: $orange;
+    font-weight: 800;
+    font-size: 1.2rem;
+    line-height: 155%;
+    text-decoration: none;
+  }
+
+  &__status {
+    flex: 1.5 1 0px;
+  }
+  &__title:hover {
+    color: $green;
+  }
+  &__status {
+    @include flexbox-centering();
+  }
+
+  &__status-open {
+    .mantine-Badge-root {
+      background: rgba(126, 84, 152, 0.14);
+    }
+    .mantine-Badge-inner {
+      color: $dark-lavender;
+    }
+  }
+  &__status-locked {
+    .mantine-Badge-root {
+      background: rgba(255, 107, 0, 0.17);
+    }
+    .mantine-Badge-inner {
+      color: $orange;
+    }
+  }
+
+  &__status-pending {
+    .mantine-Badge-root {
+      background: rgba(65, 84, 129, 0.19);
+    }
+    .mantine-Badge-inner {
+      color: $picker-bluewood;
+    }
+  }
+  &__status-finished {
+    .mantine-Badge-root {
+      background: rgba(79, 246, 65, 0.19);
+    }
+    .mantine-Badge-inner {
+      color: $green;
+    }
+  }
+
+  &__host {
+    color: #c1c1c1;
+    font-size: 0.9 rem;
+    font-weight: 700;
+    line-height: 155%;
+  }
+
+  &__link {
+    @include flexbox-centering();
+    flex: 1 1 0px;
+    flex-direction: column;
+  }
+  &__joiners {
+    @include flexbox-centering();
+    gap: calc($content-gutter / 2);
+  }
+  @include breakpoint-down("smallphone") {
+    flex-direction: column;
+    gap: calc($content-gutter / 2);
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

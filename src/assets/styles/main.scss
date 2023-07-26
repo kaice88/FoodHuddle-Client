@@ -1,17 +1,17 @@
 @charset 'UTF-8';
 
+@import "abstracts/variables";
+@import "abstracts/mixins";
 
-@import 'abstracts/variables';
-@import 'abstracts/mixins';
+@import "layout/navbar";
+@import "layout/header";
+@import "layout/content";
+@import "layout/footer";
 
-@import 'layout/navbar';
-@import 'layout/header';
-@import 'layout/content';
-@import 'layout/footer';
+@import "components/breadscumbs";
+@import "components/modalCreateSesstion";
 
-@import 'components/breadscumbs';
-@import 'components/modalCreateSesstion';
+@import "pages/login";
+@import "pages/sessions";
 
-@import 'pages/login';
-
-@import 'base/base';
+@import "base/base";

@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import axios from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
@@ -6,9 +5,8 @@ import ActionButton from '@/components/ActionButton'
 import { notificationShow } from '@/components/Notification'
 import { SessionStatuses } from '@/enums'
 
-const Index = () => {
+const HostActions = ({ id }) => {
   const [status, setStatus] = useState('OPEN')
-  const { id } = useParams()
   const { mutation } = useRequestProcessor()
 
   const changeStatusMutation = mutation(
@@ -56,17 +54,20 @@ const Index = () => {
     changeStatusMutation.mutate(status)
   }
 
-  return <div>OrderPage{id}
+  return (
     <div>
-      {status === 'OPEN'
-        ? (
-          <ActionButton value="lock order" colorName="bashfulPink" onClick={() => handleChangeStatus(SessionStatuses.LOCKED)}></ActionButton>
-          )
-        : (
-          <ActionButton value="split payment" colorName="watermelon" onClick={() => handleChangeStatus(SessionStatuses.PENDING_PAYMENTS)}></ActionButton>
+      OrderPage{id}
+      <div>
+        {status === 'OPEN'
+          ? (
+            <ActionButton value="lock order" colorName="bashfulPink" onClick={() => handleChangeStatus(SessionStatuses.LOCKED)}></ActionButton>
+            )
+          : (
+            <ActionButton value="split payment" colorName="watermelon" onClick={() => handleChangeStatus(SessionStatuses.PENDING_PAYMENTS)}></ActionButton>
           )}
-      <ActionButton value="delete" colorName="bashfulPink" onClick={handleDeleteSession}></ActionButton>
-    </div></div>
+        <ActionButton value="delete" colorName="bashfulPink" onClick={handleDeleteSession}></ActionButton>
+      </div>
+    </div>)
 }
 
-export default Index
+export default HostActions
