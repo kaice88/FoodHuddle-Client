@@ -1,9 +1,28 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Tabs } from "@mantine/core";
 
-const SessionPage = () => {
-  const { id } = useParams();
-  return <div>OrderPage{id}</div>;
-};
+import { useParams } from "react-router-dom";
+import { IconShoppingCart, IconSubtask } from "@tabler/icons-react";
+
+import OrderTab from "./Components/OrderTab";
+
+function SessionPage() {
+  const { sessionId } = useParams();
+  return (
+    <Tabs defaultValue={"order"}>
+      <Tabs.List>
+        <Tabs.Tab value="order" icon={<IconShoppingCart />}>
+          Order
+        </Tabs.Tab>
+        <Tabs.Tab value="summary" icon={<IconSubtask />}>
+          Summary
+        </Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="order">
+        <OrderTab />
+      </Tabs.Panel>
+    </Tabs>
+  );
+}
 
 export default SessionPage;

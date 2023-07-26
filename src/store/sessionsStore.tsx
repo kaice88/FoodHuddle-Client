@@ -55,5 +55,5 @@ export const useSessionStore = create(
         state.isLoading = false;
       });
     },
-  }))
+  }))clear
 );
