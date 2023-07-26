@@ -41,10 +41,10 @@
   &__title:hover {
     color: $green;
   }
-  &__status .mantine-Badge-inner,
-  .mantine-Badge-root {
+  &__status {
     @include flexbox-centering();
   }
+
   &__status-open {
     .mantine-Badge-root {
       background: rgba(126, 84, 152, 0.14);
