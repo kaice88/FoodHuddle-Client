@@ -72,7 +72,7 @@ export default function SessionTodayPage() {
               },
             })}
           >
-            Open centered Modal
+            Create New Session
           </Button>
         </Group>
       </div>

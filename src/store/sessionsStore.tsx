@@ -49,6 +49,7 @@ export const useSessionStore = create(
       set((state) => {
         state.isLoading = true;
       });
+      console.log(tab);
       const sessions = await fetchSessions(getUrl(tab));
       set((state) => {
         state.sessions = sessions;
