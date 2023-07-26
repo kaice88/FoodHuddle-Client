@@ -1,12 +1,11 @@
-import { useDisclosure } from '@mantine/hooks';
-import SessionInfo from '../components/sessionInfo/modal';
-import { Modal, Button, Group, Box, Text, Flex } from '@mantine/core';
-import { IconSquarePlus } from '@tabler/icons-react';
-import { loadingShow } from '@/components/loading/loading';
+import { useDisclosure } from '@mantine/hooks'
+import { Box, Button, Flex, Group, Modal, Text } from '@mantine/core'
+import { IconSquarePlus } from '@tabler/icons-react'
+import SessionInfo from '../components/Modal'
 
 export default function SessionTodayPage() {
-  //......Modal......................................
-  const [opened, { open, close }] = useDisclosure(false);
+  // ......Modal......................................
+  const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
     <Flex justify="center" align="flex-start" direction="column">
       <Text fw={700} fz="lg">
@@ -14,7 +13,7 @@ export default function SessionTodayPage() {
       </Text>
       <div style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}></div>
     </Flex>
-  );
+  )
 
   return (
     <div>
@@ -29,7 +28,7 @@ export default function SessionTodayPage() {
           color="orange"
           size="20px"
           leftIcon={<IconSquarePlus size="0.9rem" />}
-          styles={(theme) => ({
+          styles={theme => ({
             root: {
               backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.4),
               color: theme.colors.red[0],
@@ -44,5 +43,5 @@ export default function SessionTodayPage() {
         </Button>
       </Group>
     </div>
-  );
+  )
 }

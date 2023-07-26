@@ -5,10 +5,27 @@ import { useRequestProcessor } from '@/settings/reactQuery';
 import { TextInput, Button, Group, Textarea, Flex, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { REQUEST_POST_SESSION_INFO, REQUEST_GET_HOST_PAYMENT_INFO } from '@/constants/apis';
-import { FormValue, FormatDataSessionInfo } from './types';
 import axiosInstance from '@/settings/axios';
-import { notificationShow } from '../notifications/notification';
-import UploadImages from '../uploadFile/uploadFile';
+import { notificationShow } from './Notification';
+import UploadImages from './UploadFile';
+
+ interface FormValue {
+  title: string;
+  shopLink: string;
+  description: string;
+  hostPaymentInfo: string;
+  qrImages: Array<File>;
+  status: string;
+}
+
+ interface FormatDataSessionInfo {
+  title: string;
+  shop_link: string;
+  description: string;
+  host_payment_info: string;
+  qr_images: Array<File>;
+  status: string;
+}
 
 const SessionInfo: React.FC = () => {
   const navigate = useNavigate();

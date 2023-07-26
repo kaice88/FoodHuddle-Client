@@ -1,18 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-import { Avatar, Menu } from '@mantine/core';
-import { IconLogout } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom'
+import { Avatar, Menu } from '@mantine/core'
+import { IconLogout } from '@tabler/icons-react'
+import useAuthStore from '@/store/authStore'
 
-import useAuthStore from '@/store/authStore';
-import { UserInfoProps } from './types';
-
-export default function UserInfo({ className }: UserInfoProps) {
-  const { logout, userProfile } = useAuthStore();
-  const navigate = useNavigate();
+export default function UserInfo({ className }) {
+  const { logout, userProfile } = useAuthStore()
+  const navigate = useNavigate()
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+    logout()
+    navigate('/login')
+  }
   return (
     <div className={className}>
       <div className={`${className}__name`}>
@@ -30,5 +28,5 @@ export default function UserInfo({ className }: UserInfoProps) {
         </Menu.Dropdown>
       </Menu>
     </div>
-  );
+  )
 }

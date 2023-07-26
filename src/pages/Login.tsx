@@ -1,38 +1,38 @@
-import { useNavigate } from 'react-router-dom';
-import { Button, Center, Title } from '@mantine/core';
-import { useMutation } from '@tanstack/react-query';
-import { IconLogin } from '@tabler/icons-react';
-import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
+import { Button, Center, Title } from '@mantine/core'
+import { useMutation } from '@tanstack/react-query'
+import { IconLogin } from '@tabler/icons-react'
+import { useGoogleLogin } from '@react-oauth/google'
+import axios from 'axios'
 
-import Logo from '@/components/logo/logo';
-import useAuthStore from '../store/authStore';
+import useAuthStore from '../store/authStore'
+import Logo from '@/components/logo/logo'
 
 export default function LoginPage() {
-  const { login } = useAuthStore();
-  const navigate = useNavigate();
+  const { login } = useAuthStore()
+  const navigate = useNavigate()
 
   const handleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      getUserProfile(tokenResponse.access_token);
+      getUserProfile(tokenResponse.access_token)
     },
-  });
+  })
 
   const mutation = useMutation({
     mutationFn: (token) => {
       return axios.post('http://localhost:3003/api/v1/auth/google/callback', {
         accessToken: token,
-      });
+      })
     },
     onSuccess: (data) => {
-      login(data.data.accessToken, data.data.profile);
-      navigate('/sessions-today');
+      login(data.data.accessToken, data.data.profile)
+      navigate('/sessions-today')
     },
-  });
+  })
 
   const getUserProfile = async (token: string) => {
-    mutation.mutate(token);
-  };
+    mutation.mutate(token)
+  }
 
   return (
     <Center className="auth">
@@ -58,5 +58,5 @@ export default function LoginPage() {
         FoodHuddle v1 @
       </Title>
     </Center>
-  );
+  )
 }

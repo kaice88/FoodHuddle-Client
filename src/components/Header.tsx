@@ -1,7 +1,7 @@
-import { Header } from '@mantine/core';
+import { Header } from '@mantine/core'
 
-import Logo from '../logo/logo';
-import UserInfo from '../user-info/user-info';
+import Logo from './Logo'
+import UserInfo from './UserInfo'
 
 export default function DashboardHeader() {
   return (
@@ -9,5 +9,5 @@ export default function DashboardHeader() {
       <Logo className="header__logo"></Logo>
       <UserInfo className="header__user-info"></UserInfo>
     </Header>
-  );
+  )
 }

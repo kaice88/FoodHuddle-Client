@@ -1,11 +1,11 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 
-import LoginPage from './pages/login';
-import SessionTodayPage from './pages/sessions-today';
-import Layout from './layouts/layout';
-import ErrorPage from './pages/error';
-import { checkAuthLoader, getToken } from './utils/auth';
-import Index from './pages/sessionPage';
+import LoginPage from './pages/Login'
+import SessionTodayPage from './pages/SessionsToday'
+import Layout from './layouts/Layout'
+import ErrorPage from './pages/Error'
+import { checkAuthLoader, getToken } from './utils/auth'
+import Index from './pages/SessionPage/Index'
 
 export const router = createBrowserRouter([
   {
@@ -37,4 +37,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+])
