@@ -6,8 +6,10 @@ import Layout from "./layouts/Layout";
 import { LogoutAction } from "./pages/Logout";
 import ErrorPage from "./pages/Error";
 import { checkAuthLoader, getAuthToken } from "./utils/auth";
+
+import Index from "./pages/SessionPage/Index";
+
 import * as ROUTES from "@/constants/routes";
-import SessionDetail from "./pages/SessionDetail";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +42,7 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.SESSION_DETAIL,
         element: <SessionDetail></SessionDetail>,
+        errorElement: <ErrorPage />,
       },
       {
         path: ROUTES.SESSIONS_HISTORY,
