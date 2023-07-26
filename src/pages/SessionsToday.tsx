@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Loader, Tabs } from "@mantine/core";
 
 import { TABS_CONFIG } from "@/constants/sessions";
@@ -8,7 +7,7 @@ import { Box, Button, Flex, Group, Modal, Text } from "@mantine/core";
 import { IconSquarePlus } from "@tabler/icons-react";
 import SessionInfo from "../components/Modal";
 import SessionList from "@/components/SessionsList";
-import { useSessionStore } from "@/store/sessionsStore";
+import { useSessionData, useSessionStore } from "@/store/sessionsStore";
 
 export default function SessionTodayPage() {
   const [activeTab, setActiveTab] = useSessionStore((state) => [
@@ -16,11 +15,7 @@ export default function SessionTodayPage() {
     state.setActiveTab,
   ]);
 
-  const [sessions, setSessions, isLoading] = useSessionStore((state) => [
-    state.sessions,
-    state.setSessions,
-    state.isLoading,
-  ]);
+  const { data: sessions, isLoading } = useSessionData(activeTab);
 
   const [opened, { open, close }] = useDisclosure(false);
   const titleModal = (
@@ -33,10 +28,6 @@ export default function SessionTodayPage() {
       ></div>
     </Flex>
   );
-
-  useEffect(() => {
-    setSessions(activeTab);
-  }, [activeTab]);
 
   return (
     <>
