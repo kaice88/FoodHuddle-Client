@@ -22,13 +22,13 @@ function Bread() {
             {icon}
             {breadcrumb.props.children}
           </NavLink>
-        )
+          )
         : (
           <span key={index} className="breadcrumbs__item">
             {icon}
             {breadcrumb.props.children}
           </span>
-        )
+          )
     })
   }
   return <Breadcrumbs className="breadcrumbs">{generateItems()}</Breadcrumbs>

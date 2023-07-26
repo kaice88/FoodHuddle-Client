@@ -43,7 +43,6 @@ export const useSessionStore = create(
     sessions: [],
     setActiveTab: (tab: SessionsTodayPageTabs) =>
       set((state) => {
-        console.log(tab);
         state.activeTab = tab;
       }),
     setSessions: async (tab: SessionsTodayPageTabs) => {
@@ -51,7 +50,6 @@ export const useSessionStore = create(
         state.isLoading = true;
       });
       const sessions = await fetchSessions(getUrl(tab));
-      console.log(sessions);
       set((state) => {
         state.sessions = sessions;
         state.isLoading = false;

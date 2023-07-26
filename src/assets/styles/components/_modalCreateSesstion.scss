@@ -1,0 +1,17 @@
+    .mantine-Popover-dropdown{
+        background-color: red;
+    }
+.modal_date_time{
+    .mantine-Modal-inner{
+        background: rgba(255,255,255,0.5);
+        backdrop-filter: blur(5px);
+        pointer-events: all;
+        display: block;
+        .mantine-Modal-content{
+            width: fit-content;
+            margin: auto;
+
+        }
+    }
+
+}
