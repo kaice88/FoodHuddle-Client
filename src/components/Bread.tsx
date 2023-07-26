@@ -9,7 +9,7 @@ function Bread() {
   const breadcrumbs = useBreadcrumbs()
   const generateItems = () => {
     return breadcrumbs.map(({ breadcrumb, match }, index, arr) => {
-      if (!isValidElement(breadcrumb) || index == 0)
+      if (!isValidElement(breadcrumb) || index === 0)
         return null
 
       const icon = options.find(
@@ -22,13 +22,13 @@ function Bread() {
             {icon}
             {breadcrumb.props.children}
           </NavLink>
-        )
+          )
         : (
           <span key={index} className="breadcrumbs__item">
             {icon}
             {breadcrumb.props.children}
           </span>
-        )
+          )
     })
   }
   return <Breadcrumbs className="breadcrumbs">{generateItems()}</Breadcrumbs>

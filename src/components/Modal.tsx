@@ -1,54 +1,53 @@
-/* eslint-disable */
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRequestProcessor } from '@/settings/reactQuery';
-import { TextInput, Button, Group, Textarea, Flex, Text } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { REQUEST_POST_SESSION_INFO, REQUEST_GET_HOST_PAYMENT_INFO } from '@/constants/apis';
-import axiosInstance from '@/settings/axios';
-import { notificationShow } from './Notification';
-import UploadImages from './UploadFile';
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Button, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
+import { useForm } from '@mantine/form'
+import { notificationShow } from './Notification'
+import UploadImages from './UploadFile'
+import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
+import axiosInstance from '@/settings/axios'
+import { useRequestProcessor } from '@/settings/react-query'
 
- interface FormValue {
-  title: string;
-  shopLink: string;
-  description: string;
-  hostPaymentInfo: string;
-  qrImages: Array<File>;
-  status: string;
+interface FormValue {
+  title: string
+  shopLink: string
+  description: string
+  hostPaymentInfo: string
+  qrImages: Array<File>
+  status: string
 }
 
- interface FormatDataSessionInfo {
-  title: string;
-  shop_link: string;
-  description: string;
-  host_payment_info: string;
-  qr_images: Array<File>;
-  status: string;
+interface FormatDataSessionInfo {
+  title: string
+  shop_link: string
+  description: string
+  host_payment_info: string
+  qr_images: Array<File>
+  status: string
 }
 
 const SessionInfo: React.FC = () => {
-  const navigate = useNavigate();
-  const { query, mutation } = useRequestProcessor();
+  const navigate = useNavigate()
+  const { query, mutation } = useRequestProcessor()
   const fetchQuerySessionInfo = query(
     ['paymentInfo'],
     () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
     {
       enabled: false,
       onSuccess: (data) => {
-        form.setFieldValue('hostPaymentInfo', data.data.hostPaymentInfor);
+        form.setFieldValue('hostPaymentInfo', data.data.hostPaymentInfor)
       },
       onError: (error) => {
-        notificationShow('error', 'ERROR', error.message);
+        notificationShow('error', 'ERROR', error.message)
       },
     },
-  );
+  )
   useEffect(() => {
     const handlefetchSessionInfo = async () => {
-      await fetchQuerySessionInfo.refetch();
-    };
-    handlefetchSessionInfo();
-  }, []);
+      await fetchQuerySessionInfo.refetch()
+    }
+    handlefetchSessionInfo()
+  }, [])
 
   const fetchMutationSessionInfo = mutation(
     ['sessionInfo'],
@@ -56,22 +55,16 @@ const SessionInfo: React.FC = () => {
       await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
     {
       onError: (error) => {
-        console.log('erorrr-mutation');
-        notificationShow('error', 'Error: ', error.message);
+        notificationShow('error', 'Error: ', error.message)
       },
       onSuccess: (data) => {
-        console.log(data);
-        const { id, message } = data.data;
-        notificationShow('success', 'Success: ', message);
-        navigate(`/sessions-today/${id}`);
+        const { id, message } = data.data
+        notificationShow('success', 'Success: ', message)
+        navigate(`/sessions-today/${id}`)
       },
     },
-  );
-  // //......RESET FORM VALUE......................................
-  const resetForm = () => {
-    form.reset();
-  };
-  //......Config form.................................................
+  )
+  // ......Config form.................................................
   const form = useForm<FormValue>({
     initialValues: {
       title: '',
@@ -83,12 +76,12 @@ const SessionInfo: React.FC = () => {
     },
 
     validate: {
-      title: (value) => (value ? null : 'Title is required'),
-      shopLink: (value) => (value ? null : 'Link Shop is required'),
-      hostPaymentInfo: (value) => (value ? null : 'Payment Infomation is required'),
+      title: value => (value ? null : 'Title is required'),
+      shopLink: value => (value ? null : 'Link Shop is required'),
+      hostPaymentInfo: value => (value ? null : 'Payment Infomation is required'),
     },
-  });
-  //.....Handle submit.............................................
+  })
+  // .....Handle submit.............................................
   const handleSubmitNewSession = async (values: FormValue) => {
     const dataForm = {
       title: values.title,
@@ -97,15 +90,15 @@ const SessionInfo: React.FC = () => {
       host_payment_info: values.hostPaymentInfo,
       qr_images: '',
       status: values.status,
-    };
-    fetchMutationSessionInfo.mutate(dataForm);
-  };
+    }
+    fetchMutationSessionInfo.mutate(dataForm)
+  }
   const handleOnChangeUploadFile = (value: File[]) => {
-    form.setFieldValue('qrImages', value);
-  };
+    form.setFieldValue('qrImages', value)
+  }
 
   return (
-    <form onSubmit={form.onSubmit((values) => handleSubmitNewSession(values))}>
+    <form onSubmit={form.onSubmit(values => handleSubmitNewSession(values))}>
       <Flex gap="md" justify="center" align="flex-start" direction="row" style={{ width: '100%' }}>
         <Flex gap="md" justify="center" align="center" direction="column" style={{ width: '50%' }}>
           <TextInput
@@ -159,25 +152,9 @@ const SessionInfo: React.FC = () => {
       </Flex>
       <Group position="right" mt="md">
         <Button
-          onClick={resetForm}
-          size="15px"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: theme.fn.lighten(theme.colors.duck[0], 0.9),
-              color: theme.colors.duck[0],
-              ...theme.fn.hover({
-                backgroundColor: theme.fn.lighten(theme.colors.duck[0], 0.8),
-              }),
-              padding: '10px',
-            },
-          })}
-        >
-          Reset
-        </Button>
-        <Button
           type="submit"
           size="15px"
-          styles={(theme) => ({
+          styles={theme => ({
             root: {
               backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.9),
               color: theme.colors.orange[0],
@@ -192,7 +169,7 @@ const SessionInfo: React.FC = () => {
         </Button>
       </Group>
     </form>
-  );
-};
+  )
+}
 
-export default SessionInfo;
+export default SessionInfo

@@ -1,12 +1,36 @@
+import { useEffect } from 'react'
 import { AppShell } from '@mantine/core'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useSubmit } from 'react-router-dom'
 
 import Navbar from '../components/Navbar/Navbar'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Bread from '../components/Bread'
+import { getAuthToken, getTokenDuration } from '@/utils/auth'
+import * as ROUTES from '@/constants/routes'
 
 export default function Layout() {
+  const submit = useSubmit()
+  const token = getAuthToken()
+
+  useEffect(() => {
+    if (!token)
+      return
+
+    if (token === 'EXPIRED') {
+      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
+      return
+    }
+    const tokenDuration = getTokenDuration()
+
+    const logoutTimeout = setTimeout(() => {
+      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
+    }, tokenDuration)
+    return () => {
+      clearTimeout(logoutTimeout)
+    }
+  }, [token])
+
   return (
     <AppShell
       padding="md"

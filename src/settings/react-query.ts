@@ -1,14 +1,12 @@
-/* eslint-disable */
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export function useRequestProcessor() {
-  const queryClient = useQueryClient();
   function query(key: any, queryFunction: any, options = {}) {
     return useQuery({
       queryKey: key,
       queryFn: queryFunction,
       ...options,
-    });
+    })
   }
 
   function mutation(key: any, mutationFunction: any, options = {}) {
@@ -16,8 +14,8 @@ export function useRequestProcessor() {
       mutationKey: key,
       mutationFn: mutationFunction,
       ...options,
-    });
+    })
   }
 
-  return { query, mutation };
+  return { query, mutation }
 }

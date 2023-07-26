@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './app.tsx';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import './assets/styles/main.scss';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import App from './app.tsx'
+import './assets/styles/main.scss'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID}>
@@ -11,4 +11,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </React.StrictMode>
     ,
   </GoogleOAuthProvider>,
-);
+)

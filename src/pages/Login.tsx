@@ -1,14 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import { Button, Center, Title } from '@mantine/core'
-import { useMutation } from '@tanstack/react-query'
 import { IconLogin } from '@tabler/icons-react'
 import { useGoogleLogin } from '@react-oauth/google'
-import axios from 'axios'
 
 import useAuthStore from '../store/authStore'
-import Logo from '@/components/logo/logo'
+import { useRequestProcessor } from '@/settings/react-query'
+import axios from '@/settings/axios'
+import Logo from '@/components/Logo'
+import * as ROUTES from '@/constants/routes'
 
 export default function LoginPage() {
+  const { mutation } = useRequestProcessor()
   const { login } = useAuthStore()
   const navigate = useNavigate()
 
@@ -18,20 +20,23 @@ export default function LoginPage() {
     },
   })
 
-  const mutation = useMutation({
-    mutationFn: (token) => {
-      return axios.post('http://localhost:3003/api/v1/auth/google/callback', {
+  const authMutation = mutation(
+    'userProfile',
+    (token) => {
+      return axios.post('/v1/auth/google/callback', {
         accessToken: token,
       })
     },
-    onSuccess: (data) => {
-      login(data.data.accessToken, data.data.profile)
-      navigate('/sessions-today')
+    {
+      onSuccess: (data) => {
+        login(data.data.accessToken, data.data.profile, data.data.expiresIn)
+        navigate(ROUTES.SESSIONS_TODAY)
+      },
     },
-  })
+  )
 
   const getUserProfile = async (token: string) => {
-    mutation.mutate(token)
+    authMutation.mutate(token)
   }
 
   return (
