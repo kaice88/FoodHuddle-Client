@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core'
 
-export default function ActionButton({ colorName, value, onClick }) {
+export default function ActionButton({ colorName, value, onClick, disabled}) {
   //   const [status, setStatus] = useState({});
 
   return (
@@ -15,6 +15,7 @@ export default function ActionButton({ colorName, value, onClick }) {
         },
       })}
       onClick={onClick}
+      disabled={disabled}
     >
       {value.toUpperCase()}
     </Button>

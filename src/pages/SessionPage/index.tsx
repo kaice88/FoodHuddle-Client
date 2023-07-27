@@ -1,15 +1,39 @@
+import { useState } from 'react'
 import { Tabs } from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 
 import OrderTab from './Components/OrderTab'
 import HostActions from './Components/HostActions'
+import { SessionStatuses } from '@/enums'
+import { notificationShow } from '@/components/Notification'
+import useSession from '@/hooks/useSession'
 
 function SessionPage() {
   const { sessionId } = useParams()
+  const [currentStatus, setCurrentStatus] = useState('OPEN')
+  const navigate = useNavigate()
+
+  const { deleteSession, changeStatus } = useSession(sessionId)
+
+  const handleDeleteSession = () => {
+    deleteSession((data) => {
+      notificationShow('success', 'SUCCESS', data.data.message)
+    })
+  }
+
+  const handlechangeStatus = (status) => {
+    changeStatus(status, (data) => {
+      notificationShow('success', 'SUCCESS', data.data.message)
+      setCurrentStatus(data.data.statusSession)
+      if (status === SessionStatuses.PENDING_PAYMENTS)
+        navigate(`/sessions-today/${sessionId}/session-summary`)
+    })
+  }
+
   return (
     <>
-      <HostActions id={sessionId}></HostActions>
+      <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>
       <Tabs defaultValue={'order'}>
         <Tabs.List>
           <Tabs.Tab value="order" icon={<IconShoppingCart />}>

@@ -7,6 +7,7 @@ import ErrorPage from './pages/Error'
 import { checkAuthLoader, getAuthToken } from './utils/auth'
 
 import SessionPage from './pages/SessionPage'
+import SessionSummary from './pages/SessionSummary'
 import * as ROUTES from '@/constants/routes'
 
 export const router = createBrowserRouter([
@@ -15,10 +16,10 @@ export const router = createBrowserRouter([
     element: getAuthToken()
       ? (
         <Navigate to={ROUTES.SESSIONS_TODAY}></Navigate>
-      )
+        )
       : (
         <LoginPage></LoginPage>
-      ),
+        ),
   },
   {
     path: ROUTES.HOME,
@@ -41,7 +42,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.SESSION_SUMMARY,
-        element: <SessionPage></SessionPage>,
+        element: <SessionSummary></SessionSummary>,
         errorElement: <ErrorPage />,
       },
       {
