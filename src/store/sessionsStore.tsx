@@ -28,10 +28,10 @@ const fetchSessions = async (url: string) => {
 
 const getUrl = (tab: SessionsTodayPageTabs): string => {
   switch (tab) {
-    case SessionsTodayPageTabs.ALL:
-      return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
-  default:
-      return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
+  case SessionsTodayPageTabs.ALL:
+    return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
+    default:
+    return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
   }
 }
 

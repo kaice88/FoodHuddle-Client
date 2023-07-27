@@ -1,40 +1,40 @@
-import { useEffect, useState } from "react";
-import { AppShell, MediaQuery, Burger } from "@mantine/core";
-import { Outlet, useSubmit } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { AppShell } from '@mantine/core'
+import { Outlet, useSubmit } from 'react-router-dom'
 
-import Navbar from "../components/Navbar/Navbar";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Bread from "../components/Bread";
-import { getAuthToken, getTokenDuration } from "@/utils/auth";
-import * as ROUTES from "@/constants/routes";
+import Navbar from '../components/Navbar/Navbar'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import Bread from '../components/Bread'
+import { getAuthToken, getTokenDuration } from '@/utils/auth'
+import * as ROUTES from '@/constants/routes'
 
 export default function Layout() {
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(false)
+  const submit = useSubmit()
+  const token = getAuthToken()
 
   const handleOpen = (): void => {
-    setOpened((o) => !o);
-  };
-
-  const submit = useSubmit();
-  const token = getAuthToken();
+    setOpened(o => !o)
+  }
 
   useEffect(() => {
-    if (!token) return;
+    if (!token)
+      return
 
-    if (token === "EXPIRED") {
-      submit(null, { action: ROUTES.LOGOUT, method: "post" });
-      return;
+    if (token === 'EXPIRED') {
+      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
+      return
     }
-    const tokenDuration = getTokenDuration();
+    const tokenDuration = getTokenDuration()
 
     const logoutTimeout = setTimeout(() => {
-      submit(null, { action: ROUTES.LOGOUT, method: "post" });
-    }, tokenDuration);
+      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
+    }, tokenDuration)
     return () => {
-      clearTimeout(logoutTimeout);
-    };
-  }, [token]);
+      clearTimeout(logoutTimeout)
+    }
+  }, [token, submit])
 
   return (
     <AppShell
@@ -43,10 +43,10 @@ export default function Layout() {
       navbar={<Navbar opened={opened} />}
       header={<Header opened={opened} handleOpen={handleOpen} />}
       footer={<Footer />}
-      styles={(theme) => ({
+      styles={theme => ({
         main: {
           backgroundColor:
-            theme.colorScheme === "dark"
+            theme.colorScheme === 'dark'
               ? theme.colors.dark[8]
               : theme.colors.gray[0],
         },
@@ -57,5 +57,5 @@ export default function Layout() {
         <Outlet></Outlet>
       </div>
     </AppShell>
-  );
+  )
 }

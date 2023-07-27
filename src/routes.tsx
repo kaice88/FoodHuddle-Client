@@ -15,10 +15,10 @@ export const router = createBrowserRouter([
     element: getAuthToken()
       ? (
         <Navigate to={ROUTES.SESSIONS_TODAY}></Navigate>
-        )
+      )
       : (
         <LoginPage></LoginPage>
-        ),
+      ),
   },
   {
     path: ROUTES.HOME,
@@ -36,6 +36,11 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.SESSION_DETAIL,
+        element: <SessionPage></SessionPage>,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: ROUTES.SESSION_SUMMARY,
         element: <SessionPage></SessionPage>,
         errorElement: <ErrorPage />,
       },
