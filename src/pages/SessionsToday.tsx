@@ -16,7 +16,6 @@ export default function SessionTodayPage() {
   ]);
 
   const { data: sessions, isLoading } = useSessionData(activeTab);
-
   const [opened, { open, close }] = useDisclosure(false);
   const titleModal = (
     <Flex justify="center" align="flex-start" direction="column">

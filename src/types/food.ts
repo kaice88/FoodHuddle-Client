@@ -1,9 +1,9 @@
-interface Option {
+export interface Option {
   name: string;
   price: number;
 }
 
-interface FoodItem {
+export interface FoodItem {
   foodName: string;
   originPrice: number;
   quantity: number;
@@ -11,12 +11,12 @@ interface FoodItem {
   options: Option[];
 }
 
-interface FoodList {
+export interface FoodList {
   sessionId: number;
   foodList: FoodItem[];
 }
 
-interface FoodListResponse {
+export interface FoodListResponse {
   status: string;
   message: string;
   foodList: FoodList;

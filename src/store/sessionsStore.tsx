@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 import { SessionsTodayPageTabs } from "@/enums";
-import { SessionInfo, SessionsListResponse } from "@/types/sessions";
+import { SessionInfo, SessionsListResponse } from "@/types/Sessions";
 import axiosInstance from "@/settings/axios";
 import { useRequestProcessor } from "@/settings/react-query";
 
