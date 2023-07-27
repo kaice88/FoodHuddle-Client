@@ -19,6 +19,7 @@ function SessionPage() {
   const handleDeleteSession = () => {
     deleteSession((data) => {
       notificationShow('success', 'SUCCESS', data.data.message)
+      navigate('/sessions-today')
     })
   }
 

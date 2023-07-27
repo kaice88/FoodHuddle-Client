@@ -1,17 +1,14 @@
-import React from "react";
-import { SessionsListProps } from "./types";
-import Session from "./SessionCard";
-
-import { useId as mantineUseId } from "@mantine/hooks";
+import type { SessionsListProps } from './types'
+import Session from './SessionCard'
 
 function SessionList({ sessionsList }: SessionsListProps) {
   return (
     <div className="sessionList">
-      {sessionsList.map((session) => (
-        <Session key={mantineUseId()} session={session} />
+      {sessionsList.map(session => (
+        <Session key={session.id} session={session} />
       ))}
     </div>
-  );
+  )
 }
 
-export default SessionList;
+export default SessionList
