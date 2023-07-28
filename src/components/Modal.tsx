@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, FileButton, Flex, Group, Image, Text, TextInput, Textarea } from '@mantine/core'
+import { Button, CloseButton, FileButton, Flex, Group, Image, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import isEmpty from 'lodash/isEmpty'
+import { modals } from '@mantine/modals'
 import { notificationShow } from './Notification'
 import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
@@ -96,24 +97,70 @@ const SessionInfo: React.FC = () => {
     fetchMutationSessionInfo.mutate(dataForm)
   }
 
+  const handleImage = imageUrl =>
+
+    modals.open({
+      title: 'Preview Image',
+      centered: true,
+      children: (
+        <Image
+          src={imageUrl}
+          alt="preview Image"
+        />
+      ),
+      className: 'modal_preview_image',
+    })
+
+  const handleDeleteImage = (index) => {
+    const updatedFiles = [...files]
+    updatedFiles.splice(index, 1)
+    form.setFieldValue('qrImages', updatedFiles)
+  }
+
   const files: File[] = form.getInputProps('qrImages').value
   const previews
     = !isEmpty(files)
     && files.map((file, index) => {
       const imageUrl = URL.createObjectURL(file)
       return (
-        <Image
+        <div
           key={index}
-          src={imageUrl}
-          width={80}
-          height={80}
-          style={{ objectFit: 'contain', borderRadius: '5px', boxShadow: '1px 1px 5px 1px grey' }}
-        />
+          style={{
+            position: 'relative',
+            width: 90,
+            height: 90,
+            overflow: 'hidden',
+            borderRadius: 5,
+            boxShadow: '1px 1px 5px 1px grey',
+          }}
+        >
+          <Image
+            src={imageUrl}
+            width={80}
+            height={80}
+            style={{ objectFit: 'cover', cursor: 'pointer' }}
+            onClick={() => handleImage(imageUrl)}
+          />
+          <CloseButton
+            radius="xl"
+            variant="hover"
+            title="Delete"
+            style={{
+              position: 'absolute',
+              top: '-2px',
+              right: '-2px',
+              zIndex: 1,
+              padding: 0,
+              width: 20,
+              height: 20,
+              backgroundColor: 'rgba(255, 255, 255)',
+              color: 'grey',
+            }}
+            onClick={() => handleDeleteImage(index)}
+          />
+        </div>
       )
     })
-  const clearFile = () => {
-    form.setFieldValue('qrImages', [])
-  }
 
   return (
     <form onSubmit={form.onSubmit(values => handleSubmitNewSession(values))}>
@@ -174,15 +221,6 @@ const SessionInfo: React.FC = () => {
                   </Button>
                 )}
               </FileButton>
-              <Button
-                disabled={!previews}
-                variant="light"
-                color="orange"
-                size="xs"
-                onClick={clearFile}
-              >
-    Reset Image
-              </Button>
             </Group>
           </Flex>
           <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
