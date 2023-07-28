@@ -23,13 +23,13 @@ export default function Layout() {
       return
 
     if (token === 'EXPIRED') {
-      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
+      submit(null, { action: ROUTES.LOGIN, method: 'post' })
       return
     }
     const tokenDuration = getTokenDuration()
 
     const logoutTimeout = setTimeout(() => {
-      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
+      submit(null, { action: ROUTES.LOGIN, method: 'post' })
     }, tokenDuration)
     return () => {
       clearTimeout(logoutTimeout)

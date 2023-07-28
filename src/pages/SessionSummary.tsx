@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import { Flex } from '@mantine/core'
 import { useParams } from 'react-router-dom'
-import { useState } from 'react'
+
 import ActionButton from '@/components/ActionButton'
 import useSession from '@/hooks/useSession'
 import { SessionStatuses } from '@/enums'
 import { notificationShow } from '@/components/Notification'
+import FeeInfo from '@/components/FeeInfo'
 
 export default function SessionSummary() {
   const [disabled, setDisable] = useState(false)
@@ -17,6 +19,9 @@ export default function SessionSummary() {
     )
   }
   return (
-    <Flex><ActionButton value="finish" colorName="orange" onClick={handleChangeStatus} disabled={false}></ActionButton></Flex>
+    <div>
+      <Flex><ActionButton value="finish" colorName="orange" onClick={handleChangeStatus} disabled={false}></ActionButton></Flex>
+      <FeeInfo></FeeInfo>
+    </div>
   )
 }
