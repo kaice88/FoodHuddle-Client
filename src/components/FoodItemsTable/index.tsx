@@ -13,7 +13,8 @@ import ReusablePopover from "../Popover";
 import OptionsList from "../OptionsList";
 import { ActionIcon, Flex } from "@mantine/core";
 import { IconEditCircle, IconEraser } from "@tabler/icons-react";
-import FoodOrderForm from "../FoodOrderForm/FoodOrderForm";
+
+import FoodOrderForm from "../FoodOrderForm";
 
 const data: FoodItem[] = [
   {
@@ -68,60 +69,6 @@ const data: FoodItem[] = [
       { name: "Ginger", price: 0.5 },
     ],
   },
-  {
-    foodName: "Pasta",
-    originPrice: 9,
-    quantity: 1,
-    note: "Spaghetti Carbonara",
-    options: [
-      { name: "Garlic Bread", price: 2 },
-      { name: "Parmesan Cheese", price: 1.5 },
-    ],
-  },
-  {
-    foodName: "Ice Cream",
-    originPrice: 4,
-    quantity: 3,
-    note: "Vanilla Ice Cream",
-    options: [
-      { name: "Chocolate Syrup", price: 1 },
-      { name: "Sprinkles", price: 0.5 },
-    ],
-  },
-  {
-    foodName: "Chicken Wings",
-    originPrice: 8,
-    quantity: 1,
-    note: "Buffalo Wings",
-    options: [
-      { name: "Mild", price: 0 },
-      { name: "Hot", price: 0 },
-      { name: "BBQ", price: 0 },
-    ],
-  },
-  {
-    foodName: "Steak",
-    originPrice: 20,
-    quantity: 1,
-    note: "Ribeye Steak",
-    options: [
-      { name: "Rare", price: 0 },
-      { name: "Medium Rare", price: 0 },
-      { name: "Medium", price: 0 },
-      { name: "Well Done", price: 0 },
-    ],
-  },
-  {
-    foodName: "Fries",
-    originPrice: 3,
-    quantity: 2,
-    note: "Crispy French Fries",
-    options: [
-      { name: "Ketchup", price: 0 },
-      { name: "Mayonnaise", price: 0 },
-      { name: "Cheese", price: 1 },
-    ],
-  },
 ];
 
 function FoodItemsTable() {
@@ -131,7 +78,6 @@ function FoodItemsTable() {
         header: "Actions",
         enableEditing: false,
         Cell: ({ row }) => {
-          console.log(row._valuesCache);
           return (
             <Flex
               mih={50}
@@ -164,6 +110,7 @@ function FoodItemsTable() {
         mantineTableBodyCellProps: {
           align: "center",
         },
+        size: 30,
       },
       {
         accessorKey: "foodName", //access nested data with dot notation
@@ -174,6 +121,7 @@ function FoodItemsTable() {
         mantineTableBodyCellProps: {
           align: "center",
         },
+        size: 30,
       },
       {
         accessorKey: "originPrice", //access nested data with dot notation
@@ -206,6 +154,7 @@ function FoodItemsTable() {
         mantineTableBodyCellProps: {
           align: "center",
         },
+        size: 30,
       },
       {
         accessorKey: "options",
@@ -219,12 +168,6 @@ function FoodItemsTable() {
             />
           );
         },
-        mantineTableHeadCellProps: {
-          align: "center",
-        },
-        mantineTableBodyCellProps: {
-          align: "center",
-        },
       },
     ],
     []
@@ -234,6 +177,7 @@ function FoodItemsTable() {
     columns,
     data,
     enableTopToolbar: false,
+    enableColumnResizing: false,
   });
 
   return <MantineReactTable table={table} />;
