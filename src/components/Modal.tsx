@@ -38,7 +38,7 @@ const SessionInfo: React.FC = () => {
         form.setFieldValue('hostPaymentInfo', data.data.hostPaymentInfor)
       },
       onError: (error) => {
-        notificationShow('error', 'ERROR', error.message)
+        notificationShow('error', 'Error: ', error.response.data.message)
       },
     },
   )
@@ -55,7 +55,7 @@ const SessionInfo: React.FC = () => {
       await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
     {
       onError: (error) => {
-        notificationShow('error', 'Error: ', error.message)
+        notificationShow('error', 'Error: ', error.response.data.message)
       },
       onSuccess: (data) => {
         const { id, message } = data.data

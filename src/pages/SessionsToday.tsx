@@ -1,43 +1,42 @@
-import { useEffect } from "react";
-import { Loader, Tabs } from "@mantine/core";
+import { useEffect } from 'react'
+import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
 
-import { TABS_CONFIG } from "@/constants/sessions";
-
-import { useDisclosure } from "@mantine/hooks";
-import { Box, Button, Flex, Group, Modal, Text } from "@mantine/core";
-import { IconSquarePlus } from "@tabler/icons-react";
-import SessionInfo from "../components/Modal";
-import SessionList from "@/components/SessionsList";
-import { useSessionStore } from "@/store/sessionsStore";
+import { useDisclosure } from '@mantine/hooks'
+import { IconSquarePlus } from '@tabler/icons-react'
+import SessionInfo from '../components/Modal'
+import { TABS_CONFIG } from '@/constants/sessions'
+import SessionList from '@/components/SessionsList'
+import { useSessionStore } from '@/store/sessionsStore'
 
 export default function SessionTodayPage() {
-  const [activeTab, setActiveTab] = useSessionStore((state) => [
+  const [activeTab, setActiveTab] = useSessionStore(state => [
     state.activeTab,
     state.setActiveTab,
-  ]);
+  ])
 
-  const [sessions, setSessions, isLoading] = useSessionStore((state) => [
+  const [sessions, setSessions, isLoading] = useSessionStore(state => [
     state.sessions,
     state.setSessions,
     state.isLoading,
-  ]);
+  ])
 
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
     <Flex justify="center" align="flex-start" direction="column">
       <Text fw={700} fz="lg">
         Create new session
       </Text>
       <div
-        style={{ backgroundColor: "orange", padding: "2px", width: "55px" }}
+        style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
       ></div>
     </Flex>
-  );
+  )
 
   useEffect(() => {
-    setSessions(activeTab);
-  }, [activeTab]);
+    setSessions(activeTab)
+  }, [activeTab])
 
+  console.log(activeTab)
   return (
     <>
       <div>
@@ -58,17 +57,17 @@ export default function SessionTodayPage() {
             color="orange"
             size="20px"
             leftIcon={<IconSquarePlus size="0.9rem" />}
-            styles={(theme) => ({
+            styles={theme => ({
               root: {
                 backgroundColor: theme.fn.lighten(
                   theme.colors.darkLavender[0],
-                  0.4
+                  0.4,
                 ),
                 color: theme.colors.red[0],
                 ...theme.fn.hover({
                   backgroundColor: theme.colors.darkLavender[0],
                 }),
-                padding: "10px",
+                padding: '10px',
               },
             })}
           >
@@ -78,7 +77,7 @@ export default function SessionTodayPage() {
       </div>
       <Tabs value={activeTab} onTabChange={setActiveTab}>
         <Tabs.List position="center">
-          {TABS_CONFIG.map((tab) => (
+          {TABS_CONFIG.map(tab => (
             <Tabs.Tab key={tab.value} value={tab.value}>
               {tab.title}
             </Tabs.Tab>
@@ -86,13 +85,15 @@ export default function SessionTodayPage() {
         </Tabs.List>
 
         <Tabs.Panel value={activeTab} pt="xl">
-          {isLoading ? (
-            <Loader className="loader" />
-          ) : (
-            <SessionList sessionsList={sessions} />
-          )}
+          {isLoading
+            ? (
+              <Loader className="loader" />
+              )
+            : (
+              <SessionList sessionsList={sessions} />
+              )}
         </Tabs.Panel>
       </Tabs>
     </>
-  );
+  )
 }

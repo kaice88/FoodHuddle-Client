@@ -1,2 +1,5 @@
-export const REQUEST_POST_SESSION_INFO = 'v1/session/create-new-session';
-export const REQUEST_GET_HOST_PAYMENT_INFO = '/v1/session/host-payment-infor';
+export const REQUEST_POST_SESSION_INFO = 'v1/session/create-new-session'
+export const REQUEST_GET_HOST_PAYMENT_INFO = '/v1/session/host-payment-infor'
+export const REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB = '/v1/food-order/summary'
+export const REQUEST_POST_ORDER_BILL = '/v1/session/fee'
+export const REQUEST_PUT_FOOD_ORDER_ROW = '/v1/food-order/'
