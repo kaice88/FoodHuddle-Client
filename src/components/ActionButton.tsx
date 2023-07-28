@@ -1,8 +1,20 @@
-import { Button } from '@mantine/core'
+import { Button, Text } from '@mantine/core'
+import { modals } from '@mantine/modals'
 
-export default function ActionButton({ colorName, value, onClick, disabled}) {
-  //   const [status, setStatus] = useState({});
-
+export default function ActionButton({ colorName, value, handleOnClick }) {
+  const openModal = () => modals.openConfirmModal({
+    title: 'CONFIRM',
+    children: (
+      <Text size="sm" color="gray">
+        <span>{`If you ${value} this session, you can't undo this.`}</span>
+        <br></br>
+        <span>{`Are you sure ${value} this session?`}</span>
+      </Text>
+    ),
+    labels: { confirm: 'Confirm', cancel: 'Cancel' },
+    confirmProps: { color: 'red' },
+    onConfirm: handleOnClick,
+  })
   return (
     <Button
       styles={(theme: any) => ({
@@ -14,10 +26,9 @@ export default function ActionButton({ colorName, value, onClick, disabled}) {
           }),
         },
       })}
-      onClick={onClick}
-      disabled={disabled}
+      onClick={openModal}
     >
-      {value.toUpperCase()}
+      {value}
     </Button>
   )
 }

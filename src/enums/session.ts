@@ -10,3 +10,10 @@ export enum SessionsTodayPageTabs {
   JOINED = 'Joined',
   HOSTED = 'Hosted',
 }
+
+export enum SessionActions {
+  DELETE = 'DELETE',
+  LOCK_ORDER = 'LOCK ORDER',
+  SPLIT_PAYMENT = 'SPLIT PAYMENT',
+  FINISH = 'FINISH',
+}

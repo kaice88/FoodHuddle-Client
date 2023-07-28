@@ -1,43 +1,39 @@
 import { useEffect, useState } from 'react'
 import { AppShell } from '@mantine/core'
-import { Outlet, useSubmit } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 import Navbar from '../components/Navbar/Navbar'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Bread from '../components/Bread'
-import { getAuthToken, getTokenDuration } from '@/utils/auth'
-import * as ROUTES from '@/constants/routes'
+import useAuth from '@/hooks/useAuth'
+import { LOGIN } from '@/constants/routes'
 
 export default function Layout() {
   const [opened, setOpened] = useState(false)
-  const submit = useSubmit()
-  const token = getAuthToken()
+  const { logout, isAuthenticated, getTokenDuration } = useAuth()
+  const navigate = useNavigate()
 
   const handleOpen = (): void => {
     setOpened(o => !o)
   }
 
   useEffect(() => {
-    if (!token)
-      return
+    if (!isAuthenticated) { navigate(LOGIN) }
+    else {
+      const tokenDuration = getTokenDuration()
 
-    if (token === 'EXPIRED') {
-      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
-      return
+      const logoutTimeout = setTimeout(() => {
+        logout()
+      }, tokenDuration)
+      return () => {
+        clearTimeout(logoutTimeout)
+      }
     }
-    const tokenDuration = getTokenDuration()
-
-    const logoutTimeout = setTimeout(() => {
-      submit(null, { action: ROUTES.LOGOUT, method: 'post' })
-    }, tokenDuration)
-    return () => {
-      clearTimeout(logoutTimeout)
-    }
-  }, [token, submit])
+  }, [isAuthenticated])
 
   return (
-    <AppShell
+    <>{isAuthenticated && <AppShell
       padding="md"
       navbarOffsetBreakpoint="sm"
       navbar={<Navbar opened={opened} />}
@@ -56,6 +52,8 @@ export default function Layout() {
       <div className="content">
         <Outlet></Outlet>
       </div>
-    </AppShell>
+    </AppShell>}
+    </>
+
   )
 }
