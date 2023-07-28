@@ -4,23 +4,17 @@ import LoginPage from "./pages/Login";
 import SessionTodayPage from "./pages/SessionsToday";
 import Layout from "./layouts/Layout";
 import ErrorPage from "./pages/Error";
-import { checkAuthLoader, getAuthToken } from "./utils/auth";
-import SessionPage from "./pages/SessionPage";
 import * as ROUTES from "@/constants/routes";
+import SessionPage from "./pages/SessionPage";
 
 export const router = createBrowserRouter([
   {
     path: ROUTES.LOGIN,
-    element: getAuthToken() ? (
-      <Navigate to={ROUTES.SESSIONS_TODAY}></Navigate>
-    ) : (
-      <LoginPage></LoginPage>
-    ),
+    element: <LoginPage></LoginPage>,
   },
   {
     path: ROUTES.HOME,
     element: <Layout />,
-    loader: checkAuthLoader,
     errorElement: <ErrorPage />,
     children: [
       {

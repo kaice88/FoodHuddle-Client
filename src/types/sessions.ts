@@ -1,6 +1,6 @@
 import type { SessionStatuses } from "@/enums";
 
-export interface SessionInfo {
+export interface SessionToday {
   id: number;
   title: string;
   host: string;
@@ -9,10 +9,6 @@ export interface SessionInfo {
   created_at?: string;
 }
 
-export interface SessionsListResponse {
-  data: SessionInfo[];
-  status: string;
-}
 interface QRImages {
   [key: string]: string;
 }
