@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
+import { Button, FileButton, Flex, Group, Image, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from './Notification'
-import UploadImages from './UploadFile'
 import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
@@ -14,7 +14,6 @@ interface FormValue {
   description: string
   hostPaymentInfo: string
   qrImages: Array<File>
-  status: string
 }
 
 interface FormatDataSessionInfo {
@@ -23,7 +22,6 @@ interface FormatDataSessionInfo {
   description: string
   host_payment_info: string
   qr_images: Array<File>
-  status: string
 }
 
 const SessionInfo: React.FC = () => {
@@ -51,8 +49,14 @@ const SessionInfo: React.FC = () => {
 
   const fetchMutationSessionInfo = mutation(
     ['sessionInfo'],
-    async (dataForm: FormatDataSessionInfo) =>
-      await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
+    async (data: FormatDataSessionInfo) =>
+      await axiosInstance.post(REQUEST_POST_SESSION_INFO, data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      ),
     {
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
@@ -72,7 +76,6 @@ const SessionInfo: React.FC = () => {
       description: '',
       hostPaymentInfo: '',
       qrImages: [],
-      status: 'OPEN',
     },
 
     validate: {
@@ -88,13 +91,28 @@ const SessionInfo: React.FC = () => {
       shop_link: values.shopLink,
       description: values.description,
       host_payment_info: values.hostPaymentInfo,
-      qr_images: '',
-      status: values.status,
+      qr_images: values.qrImages,
     }
     fetchMutationSessionInfo.mutate(dataForm)
   }
-  const handleOnChangeUploadFile = (value: File[]) => {
-    form.setFieldValue('qrImages', value)
+
+  const files: File[] = form.getInputProps('qrImages').value
+  const previews
+    = !isEmpty(files)
+    && files.map((file, index) => {
+      const imageUrl = URL.createObjectURL(file)
+      return (
+        <Image
+          key={index}
+          src={imageUrl}
+          width={80}
+          height={80}
+          style={{ objectFit: 'contain', borderRadius: '5px', boxShadow: '1px 1px 5px 1px grey' }}
+        />
+      )
+    })
+  const clearFile = () => {
+    form.setFieldValue('qrImages', [])
   }
 
   return (
@@ -145,8 +163,30 @@ const SessionInfo: React.FC = () => {
               QR code
             </Text>
             <Group position="center">
-              <UploadImages handleOnChange={handleOnChangeUploadFile} />
+              <FileButton
+                accept="image/png,image/jpeg"
+                multiple
+                {...form.getInputProps('qrImages')}
+              >
+                {props => (
+                  <Button variant="light" size="xs" color="indigo" {...props}>
+        Upload image
+                  </Button>
+                )}
+              </FileButton>
+              <Button
+                disabled={!previews}
+                variant="light"
+                color="orange"
+                size="xs"
+                onClick={clearFile}
+              >
+    Reset Image
+              </Button>
             </Group>
+          </Flex>
+          <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
+            {previews}
           </Flex>
         </Flex>
       </Flex>
