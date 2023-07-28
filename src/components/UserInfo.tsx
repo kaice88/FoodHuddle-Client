@@ -1,12 +1,14 @@
-import { Form } from 'react-router-dom'
 import { Avatar, Menu } from '@mantine/core'
 import { IconLogout } from '@tabler/icons-react'
 
-import * as ROUTES from '@/constants/routes'
-import useAuthStore from '@/store/authStore'
+import useAuth from '@/hooks/useAuth'
 
 export default function UserInfo({ className }) {
-  const { userProfile } = useAuthStore()
+  const { logout, userProfile } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+  }
   return (
     <div className={className}>
       <div className={`${className}__name`}>
@@ -18,11 +20,9 @@ export default function UserInfo({ className }) {
           <Avatar src={userProfile.photo} radius="xl" alt="avatar"></Avatar>
         </Menu.Target>
         <Menu.Dropdown>
-          <Form action={ROUTES.LOGOUT} method="post">
-            <Menu.Item icon={<IconLogout size="1rem" />} type="submit">
+          <Menu.Item icon={<IconLogout size="1rem" />} onClick={handleLogout}>
               Logout
-            </Menu.Item>
-          </Form>
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </div>
