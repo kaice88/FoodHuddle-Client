@@ -1,12 +1,10 @@
 import { Avatar, Menu } from '@mantine/core'
 import { IconLogout } from '@tabler/icons-react'
 
-import useAuthStore from '@/store/authStore'
 import useAuth from '@/hooks/useAuth'
 
 export default function UserInfo({ className }) {
-  const { userProfile } = useAuthStore()
-  const { logout } = useAuth()
+  const { logout, userProfile } = useAuth()
 
   const handleLogout = () => {
     logout()
