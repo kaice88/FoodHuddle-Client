@@ -10,17 +10,19 @@ import axiosInstance from "@/settings/axios";
 
 import { REQUEST_GET_SESSION_INFO } from "@/constants/apis";
 import type { SessionInfoData } from "@/types/sessions";
+import useFoodStore from "@/store/foodStore";
 
 function SessionPage() {
   const { sessionId } = useParams();
+  const setCurrentShop = useFoodStore((state) => state.setCurrentShop);
   const [sessionData, setSessionData] = useState<SessionInfoData | null>(null);
 
   useEffect(() => {
     axiosInstance
       .get<SessionInfoData>(REQUEST_GET_SESSION_INFO(sessionId!))
       .then((response) => {
-        console.log(response.data);
         setSessionData(response.data);
+        setCurrentShop(response.data.shopLink);
       })
       .catch((error) => console.log(error));
   }, []);

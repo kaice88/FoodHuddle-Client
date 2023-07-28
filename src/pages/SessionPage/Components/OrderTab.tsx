@@ -9,7 +9,6 @@ function OrderTab() {
     <div className="orderTab">
       {" "}
       <FoodMenu />
-      <FoodItemsTable />
     </div>
   );
 }

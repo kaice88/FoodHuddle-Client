@@ -1,9 +1,15 @@
-export interface Option {
-  name: string;
-  price: number;
+interface FoodOrderListResponse {
+  status: string;
+  message: string;
+  data: FoodOrderListData;
 }
 
-export interface FoodItem {
+interface FoodOrderListData {
+  sessionId: number;
+  foodList: FoodOrderItem[];
+}
+
+export interface FoodOrderItem {
   foodName: string;
   originPrice: number;
   quantity: number;
@@ -11,13 +17,32 @@ export interface FoodItem {
   options: Option[];
 }
 
-export interface FoodList {
-  sessionId: number;
-  foodList: FoodItem[];
+interface Option {
+  name: string;
+  price: number;
 }
 
-export interface FoodListResponse {
+export type OptionCategory = {
+  mandatory: boolean;
+  id: number;
+  name: string;
+  optionItems: Option[];
+};
+
+export type MenuItem = {
+  id: number;
+  foodName: string;
+  description: string;
+  price: number;
+  discountPrice: number;
+  photo: string;
+  options: OptionCategory[];
+};
+
+export type Menu = MenuItem[];
+
+export type MenuResponseData = {
   status: string;
   message: string;
-  foodList: FoodList;
-}
+  data: Menu;
+};
