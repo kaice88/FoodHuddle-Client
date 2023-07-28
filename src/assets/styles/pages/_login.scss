@@ -1,0 +1,27 @@
+.auth {
+    @include flexbox-vertical;
+    height: 100vh;
+    gap: 25%;
+
+    &__logo {
+        width: 30%;
+    }
+
+    &__form {
+        flex-grow: 1;
+        @include flexbox-vertical;
+        align-items: center;
+
+        &__button {
+            width: 70%;
+            margin-top: 20px;
+            color: $bashful-pink;
+            background-color: rgba($bashful-pink,0.15);
+
+            &:hover {
+                color: rgba($bashful-pink,0.8);
+                background-color: rgba($bashful-pink,0.1);
+            }
+        }
+    }
+}

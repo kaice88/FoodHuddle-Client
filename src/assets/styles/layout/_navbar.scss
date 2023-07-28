@@ -1,0 +1,26 @@
+.navbar {
+
+    a {
+        text-decoration: none;
+
+        button {
+            margin: 5px 0;
+            border-radius: 3px;
+
+        }
+
+        button:hover{
+            background-color: $white;
+            background-color: rgba($dark-lavender, 0.05);
+        }
+
+        button[data-active] {
+            color: $black;
+            background-color: rgba($dark-lavender, 0.16);
+            
+            &:hover {
+                background-color: rgba($dark-lavender, 0.16);
+            }
+        }
+    }
+}

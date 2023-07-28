@@ -11,13 +11,7 @@ export default function NavigationLink({ icon, label, url }: MainLinkProps) {
   // TODO: remove underline
   return (
     <RouterNavLink to={url}>
-      {({ isActive }) => (
-        <NavLink
-          label={label}
-          active={isActive}
-          icon={icon}
-        />
-      )}
+      {({ isActive }) => <NavLink label={label} active={isActive} icon={icon} />}
     </RouterNavLink>
   )
 }

@@ -1,0 +1,13 @@
+.breadcrumbs {
+    padding: 10px 0 20px 0;
+
+    &__item {
+        @include flexbox-horizontal;
+        gap: 10px;
+        align-items: center;
+    }
+    a.breadcrumbs__item {
+      text-decoration: none;
+      color: $dark-lavender;
+    }
+}

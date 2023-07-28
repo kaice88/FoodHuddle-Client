@@ -1,0 +1,31 @@
+.header {
+    @include flexbox-horizontal;
+    justify-content: space-between;
+    align-items: center;
+
+    &__logo {
+        width: 250px;
+    }
+
+    &__user-info {
+        display: flex;
+        align-items: center;
+        gap:10px;
+        padding: 0 20px;
+
+        &__name {
+            @include flexbox-vertical;
+
+            .full-name {
+                font-size: $font-size-base;
+                font-weight: $font-weight-medium;
+                color: $picker-bluewood;
+            }
+
+            .email {
+                font-size: $font-size-small;
+                color: rgba($picker-bluewood,0.5) ;
+            }
+        }
+    }
+}
