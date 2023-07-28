@@ -5,7 +5,7 @@ import { IconSquarePlus } from '@tabler/icons-react'
 import SessionInfo from '../components/Modal'
 import { TABS_CONFIG } from '@/constants/sessions'
 import SessionList from '@/components/SessionsList'
-import { useSessionData, useSessionStore } from '@/store/sessionsStore'
+import { useSessionStore } from '@/store/sessionsStore'
 
 export default function SessionTodayPage() {
   const [activeTab, setActiveTab] = useSessionStore(state => [
@@ -13,7 +13,11 @@ export default function SessionTodayPage() {
     state.setActiveTab,
   ])
 
-  const { data: sessions, isLoading } = useSessionData(activeTab)
+  const [sessions, setSessions, isLoading] = useSessionStore(state => [
+    state.sessions,
+    state.setSessions,
+    state.isLoading,
+  ])
 
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
@@ -27,6 +31,7 @@ export default function SessionTodayPage() {
     </Flex>
   )
 
+  console.log(activeTab)
   return (
     <>
       <div>
@@ -78,10 +83,10 @@ export default function SessionTodayPage() {
           {isLoading
             ? (
               <Loader className="loader" />
-              )
+            )
             : (
               <SessionList sessionsList={sessions} />
-              )}
+            )}
         </Tabs.Panel>
       </Tabs>
     </>

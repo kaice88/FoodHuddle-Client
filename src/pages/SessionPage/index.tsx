@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { Tabs } from '@mantine/core'
 import { useNavigate, useParams } from 'react-router-dom'
+
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 
 import OrderTab from './Components/OrderTab'
+import SummaryTab from './Components/SummaryTab'
 import HostActions from './Components/HostActions'
-import { SessionStatuses } from '@/enums'
 import { notificationShow } from '@/components/Notification'
 import useSession from '@/hooks/useSession'
+import { SessionStatuses } from '@/enums'
 
 function SessionPage() {
   const { sessionId } = useParams()
@@ -46,6 +48,9 @@ function SessionPage() {
         </Tabs.List>
         <Tabs.Panel value="order">
           <OrderTab />
+        </Tabs.Panel>
+        <Tabs.Panel value="summary">
+          <SummaryTab sessionId={sessionId}/>
         </Tabs.Panel>
       </Tabs>
     </>

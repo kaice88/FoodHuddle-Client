@@ -13,7 +13,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = error => reject(error)
   })
 
-const UploadImages: React.FC = ({ handleOnChange }) => {
+const UploadImages: React.FC = ({ handleOnChange, type }) => {
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
@@ -42,10 +42,12 @@ const UploadImages: React.FC = ({ handleOnChange }) => {
   }
 
   const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
+    type
+      ? <div style={{ margin: 0, border: '1px solid #aaa9a9', boxShadow: '1px 1px 0px 1px #aaa9a9', padding: '5px', borderRadius: '5px' }}><PlusOutlined /> Upload</div>
+      : <div>
+        <PlusOutlined />
+        <div style={{ marginTop: 8 }}>Upload</div>
+      </div>
   )
   const customRequest = async ({ file, onSuccess, onError }) => {
     try {
@@ -60,7 +62,7 @@ const UploadImages: React.FC = ({ handleOnChange }) => {
     <>
       <Upload
         customRequest={customRequest}
-        listType="picture-circle"
+        listType={type || 'picture-circle'}
         fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}

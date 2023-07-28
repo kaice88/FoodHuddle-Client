@@ -9,3 +9,6 @@ export const REQUEST_POST_SESSION_INFO = `${SESSION_BASE_URL}/create-new-session
 export const REQUEST_GET_HOST_PAYMENT_INFO = `${SESSION_BASE_URL}/host-payment-infor`
 export const REQUEST_GET_ALL_SESSIONS_TODAY = `${SESSION_BASE_URL}/get-all-sessions-today`
 export const REQUEST_SESSION = id => `${SESSION_BASE_URL}/${id}`
+export const REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB = '/v1/food-order/summary'
+export const REQUEST_POST_ORDER_BILL = '/v1/session/fee'
+export const REQUEST_PUT_FOOD_ORDER_ROW = '/v1/food-order/'
