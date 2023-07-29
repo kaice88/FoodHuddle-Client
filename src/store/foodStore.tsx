@@ -1,10 +1,11 @@
-import { FoodOrderItem } from "@/types/food";
+import { FoodOrderItem, MenuItem } from "@/types/food";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type State = {
   currentShop: string;
   foodOrderList: FoodOrderItem[];
+  foodMenu: MenuItem[];
 };
 
 type Actions = {
@@ -18,6 +19,7 @@ const useFoodStore = create(
   immer<State & Actions>((set) => ({
     currentShop: "",
     foodOrderList: [],
+    foodMenu: [],
     updateFoodOrderItem: (item) => {},
     deleteFoodOrderItem: (item) => {},
     addFoodOrderItem: (item) =>

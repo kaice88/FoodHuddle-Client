@@ -4,40 +4,61 @@ import { OptionCategory } from "@/types/food";
 import { Checkbox, Title, Text } from "@mantine/core";
 import { moneyFormat } from "@/utils";
 import type { Option } from "@/types/food";
+
 import isNull from "lodash/isNull";
+import { v4 as uuidv4 } from "uuid";
 
 type OptionsGroupProps = {
   optionCategory: OptionCategory;
-  setFieldValue: (option: Option | null) => void;
+  optionsChangedHandler: (
+    optionCategory: string,
+    option: Option[] | null
+  ) => void;
 };
 
-function OptionsGroup({ optionCategory, setFieldValue }: OptionsGroupProps) {
-  const [selectedOptionItem, setSelectedOptionItem] = useState<Option | null>(
-    null
-  );
+function OptionsGroup({
+  optionCategory,
+  optionsChangedHandler,
+}: OptionsGroupProps) {
+  const [selectedOptionItems, setSelectedOptionItems] = useState<Option[]>([]);
 
   useEffect(() => {
-    setFieldValue(selectedOptionItem);
-  }, [selectedOptionItem]);
+    console.log(selectedOptionItems);
+    optionsChangedHandler(optionCategory.name, selectedOptionItems);
+  }, [selectedOptionItems]);
+
+  const handleCheckboxChange = (optionItem: Option, checked: boolean) => {
+    if (optionCategory.mandatory) {
+      setSelectedOptionItems(checked ? [optionItem] : null);
+    } else {
+      setSelectedOptionItems((prevSelectedOptionItems) =>
+        checked
+          ? [...(prevSelectedOptionItems || []), optionItem]
+          : (prevSelectedOptionItems || []).filter(
+              (option) => option.name !== optionItem.name
+            )
+      );
+    }
+  };
 
   return (
     <div>
       <Title order={6}>{optionCategory.name}</Title>
       {optionCategory.optionItems.map((optionItem) => (
         <Checkbox
-          key={Math.random().toString(36)}
+          key={uuidv4()}
           labelPosition="left"
           description={moneyFormat(optionItem.price, "VND", "vi-VN")}
           label={optionItem.name}
           checked={
-            !isNull(selectedOptionItem) &&
-            selectedOptionItem.name === optionItem.name
+            !isNull(selectedOptionItems) &&
+            selectedOptionItems.some(
+              (option) => option.name === optionItem.name
+            )
           }
           onChange={(event) => {
             const checked = event.currentTarget.checked;
-
-            if (checked) setSelectedOptionItem(optionItem);
-            if (!checked) setSelectedOptionItem(null);
+            handleCheckboxChange(optionItem, checked);
           }}
         />
       ))}

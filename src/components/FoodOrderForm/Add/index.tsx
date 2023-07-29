@@ -9,38 +9,41 @@ import {
   Text,
   NumberInput,
   Title,
-  em,
   Spoiler,
 } from "@mantine/core";
 
-import { UseFormReturnType, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 
 import useModal from "@/hooks/useModal";
-import OptionsGroup from "./OptionsGroup";
+import OptionsGroup from "../OptionsGroup";
 import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
-import isNull from "lodash/isNull";
-import FoodMenuItem, { PriceDisplay } from "../FoodMenu/FoodMenuItem";
-import { key } from "localforage";
+
+import { PriceDisplay } from "../../FoodMenu/FoodMenuItem";
+
 import useFoodStore from "@/store/foodStore";
 const { closeModal } = useModal();
-interface FoodOrderFormProps {
+interface AddOrderFormProps {
   menuItem: MenuItem;
 }
 
-function FoodOrderForm({ menuItem }: FoodOrderFormProps) {
+function AddOrderForm({ menuItem }: AddOrderFormProps) {
   const addFoodOrderItem = useFoodStore((state) => state.addFoodOrderItem);
+
   const mandatoryOptions = menuItem.options.filter(
     (option) => option.mandatory
+  );
+
+  const optionalOptions = menuItem.options.filter(
+    (option) => option.mandatory === false
   );
 
   const validate = {};
 
   mandatoryOptions.forEach((option) => {
-    validate[option.name] = (value: Option) =>
-      isNull(value) ? `${option.name} is required` : null;
+    validate[option.name] = (value) =>
+      isEmpty(value) ? `${option.name} is required!` : null;
   });
-
   const form = useForm({
     initialValues: {
       quantity: 1,
@@ -49,26 +52,26 @@ function FoodOrderForm({ menuItem }: FoodOrderFormProps) {
     validate,
   });
 
-  const fieldChangeHandler = (field: string, value: any) => {
+  const optionsChangedHandler = (field: string, value: Option[]) => {
     form.setFieldValue(field, value);
   };
 
   const submitHandler = form.onSubmit((values) => {
-    const { note, quantity, ...rest } = values;
+    const { note, quantity, ...restOptions } = values;
 
     const foodOrderItem: FoodOrderItem = {
-      id: menuItem.id,
       foodName: menuItem.foodName,
-      quantity,
-      note,
       originPrice:
         menuItem.discountPrice > 0 ? menuItem.discountPrice : menuItem.price,
-      options: Object.entries(rest).map(([key, value]) => ({
-        category: key,
-        detail: value as Option,
-      })),
+      note,
+      quantity,
+      options: [
+        ...Object.entries(restOptions).map(([category, detail]) => ({
+          category,
+          detail,
+        })),
+      ],
     };
-
     addFoodOrderItem(foodOrderItem);
     closeModal();
   });
@@ -112,10 +115,8 @@ function FoodOrderForm({ menuItem }: FoodOrderFormProps) {
             {menuItem.options.map((option) => (
               <Flex key={option.id} direction="column">
                 <OptionsGroup
+                  optionsChangedHandler={optionsChangedHandler}
                   key={option.id}
-                  setFieldValue={(optionItem) => {
-                    fieldChangeHandler(option.name, optionItem);
-                  }}
                   optionCategory={option}
                 />
                 {!isEmpty(get(form.errors, `${option.name}`)) && (
@@ -129,11 +130,11 @@ function FoodOrderForm({ menuItem }: FoodOrderFormProps) {
         </ScrollArea>
 
         <Group position="right" mt="md">
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Add</Button>
         </Group>
       </form>
     </Box>
   );
 }
 
-export default FoodOrderForm;
+export default AddOrderForm;

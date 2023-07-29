@@ -4,7 +4,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { moneyFormat } from "@/utils";
 import useModal from "@/hooks/useModal";
 import isEmpty from "lodash/isEmpty";
-import FoodOrderForm from "@/components/FoodOrderForm";
+import AddOrderForm from "@/components/FoodOrderForm/Add";
 
 interface FoodItemProps {
   foodMenuItem: MenuItem;
@@ -40,7 +40,7 @@ export function PriceDisplay({
 function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
   const { openModal } = useModal(
     "Food Order",
-    <FoodOrderForm menuItem={foodMenuItem} />
+    <AddOrderForm menuItem={foodMenuItem} />
   );
   const orderHandler = () => {
     if (isEmpty(foodMenuItem.options)) {

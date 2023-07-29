@@ -13,10 +13,9 @@ import { ActionIcon, Flex } from "@mantine/core";
 import { IconEditCircle, IconEraser } from "@tabler/icons-react";
 
 import useFoodStore from "@/store/foodStore";
-
 function FoodOrderTable() {
   const foodOrderList = useFoodStore((state) => state.foodOrderList);
-  console.log(foodOrderList);
+
   return <div>Table</div>;
 }
 

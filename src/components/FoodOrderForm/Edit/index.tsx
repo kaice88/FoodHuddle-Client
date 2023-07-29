@@ -1,7 +1,7 @@
 import React from "react";
 
-function Menu() {
+function EditOrderForm() {
   return <div>index</div>;
 }
 
-export default Menu;
+export default EditOrderForm;

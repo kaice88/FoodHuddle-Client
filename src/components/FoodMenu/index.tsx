@@ -3,6 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import { Loader, Flex } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
+import { v4 as uuidv4 } from "uuid";
 
 import useFood from "@/hooks/useFood";
 import useFoodStore from "@/store/foodStore";
@@ -13,15 +14,14 @@ const { getMenuFoodData } = useFood();
 
 function FoodMenu() {
   const { sessionId } = useParams();
-  const currentShop = useFoodStore((state) => state.currentShop);
   const matchesSM = useMediaQuery("(max-width: 686px)");
   const matchesMD = useMediaQuery("(max-width:1283.5px)");
+  const matchesXL = useMediaQuery("(min-width:1587.5px)");
+  const matchesXXL = useMediaQuery("(min-width:1700px)");
 
-  const {
-    data: menu,
-    isLoading,
-    error,
-  } = getMenuFoodData(sessionId!, currentShop);
+  const currentShop = useFoodStore((state) => state.currentShop);
+
+  const { data: menu, isLoading } = getMenuFoodData(sessionId!, currentShop);
 
   if (isEmpty(currentShop)) {
     return <Loader />;
@@ -35,7 +35,12 @@ function FoodMenu() {
     ? divideElementsIntoGroups(menu!, 3)
     : matchesMD
     ? divideElementsIntoGroups(menu!, 6)
+    : matchesXXL
+    ? divideElementsIntoGroups(menu!, 15)
+    : matchesXL
+    ? divideElementsIntoGroups(menu!, 12)
     : divideElementsIntoGroups(menu!, 9);
+
   return (
     <Carousel
       orientation={matchesSM ? "vertical" : "horizontal"}
@@ -47,10 +52,10 @@ function FoodMenu() {
       {" "}
       {menuGroups.map((menu) => {
         return (
-          <Carousel.Slide key={Math.random().toString(36)}>
+          <Carousel.Slide key={uuidv4()}>
             {" "}
             <Flex
-              key={Math.random().toString(36)}
+              key={uuidv4()}
               align="center"
               justify="center"
               rowGap={24}
@@ -58,10 +63,7 @@ function FoodMenu() {
               wrap="wrap"
             >
               {menu.map((item) => (
-                <FoodMenuItem
-                  key={item.id + Math.random().toString(36)}
-                  foodMenuItem={item}
-                />
+                <FoodMenuItem key={uuidv4()} foodMenuItem={item} />
               ))}
             </Flex>
           </Carousel.Slide>
