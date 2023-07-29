@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, CloseButton, FileButton, Flex, Group, Image, Text, TextInput, Textarea } from '@mantine/core'
+import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import isEmpty from 'lodash/isEmpty'
-import { modals } from '@mantine/modals'
 import { notificationShow } from './Notification'
+import ImagesUploaded from './ImagesUploaded'
 import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
@@ -25,9 +24,10 @@ interface FormatDataSessionInfo {
   qr_images: Array<File>
 }
 
-const SessionInfo: React.FC = () => {
+const SessionInfo: React.FC = ({ isCreateFirst }) => {
   const navigate = useNavigate()
   const { query, mutation } = useRequestProcessor()
+
   const fetchQuerySessionInfo = query(
     ['paymentInfo'],
     () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
@@ -45,7 +45,12 @@ const SessionInfo: React.FC = () => {
     const handlefetchSessionInfo = async () => {
       await fetchQuerySessionInfo.refetch()
     }
-    handlefetchSessionInfo()
+    if (isCreateFirst) {
+      handlefetchSessionInfo()
+    }
+    else {
+      // ...Call Get Session Info Existed...//
+    }
   }, [])
 
   const fetchMutationSessionInfo = mutation(
@@ -65,19 +70,23 @@ const SessionInfo: React.FC = () => {
       onSuccess: (data) => {
         const { id, message } = data.data
         notificationShow('success', 'Success: ', message)
-        navigate(`/sessions-today/${id}`)
+
+        if (isCreateFirst)
+          navigate(`/sessions-today/${id}`)
       },
     },
   )
   // ......Config form.................................................
   const form = useForm<FormValue>({
-    initialValues: {
-      title: '',
-      shopLink: '',
-      description: '',
-      hostPaymentInfo: '',
-      qrImages: [],
-    },
+    initialValues: isCreateFirst
+      ? {
+          title: '',
+          shopLink: '',
+          description: '',
+          hostPaymentInfo: '',
+          qrImages: [],
+        }
+      : null, // ...Place your data session info...//
 
     validate: {
       title: value => (value ? null : 'Title is required'),
@@ -85,82 +94,26 @@ const SessionInfo: React.FC = () => {
       hostPaymentInfo: value => (value ? null : 'Payment Infomation is required'),
     },
   })
+
   // .....Handle submit.............................................
   const handleSubmitNewSession = async (values: FormValue) => {
-    const dataForm = {
-      title: values.title,
-      shop_link: values.shopLink,
-      description: values.description,
-      host_payment_info: values.hostPaymentInfo,
-      qr_images: values.qrImages,
-    }
+    const dataForm = new FormData()
+    values.qrImages.forEach((file) => {
+      dataForm.append('qr_images', file)
+    })
+    dataForm.append('title', values.title)
+    dataForm.append('shop_link', values.shopLink)
+    dataForm.append('description', values.description)
+    dataForm.append('host_payment_info', values.hostPaymentInfo)
     fetchMutationSessionInfo.mutate(dataForm)
   }
 
-  const handleImage = imageUrl =>
-
-    modals.open({
-      title: 'Preview Image',
-      centered: true,
-      children: (
-        <Image
-          src={imageUrl}
-          alt="preview Image"
-        />
-      ),
-      className: 'modal_preview_image',
-    })
-
+  const files = form.getInputProps('qrImages').value
   const handleDeleteImage = (index) => {
     const updatedFiles = [...files]
     updatedFiles.splice(index, 1)
     form.setFieldValue('qrImages', updatedFiles)
   }
-
-  const files: File[] = form.getInputProps('qrImages').value
-  const previews
-    = !isEmpty(files)
-    && files.map((file, index) => {
-      const imageUrl = URL.createObjectURL(file)
-      return (
-        <div
-          key={index}
-          style={{
-            position: 'relative',
-            width: 90,
-            height: 90,
-            overflow: 'hidden',
-            borderRadius: 5,
-            boxShadow: '1px 1px 5px 1px grey',
-          }}
-        >
-          <Image
-            src={imageUrl}
-            width={80}
-            height={80}
-            style={{ objectFit: 'cover', cursor: 'pointer' }}
-            onClick={() => handleImage(imageUrl)}
-          />
-          <CloseButton
-            radius="xl"
-            variant="hover"
-            title="Delete"
-            style={{
-              position: 'absolute',
-              top: '-2px',
-              right: '-2px',
-              zIndex: 1,
-              padding: 0,
-              width: 20,
-              height: 20,
-              backgroundColor: 'rgba(255, 255, 255)',
-              color: 'grey',
-            }}
-            onClick={() => handleDeleteImage(index)}
-          />
-        </div>
-      )
-    })
 
   return (
     <form onSubmit={form.onSubmit(values => handleSubmitNewSession(values))}>
@@ -224,7 +177,7 @@ const SessionInfo: React.FC = () => {
             </Group>
           </Flex>
           <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
-            {previews}
+            <ImagesUploaded handleDeleteImage={handleDeleteImage} files={files} />
           </Flex>
         </Flex>
       </Flex>

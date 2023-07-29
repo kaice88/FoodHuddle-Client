@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks'
 import { Box, Button, Flex, Group, Modal, Text } from '@mantine/core'
 import { IconSquarePlus } from '@tabler/icons-react'
-import SessionInfo from '../components/Modal'
+import SessionInfo from '../components/ModalCreateSession'
 
 export default function SessionTodayPage() {
   // ......Modal......................................
@@ -19,7 +19,7 @@ export default function SessionTodayPage() {
     <div>
       <Modal opened={opened} onClose={close} title={titleModal} centered size={700}>
         <Box maw={600} mx="auto">
-          <SessionInfo />
+          <SessionInfo isCreateFirst={true}/>
         </Box>
       </Modal>
       <Group position="center">
