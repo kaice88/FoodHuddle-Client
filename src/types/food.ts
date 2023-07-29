@@ -10,14 +10,15 @@ interface FoodOrderListData {
 }
 
 export interface FoodOrderItem {
+  id: number;
   foodName: string;
   originPrice: number;
   quantity: number;
   note: string;
-  options: Option[];
+  options: { category: string; detail: Option }[];
 }
 
-interface Option {
+export interface Option {
   name: string;
   price: number;
 }

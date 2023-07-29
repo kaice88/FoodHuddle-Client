@@ -20,7 +20,10 @@ const useFoodStore = create(
     foodOrderList: [],
     updateFoodOrderItem: (item) => {},
     deleteFoodOrderItem: (item) => {},
-    addFoodOrderItem: (item) => {},
+    addFoodOrderItem: (item) =>
+      set((state) => {
+        state.foodOrderList.push(item);
+      }),
     setCurrentShop: (currentShop: string) => {
       set((state) => {
         state.currentShop = currentShop;

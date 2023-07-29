@@ -20,13 +20,29 @@
   &__info {
     flex: 2 1 0;
     display: flex;
+    gap: 16px;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden;
+    align-items: stretch;
+
+    overflow: hidden; /* Hide the overflowing content */
+    text-overflow: ellipsis; /* Add ellipsis (...) at the end of the text */
+    white-space: pre-line;
   }
 }
 
 .menu {
   width: 100%;
   padding: calc(2 * $content-gutter);
+}
+
+.mantine-Checkbox-body {
+  justify-content: space-between;
+  padding: 0 $content-gutter;
+}
+
+.menuItemForm {
+  width: 100%;
+  border-radius: 8px;
+  height: 100%;
 }

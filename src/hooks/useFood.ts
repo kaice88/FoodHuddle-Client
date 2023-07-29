@@ -14,7 +14,6 @@ const fetchMenuFoodData = async (sessionId: string) => {
 
   if (response.status === 200) {
     const { data: menu } = response.data;
-    console.log(menu);
     return menu;
   }
   return [];

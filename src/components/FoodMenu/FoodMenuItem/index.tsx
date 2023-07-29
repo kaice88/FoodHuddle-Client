@@ -1,13 +1,53 @@
-import { ActionIcon, Flex, Group, Box, Text, Title } from "@mantine/core";
-import React from "react";
+import { ActionIcon, Flex, Box, Text, Title } from "@mantine/core";
 import type { MenuItem } from "@/types/food";
 import { IconPlus } from "@tabler/icons-react";
 import { moneyFormat } from "@/utils";
+import useModal from "@/hooks/useModal";
+import isEmpty from "lodash/isEmpty";
+import FoodOrderForm from "@/components/FoodOrderForm";
+
 interface FoodItemProps {
   foodMenuItem: MenuItem;
 }
 
+export function PriceDisplay({
+  price,
+  discountPrice,
+}: {
+  price: number;
+  discountPrice: number;
+}) {
+  if (discountPrice > 0) {
+    return (
+      <div>
+        <Text size="xs" td="line-through">
+          {moneyFormat(price, "VND", "vi-VN")}
+        </Text>
+        <Text size="sm" style={{ color: "#FF6B00" }}>
+          {moneyFormat(discountPrice, "VND", "vi-VN")}
+        </Text>
+      </div>
+    );
+  } else {
+    return (
+      <Text size="sm" style={{ color: "#FF6B00" }}>
+        {moneyFormat(price, "VND", "vi-VN")}
+      </Text>
+    );
+  }
+}
+
 function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
+  const { openModal } = useModal(
+    "Food Order",
+    <FoodOrderForm menuItem={foodMenuItem} />
+  );
+  const orderHandler = () => {
+    if (isEmpty(foodMenuItem.options)) {
+      return;
+    }
+    openModal();
+  };
   return (
     <div className="foodMenuItem">
       <div className="foodMenuItem__imageWrapper">
@@ -15,24 +55,21 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
         <img src={foodMenuItem.photo} />
       </div>
       <div className="foodMenuItem__info">
-        <Box w={200}>
-          {" "}
-          <Title lineClamp={2} order={6} fw={500}>
-            {foodMenuItem.foodName}
-          </Title>
-        </Box>
+        <Title lineClamp={2} order={6} fw={500}>
+          {foodMenuItem.foodName}
+        </Title>
+
         <Flex justify={"space-between"}>
-          <Text size="md" style={{ color: "#FF6B00" }}>
-            {moneyFormat(
-              foodMenuItem.discountPrice || foodMenuItem.price,
-              "VND",
-              "vi-VN"
-            )}
-          </Text>
+          <PriceDisplay
+            discountPrice={foodMenuItem.discountPrice}
+            price={foodMenuItem.price}
+          />
+
           <ActionIcon
             aria-label="Add to list of order items"
             variant="filled"
             color="red"
+            onClick={orderHandler}
           >
             {" "}
             <IconPlus size={"1rem"} />
