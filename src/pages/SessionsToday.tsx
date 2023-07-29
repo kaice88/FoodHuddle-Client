@@ -1,5 +1,5 @@
-import { useDisclosure } from '@mantine/hooks'
 import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import { IconSquarePlus } from '@tabler/icons-react'
 import SessionInfo from '../components/ModalCreateSession'
 import SessionList from '@/components/SessionsList'
