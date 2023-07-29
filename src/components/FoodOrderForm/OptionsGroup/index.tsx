@@ -7,23 +7,28 @@ import type { Option } from "@/types/food";
 
 import isNull from "lodash/isNull";
 import { v4 as uuidv4 } from "uuid";
+import { isEmpty } from "lodash";
 
-type OptionsGroupProps = {
+interface OptionsGroupProps {
   optionCategory: OptionCategory;
   optionsChangedHandler: (
     optionCategory: string,
     option: Option[] | null
   ) => void;
-};
+}
 
 function OptionsGroup({
   optionCategory,
   optionsChangedHandler,
+  defaultValue,
 }: OptionsGroupProps) {
-  const [selectedOptionItems, setSelectedOptionItems] = useState<Option[]>([]);
+  const [selectedOptionItems, setSelectedOptionItems] = useState<Option[]>(
+    () => {
+      return !isEmpty(defaultValue) ? defaultValue.detail : [];
+    }
+  );
 
   useEffect(() => {
-    console.log(selectedOptionItems);
     optionsChangedHandler(optionCategory.name, selectedOptionItems);
   }, [selectedOptionItems]);
 

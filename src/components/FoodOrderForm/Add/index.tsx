@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 
 import { useForm } from "@mantine/form";
+import { v4 as uuidv4 } from "uuid";
 
 import useModal from "@/hooks/useModal";
 import OptionsGroup from "../OptionsGroup";
@@ -32,10 +33,6 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
 
   const mandatoryOptions = menuItem.options.filter(
     (option) => option.mandatory
-  );
-
-  const optionalOptions = menuItem.options.filter(
-    (option) => option.mandatory === false
   );
 
   const validate = {};
@@ -60,6 +57,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
     const { note, quantity, ...restOptions } = values;
 
     const foodOrderItem: FoodOrderItem = {
+      id: uuidv4(),
       foodName: menuItem.foodName,
       originPrice:
         menuItem.discountPrice > 0 ? menuItem.discountPrice : menuItem.price,

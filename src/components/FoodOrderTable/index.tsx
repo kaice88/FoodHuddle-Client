@@ -12,11 +12,28 @@ import OptionsList from "../OptionsList";
 import { ActionIcon, Flex } from "@mantine/core";
 import { IconEditCircle, IconEraser } from "@tabler/icons-react";
 
+import useModal from "@/hooks/useModal";
 import useFoodStore from "@/store/foodStore";
+import { Button } from "antd";
+import EditOrderForm from "../FoodOrderForm/Edit";
 function FoodOrderTable() {
   const foodOrderList = useFoodStore((state) => state.foodOrderList);
-
-  return <div>Table</div>;
+  const { openModal } = useModal(
+    "EDIT",
+    <EditOrderForm foodOrderItem={foodOrderList[0]} />
+  );
+  console.log(foodOrderList);
+  return (
+    <div>
+      <Button
+        onClick={() => {
+          openModal();
+        }}
+      >
+        Edit
+      </Button>
+    </div>
+  );
 }
 
 export default FoodOrderTable;

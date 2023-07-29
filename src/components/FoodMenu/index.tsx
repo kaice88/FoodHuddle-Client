@@ -9,11 +9,13 @@ import useFood from "@/hooks/useFood";
 import useFoodStore from "@/store/foodStore";
 import FoodMenuItem from "./FoodMenuItem";
 import { divideElementsIntoGroups } from "@/utils";
+import { Empty } from "antd";
 
 const { getMenuFoodData } = useFood();
 
 function FoodMenu() {
   const { sessionId } = useParams();
+  const setCurrentMenu = useFoodStore((state) => state.setCurrentMenu);
   const matchesSM = useMediaQuery("(max-width: 686px)");
   const matchesMD = useMediaQuery("(max-width:1283.5px)");
   const matchesXL = useMediaQuery("(min-width:1587.5px)");
@@ -29,6 +31,10 @@ function FoodMenu() {
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (!isEmpty(menu)) {
+    setCurrentMenu(menu!);
   }
 
   const menuGroups = matchesSM
