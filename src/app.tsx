@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -23,8 +24,10 @@ export default function App() {
           },
         }}
       >
-        <Notifications position="top-right" zIndex={2077} />
-        <RouterProvider router={router} />
+        <ModalsProvider>
+          <Notifications position="top-right" zIndex={2077} />
+          <RouterProvider router={router} />
+        </ModalsProvider>
       </MantineProvider>
     </QueryClientProvider>
   )

@@ -1,23 +1,21 @@
 import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
-
 import { useDisclosure } from '@mantine/hooks'
 import { IconSquarePlus } from '@tabler/icons-react'
+
 import SessionInfo from '../components/Modal'
-import { TABS_CONFIG } from '@/constants/sessions'
 import SessionList from '@/components/SessionsList'
-import { useSessionStore } from '@/store/sessionsStore'
+import useSessionsToday from '@/hooks/useSessionsToday'
+import { SessionsTodayPageTabs } from '@/enums'
+import { TABS_CONFIG } from '@/constants/sessions'
 
 export default function SessionTodayPage() {
-  const [activeTab, setActiveTab] = useSessionStore(state => [
-    state.activeTab,
-    state.setActiveTab,
-  ])
-
-  const [sessions, setSessions, isLoading] = useSessionStore(state => [
-    state.sessions,
-    state.setSessions,
-    state.isLoading,
-  ])
+  const {
+    isLoading,
+    data: sessions,
+    error,
+    activeTab,
+    setActiveTab,
+  } = useSessionsToday(SessionsTodayPageTabs.ALL)
 
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
@@ -31,7 +29,6 @@ export default function SessionTodayPage() {
     </Flex>
   )
 
-  console.log(activeTab)
   return (
     <>
       <div>
@@ -83,10 +80,10 @@ export default function SessionTodayPage() {
           {isLoading
             ? (
               <Loader className="loader" />
-            )
+              )
             : (
               <SessionList sessionsList={sessions} />
-            )}
+              )}
         </Tabs.Panel>
       </Tabs>
     </>

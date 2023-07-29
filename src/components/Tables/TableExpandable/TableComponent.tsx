@@ -14,10 +14,10 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
         return <ChildTable className="child-table" dataChilTable={element[0].elements} key={row.id}/>
       }
       else {
-        return null // Return null or any other fallback content if not grouped by food
+        return <ChildTable className="child-table" dataChilTable={elements[row.id]} key={row.id}/>
       }
     },
-    mantineDetailPanelProps: props => (
+    mantineDetailPanelProps: () => (
       {
         style: {
           textAlign: 'center',

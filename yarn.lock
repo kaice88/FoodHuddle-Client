@@ -720,6 +720,13 @@
   dependencies:
     "@mantine/utils" "6.0.17"
 
+"@mantine/modals@^6.0.17":
+  version "6.0.17"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-6.0.17.tgz#65d2e03c732a1937cf166942220db9368ebcefb4"
+  integrity sha512-57S4+G7+iPZOd6utzx3aYRKA1FcfJX7tfnbPafk303gSbZ9KQ3UWKJn9bk1HWev8AQsrNDyPH1zhjxVGpnqTZA==
+  dependencies:
+    "@mantine/utils" "6.0.17"
+
 "@mantine/notifications@^6.0.17":
   version "6.0.17"
   resolved "https://registry.npmjs.org/@mantine/notifications/-/notifications-6.0.17.tgz"
@@ -990,6 +997,11 @@
   version "7.0.11"
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
+
+"@types/lodash@^4.14.196":
+  version "4.14.196"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.196.tgz#a7c3d6fc52d8d71328b764e28e080b4169ec7a95"
+  integrity sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ==
 
 "@types/mdast@^3.0.0":
   version "3.0.11"

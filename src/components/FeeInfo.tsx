@@ -1,5 +1,5 @@
-import { Flex, Grid, Paper, Text, Title, useMantineTheme } from '@mantine/core'
-import { Image } from 'antd'
+import { Flex, Grid, Image, Paper, Text, Title, useMantineTheme } from '@mantine/core'
+import { modals } from '@mantine/modals'
 
 const listBillImages = ['http://surl.li/htspb', 'http://surl.li/htspb', 'http://surl.li/htspb', 'http://surl.li/htspb']
 const FeeItem = ({ title, value, color }) => {
@@ -14,18 +14,28 @@ const FeeItem = ({ title, value, color }) => {
 }
 
 const BillItem = ({ srcImage }) => {
-  return (
-    <span style={{ marginRight: '10px' }}>
+  const handleImage = () => modals.open({
+    title: 'Image preview',
+    centered: true,
+    children: (
       <Image
-        width={70}
-        height={70}
         src= {srcImage}
-        preview={{
-          src: srcImage,
-        }}
-        style={{ marginRight: '10px' }}
+        alt="Bill image"
+        onClick={handleImage}
       />
-    </span>
+    ),
+
+  })
+  return (
+  // <span style={{ marginRight: '10px' }}>
+    <Image
+      width={70}
+      height={70}
+      src= {srcImage}
+      alt="Bill image"
+      onClick={handleImage}
+    />
+  //  </span>
   )
 }
 
@@ -43,7 +53,9 @@ export default function FeeInfo() {
         </Grid.Col>
         <Grid.Col sm={12} md={6}>
           <Title sx={() => ({ fontWeight: 700, fontSize: '20px' })} color={theme.colors.duck[0]}>Bill</Title>
-          {listBillImages.map((item, index) => <BillItem key={index} srcImage = {item}></BillItem>)}
+          <Flex wrap="wrap" gap="lg">
+            {listBillImages.map((item, index) => <BillItem key={index} srcImage ={item} ></BillItem>)}
+          </Flex>
         </Grid.Col>
       </Grid>
     </Paper>

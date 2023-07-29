@@ -16,3 +16,9 @@ export const moneyFormat = (
 export const calculateTotal = (total, item) => {
   return new Decimal(total).add(item)
 }
+
+export const calculatePaymentAmount = (foodOrders) => {
+  return foodOrders.reduce((total, item) => {
+    return new Decimal(total).add(new Decimal(item.quantity).mul(item.actualPrice))
+  }, 0)
+}
