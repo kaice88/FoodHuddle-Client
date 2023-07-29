@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from './Notification'
 import ImagesUploaded from './ImagesUploaded'
 import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
@@ -80,12 +81,12 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
   const form = useForm<FormValue>({
     initialValues: isCreateFirst
       ? {
-          title: '',
-          shopLink: '',
-          description: '',
-          hostPaymentInfo: '',
-          qrImages: [],
-        }
+        title: '',
+        shopLink: '',
+        description: '',
+        hostPaymentInfo: '',
+        qrImages: [],
+      }
       : null, // ...Place your data session info...//
 
     validate: {
@@ -98,9 +99,12 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
   // .....Handle submit.............................................
   const handleSubmitNewSession = async (values: FormValue) => {
     const dataForm = new FormData()
-    values.qrImages.forEach((file) => {
-      dataForm.append('qr_images', file)
-    })
+    !isEmpty(values.qrImages)
+      ? values.qrImages.forEach((file) => {
+        dataForm.append('qr_images', file)
+      })
+      : dataForm.append('qr_images', [])
+
     dataForm.append('title', values.title)
     dataForm.append('shop_link', values.shopLink)
     dataForm.append('description', values.description)
