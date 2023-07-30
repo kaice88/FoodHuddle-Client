@@ -9,21 +9,18 @@ import useModal from "@/hooks/useModal";
 import useFoodStore from "@/store/foodStore";
 
 import type { FoodOrderItem } from "@/types/food";
-import { ActionIcon, Group, Loader, Button } from "@mantine/core";
+import { ActionIcon, Group, Text, Button } from "@mantine/core";
 import { IconEditCircle, IconEraser } from "@tabler/icons-react";
 
+import ReusablePopover from "../Popover";
 import EditOrderForm from "../FoodOrderForm/Edit";
 import { useParams } from "react-router-dom";
 
-import { find, isEmpty } from "lodash";
+import { find } from "lodash";
 import { moneyFormat } from "@/utils";
-import { calculateFoodOrderListTotal } from "@/utils/food";
-import {
-  fetchFoodOrderList,
-  editFoodOrderList,
-  foodOrderListMutation,
-  foodOrderListQuery,
-} from "@/hooks/useOrder";
+import { calculateFoodOrderListTotal, isOptionsEmpty } from "@/utils/food";
+import { fetchFoodOrderList, editFoodOrderList } from "@/hooks/useOrder";
+import OptionsList from "../OptionsList";
 
 function FoodOrderTable() {
   const { sessionId } = useParams();
@@ -45,6 +42,22 @@ function FoodOrderTable() {
         },
       },
       { accessorKey: "quantity", header: "Quantity" },
+      {
+        accessorKey: "options",
+        header: "Options",
+        Cell: ({ row }) => {
+          const options = row.getValue("options");
+          if (isOptionsEmpty(options)) {
+            return <Text>No options</Text>;
+          }
+          return (
+            <ReusablePopover
+              title={"Options"}
+              popoverContent={<OptionsList options={row.getValue("options")} />}
+            />
+          );
+        },
+      },
       { accessorKey: "note", header: "Note" },
       {
         accessorKey: "id",
@@ -81,22 +94,36 @@ function FoodOrderTable() {
     [foodOrderList]
   );
 
+  const table = useMantineReactTable({
+    columns,
+    data: foodOrderList,
+    state: {
+      density: "xs",
+    },
+    enableTopToolbar: false,
+  });
+
   useEffect(() => {
-    fetchFoodOrderList(parseInt(sessionId!)).then((data) => {
-      setFoodOrderList(data);
-    });
+    const init = async () => {
+      try {
+        const foodOrderList = await fetchFoodOrderList(parseInt(sessionId!));
+        setFoodOrderList(foodOrderList!);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    init();
   }, []);
 
   return (
     <>
       {" "}
-      <MantineReactTable columns={columns} data={foodOrderList} />;
+      <MantineReactTable table={table} />
       <Group position="right">
-        {" "}
         <Button
           onClick={() => {
             editFoodOrderList({
-              sessionId: parseInt(sessionId),
+              sessionId: parseInt(sessionId!),
               foodOrderList,
             });
           }}

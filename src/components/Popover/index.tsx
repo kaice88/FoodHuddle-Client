@@ -2,15 +2,21 @@ import React from "react";
 import { Popover, Button } from "@mantine/core";
 
 interface ReusablePopoverProps {
-  buttonText: string;
+  title: string;
   popoverContent: React.ReactNode;
 }
 
-function ReusablePopover({ buttonText, popoverContent }: ReusablePopoverProps) {
+function ReusablePopover({ title, popoverContent }: ReusablePopoverProps) {
   return (
-    <Popover width={200} position={"bottom"} withArrow shadow={"md"}>
+    <Popover
+      width={300}
+      zIndex={1000000}
+      position="bottom"
+      withArrow
+      shadow="md"
+    >
       <Popover.Target>
-        <Button>{buttonText}</Button>
+        <Button>{title}</Button>
       </Popover.Target>
       <Popover.Dropdown>{popoverContent}</Popover.Dropdown>
     </Popover>

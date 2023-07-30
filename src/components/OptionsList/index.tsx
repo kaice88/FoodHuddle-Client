@@ -1,26 +1,42 @@
 import { List, ThemeIcon } from "@mantine/core";
-import { IconShoppingCartPlus } from "@tabler/icons-react";
-import type { Option } from "@/types/food";
+import { IconCategory, IconShoppingCartPlus } from "@tabler/icons-react";
+import type { SelectedOptions } from "@/types/food";
+import { startCase } from "lodash";
 
 interface OptionsListProp {
-  options: Option[];
+  options: SelectedOptions[];
 }
 
 function OptionsList({ options }: OptionsListProp) {
+  const selectedOptions = options.filter((o) => o.detail.length > 0);
   return (
     <List
       spacing="xs"
       size="sm"
       center
       icon={
-        <ThemeIcon color="teal" size={24} radius="xl">
-          <IconShoppingCartPlus size="1rem" />
+        <ThemeIcon>
+          <IconCategory />
         </ThemeIcon>
       }
     >
-      {options.map((option) => (
+      {selectedOptions.map((category) => (
         <List.Item>
-          {option.name} : {option.price}
+          {category.category}
+          <List
+            icon={
+              <ThemeIcon>
+                <IconShoppingCartPlus />
+              </ThemeIcon>
+            }
+          >
+            {" "}
+            {category.detail.map((o) => (
+              <List.Item>
+                {o.name} : {o.price}
+              </List.Item>
+            ))}
+          </List>
         </List.Item>
       ))}
     </List>

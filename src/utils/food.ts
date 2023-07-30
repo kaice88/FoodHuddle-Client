@@ -1,4 +1,4 @@
-import { FoodOrderItem } from "@/types/food";
+import { FoodOrderItem, SelectedOptions } from "@/types/food";
 
 export function calculateFoodOrderItemTotal(item: FoodOrderItem): number {
   // Add the price of the food item (originPrice * quantity)
@@ -22,4 +22,11 @@ export function calculateFoodOrderListTotal(foodOrderList: FoodOrderItem[]) {
       total + calculateFoodOrderItemTotal(foodOrderItem),
     0
   );
+}
+export function isOptionsEmpty(options: SelectedOptions[]): boolean {
+  if (options.length === 0) {
+    return true;
+  }
+
+  return options.every((option) => option.detail.length === 0);
 }

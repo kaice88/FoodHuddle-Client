@@ -1,7 +1,5 @@
-import useFoodStore from "@/store/foodStore";
 import { v4 as uuidv4 } from "uuid";
-import { useEffect } from "react";
-import { useRequestProcessor } from "@/settings/react-query";
+
 import type { FoodOrderListData, FoodOrderItem } from "@/types/food";
 
 import axiosInstance from "@/settings/axios";
@@ -18,8 +16,6 @@ type GetOrderListResponseData = {
   data: { sessionId: number; foodOrderList: Omit<FoodOrderItem, "id">[] };
 };
 
-const { query, mutation } = useRequestProcessor();
-
 export const editFoodOrderList = async (
   foodOrderListData: FoodOrderListData
 ) => {
@@ -29,6 +25,7 @@ export const editFoodOrderList = async (
   );
 
   if (response.status == 200) {
+    notificationShow("success", "Food Order", "Submit order successfully");
     return response.data;
   }
 };
@@ -44,22 +41,4 @@ export const fetchFoodOrderList = async (sessionId: number) => {
       id: uuidv4(),
     }));
   }
-};
-
-export const foodOrderListMutation = (foodOrderListData: FoodOrderListData) => {
-  return mutation<EditOrderListResponseData, Error, FoodOrderListData>(
-    ["editFoodOrderList"],
-    () => editFoodOrderList(foodOrderListData),
-    {
-      onSuccess: () => {
-        notificationShow("success", "Food Order", "Submit order successfully");
-      },
-    }
-  );
-};
-
-export const foodOrderListQuery = (sessionId: number) => {
-  return query<FoodOrderItem[], Error>(["fetchFoodOrderList", sessionId], () =>
-    fetchFoodOrderList(sessionId)
-  );
 };
