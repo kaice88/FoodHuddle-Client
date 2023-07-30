@@ -39,6 +39,7 @@ function useSession(id) {
       onSuccess,
     })
   }
+
   return { deleteSession, changeStatus }
 }
 export default useSession

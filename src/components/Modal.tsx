@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
+import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notificationShow } from './Notification'
-import UploadImages from './UploadFile'
+import ImagesUploaded from './ImagesUploaded'
 import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
@@ -72,7 +72,6 @@ const SessionInfo: React.FC = () => {
       description: '',
       hostPaymentInfo: '',
       qrImages: [],
-      status: 'OPEN',
     },
 
     validate: {
@@ -83,18 +82,25 @@ const SessionInfo: React.FC = () => {
   })
   // .....Handle submit.............................................
   const handleSubmitNewSession = async (values: FormValue) => {
-    const dataForm = {
-      title: values.title,
-      shop_link: values.shopLink,
-      description: values.description,
-      host_payment_info: values.hostPaymentInfo,
-      qr_images: '',
-      status: values.status,
-    }
-    fetchMutationSessionInfo.mutate(dataForm)
+    // console.log(values)
+    const files = new FormData()
+    // values.qrImages.forEach((file) => {
+    //   files.append('qr_images', file)
+    // })
+    files.append('qr_images', '')
+    files.append('status', 'OPEN')
+    files.append('title', values.title)
+    files.append('shop_link', values.shopLink)
+    files.append('description', values.description)
+    files.append('host_payment_info', values.hostPaymentInfo)
+    fetchMutationSessionInfo.mutate(files)
   }
-  const handleOnChangeUploadFile = (value: File[]) => {
-    form.setFieldValue('qrImages', value)
+
+  const files = form.getInputProps('qrImages').value
+  const handleDeleteImage = (index) => {
+    const updatedFiles = [...files]
+    updatedFiles.splice(index, 1)
+    form.setFieldValue('qrImages', updatedFiles)
   }
 
   return (
@@ -145,8 +151,21 @@ const SessionInfo: React.FC = () => {
               QR code
             </Text>
             <Group position="center">
-              <UploadImages handleOnChange={handleOnChangeUploadFile} />
+              <FileButton
+                accept="image/png,image/jpeg"
+                multiple
+                {...form.getInputProps('qrImages')}
+              >
+                {props => (
+                  <Button variant="light" size="xs" color="indigo" {...props}>
+                          Upload image
+                  </Button>
+                )}
+              </FileButton>
             </Group>
+          </Flex>
+          <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
+            <ImagesUploaded handleDeleteImage={handleDeleteImage} files={files} />
           </Flex>
         </Flex>
       </Flex>
