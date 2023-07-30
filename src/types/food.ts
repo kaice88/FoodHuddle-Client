@@ -1,6 +1,6 @@
 export interface FoodOrderListData {
   sessionId: number;
-  foodList: FoodOrderItem[];
+  foodOrderList: FoodOrderItem[];
 }
 
 export interface FoodOrderItem {

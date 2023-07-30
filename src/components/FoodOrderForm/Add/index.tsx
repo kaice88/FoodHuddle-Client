@@ -112,10 +112,10 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
 
         <Textarea autosize label="Note" {...form.getInputProps("note")} />
 
-        <ScrollArea mt={8} h={200}>
-          <Flex direction="column" gap={16}>
-            {menuItem.options &&
-              menuItem.options.map((option) => (
+        {!isEmpty(menuItem.options) && (
+          <ScrollArea mt={8} h={200}>
+            <Flex direction="column" gap={16}>
+              {menuItem.options.map((option) => (
                 <Flex key={option.id} direction="column">
                   <OptionsGroup
                     optionsChangedHandler={optionsChangedHandler}
@@ -129,8 +129,9 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
                   )}
                 </Flex>
               ))}
-          </Flex>
-        </ScrollArea>
+            </Flex>
+          </ScrollArea>
+        )}
 
         <Group position="right" mt="md">
           <Button type="submit">Add</Button>

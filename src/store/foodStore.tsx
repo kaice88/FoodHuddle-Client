@@ -10,10 +10,11 @@ type State = {
 
 type Actions = {
   updateFoodOrderItem: (foodOrderItem: FoodOrderItem) => void;
-  deleteFoodOrderItem: (foodOrderItem: FoodOrderItem) => void;
+  deleteFoodOrderItem: (id: string) => void;
   addFoodOrderItem: (foodOrderItem: FoodOrderItem) => void;
   setCurrentShop: (currentShop: string) => void;
   setCurrentMenu: (currentMenu: Menu) => void;
+  setFoodOrderList: (foodOrderList: FoodOrderItem[]) => void;
 };
 
 const useFoodStore = create(
@@ -32,7 +33,12 @@ const useFoodStore = create(
           state.foodOrderList[index] = updatedItem;
         }
       }),
-    deleteFoodOrderItem: (item: FoodOrderItem) => {},
+    deleteFoodOrderItem: (id: string) =>
+      set((state) => {
+        state.foodOrderList = state.foodOrderList.filter(
+          (item) => item.id !== id
+        );
+      }),
     addFoodOrderItem: (item: FoodOrderItem) =>
       set((state) => {
         state.foodOrderList.push(item);
@@ -45,6 +51,11 @@ const useFoodStore = create(
     setCurrentMenu: (menu: Menu) => {
       set((state) => {
         state.currentMenu = menu;
+      });
+    },
+    setFoodOrderList: (foodOrderList) => {
+      set((state) => {
+        state.foodOrderList = foodOrderList;
       });
     },
   }))

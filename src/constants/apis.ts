@@ -11,3 +11,7 @@ export const REQUEST_GET_SESSION_INFO = (sessionId: string) =>
   `/v1/session/${sessionId}`;
 
 export const REQUEST_GET_FOOD_MENU = `v1/food-order/menu`;
+
+export const REQUEST_EDIT_FOOD_ORDER_LIST = "/v1/food-order";
+export const REQUEST_GET_FOOD_ORDER_LIST = (sessionId: number) =>
+  `/v1/food-order?sessionId=${sessionId}`;

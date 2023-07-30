@@ -3,9 +3,10 @@ import type { MenuResponseData, Menu } from "@/types/food";
 
 import axiosInstance from "@/settings/axios";
 import { REQUEST_GET_FOOD_MENU } from "@/constants/apis";
+import useFoodStore from "@/store/foodStore";
+import isEmpty from "lodash/isEmpty";
 
-const { query, mutation } = useRequestProcessor();
-
+const { query } = useRequestProcessor();
 const fetchMenuFoodData = async (sessionId: string) => {
   const response = await axiosInstance.get<MenuResponseData>(
     REQUEST_GET_FOOD_MENU,
@@ -19,14 +20,23 @@ const fetchMenuFoodData = async (sessionId: string) => {
   return [];
 };
 
-const getMenuFoodData = (sessionId: string, currentShop: string) => {
+const menuFoodQuery = (sessionId: string, currentShop: string) => {
   return query<Menu, Error>(["FoodMenu", sessionId, currentShop], () =>
     fetchMenuFoodData(sessionId)
   );
 };
 
-function useFood() {
-  return { getMenuFoodData };
+function useMenu(sessionId: string) {
+  const setCurrentMenu = useFoodStore((state) => state.setCurrentMenu);
+  const currentShop = useFoodStore((state) => state.currentShop);
+
+  const { isLoading, data, error } = menuFoodQuery(sessionId, currentShop);
+
+  if (!isEmpty(data)) {
+    setCurrentMenu(data!);
+  }
+
+  return { isLoading, data, error };
 }
 
-export default useFood;
+export default useMenu;
