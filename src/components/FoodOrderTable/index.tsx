@@ -18,6 +18,7 @@ import { Button } from "antd";
 import EditOrderForm from "../FoodOrderForm/Edit";
 function FoodOrderTable() {
   const foodOrderList = useFoodStore((state) => state.foodOrderList);
+
   const { openModal } = useModal(
     "EDIT",
     <EditOrderForm foodOrderItem={foodOrderList[0]} />
