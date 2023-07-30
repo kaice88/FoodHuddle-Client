@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Loader, Flex, Title, SimpleGrid, rem } from "@mantine/core";
+import { Loader, Title, SimpleGrid, ActionIcon } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { v4 as uuidv4 } from "uuid";
@@ -7,19 +7,20 @@ import { v4 as uuidv4 } from "uuid";
 import FoodMenuItem from "./FoodMenuItem";
 import { divideElementsIntoGroups } from "@/utils";
 import useMenu from "@/hooks/useMenu";
-import { IconMeat } from "@tabler/icons-react";
+import {
+  IconMeat,
+  IconArrowBigLeftFilled,
+  IconArrowBigRightFilled,
+} from "@tabler/icons-react";
 
 function FoodMenu() {
   const { sessionId } = useParams();
-  const { data: menu, isLoading, error } = useMenu(sessionId!);
+  const { data: menu, isLoading } = useMenu(sessionId!);
 
-  if (isLoading) {
-    return <Loader />;
-  }
   const xl = useMediaQuery("(min-width: 1500px)");
   const md = useMediaQuery("(min-width: 1270px)");
   const sm = useMediaQuery("(min-width: 500px)");
-  console.log(xl);
+
   const menuGroups = xl
     ? divideElementsIntoGroups(menu, 8)
     : md
@@ -28,16 +29,38 @@ function FoodMenu() {
     ? divideElementsIntoGroups(menu, 4)
     : divideElementsIntoGroups(menu, 2);
 
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <>
       <Title order={3}>
         <IconMeat /> What's popping?
       </Title>
-      <Carousel align={"center"} className="menu" withIndicators withControls>
+      <Carousel
+        controlsOffset={-50}
+        controlSize={16}
+        align={"center"}
+        className="menu"
+        withIndicators
+        withControls
+        nextControlIcon={
+          <ActionIcon color="red">
+            {" "}
+            <IconArrowBigRightFilled />
+          </ActionIcon>
+        }
+        previousControlIcon={
+          <ActionIcon color="red">
+            {" "}
+            <IconArrowBigLeftFilled />
+          </ActionIcon>
+        }
+      >
         {" "}
         {menuGroups.map((menu) => {
           return (
-            <Carousel.Slide key={uuidv4()}>
+            <Carousel.Slide slideGap="lg" key={uuidv4()}>
               {" "}
               <SimpleGrid
                 breakpoints={[

@@ -1,3 +1,5 @@
+import { isEmpty } from "lodash";
+
 export const moneyFormat = (
   value: number,
   currency: string = "USD",
@@ -15,6 +17,9 @@ export function divideElementsIntoGroups<T>(
   elements: T[],
   maxElementsPerGroup: number
 ): T[][] {
+  if (isEmpty(elements)) {
+    return [];
+  }
   if (maxElementsPerGroup <= 0) {
     throw new Error("maxElementsPerGroup must be a positive integer.");
   }

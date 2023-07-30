@@ -66,12 +66,6 @@ function FoodOrderTable() {
       {
         accessorKey: "options",
         header: "Options",
-        mantineTableHeadCellProps: {
-          align: "center",
-        },
-        mantineTableBodyCellProps: {
-          align: "center",
-        },
         Cell: ({ row }) => {
           const options = row.getValue("options");
           if (isOptionsEmpty(options)) {
@@ -103,9 +97,10 @@ function FoodOrderTable() {
           );
 
           return (
-            <Group>
+            <Flex align="center" justify="center">
               {" "}
               <ActionIcon
+                color="blue"
                 onClick={() => {
                   openModal();
                 }}
@@ -116,11 +111,18 @@ function FoodOrderTable() {
                 onClick={() => {
                   deleteFoodOrderItem(id);
                 }}
+                color="red"
               >
                 <IconEraser />
               </ActionIcon>
-            </Group>
+            </Flex>
           );
+        },
+        mantineTableHeadCellProps: {
+          align: "center",
+        },
+        mantineTableBodyCellProps: {
+          align: "center",
         },
       },
     ],
