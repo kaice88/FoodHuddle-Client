@@ -23,14 +23,14 @@ export function PriceDisplay({
         <Text size="xs" td="line-through">
           {moneyFormat(price, "VND", "vi-VN")}
         </Text>
-        <Text size="sm" style={{ color: "#FF6B00" }}>
+        <Text fw={700} size="md" style={{ color: "#FF6B00" }}>
           {moneyFormat(discountPrice, "VND", "vi-VN")}
         </Text>
       </div>
     );
   } else {
     return (
-      <Text size="sm" style={{ color: "#FF6B00" }}>
+      <Text size="md" fw={700} style={{ color: "#FF6B00" }}>
         {moneyFormat(price, "VND", "vi-VN")}
       </Text>
     );
@@ -39,7 +39,7 @@ export function PriceDisplay({
 
 function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
   const { openModal } = useModal(
-    "Food Order",
+    <Title order={4}>{"Order Customization"}</Title>,
     <AddOrderForm menuItem={foodMenuItem} />
   );
 

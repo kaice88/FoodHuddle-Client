@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Checkbox, Title, Text } from "@mantine/core";
+import { Checkbox, Title } from "@mantine/core";
 import { moneyFormat } from "@/utils";
 import type { OptionDetail, Option, SelectedOptions } from "@/types/food";
 
 import { v4 as uuidv4 } from "uuid";
-import { isEmpty } from "lodash";
-
+import isEmpty from "lodash/isEmpty";
+import startCase from "lodash/startCase";
 interface OptionsGroupProps {
   option: Option;
   optionsChangedHandler: (category: string, detail: OptionDetail[]) => void;
@@ -44,13 +44,13 @@ function OptionsGroup({
 
   return (
     <div>
-      <Title order={6}>{option.category}</Title>
+      <Title order={6}>{startCase(option.category)}</Title>
       {option.detail.map((optionItem) => (
         <Checkbox
           key={uuidv4()}
           labelPosition="left"
           description={moneyFormat(optionItem.price, "VND", "vi-VN")}
-          label={optionItem.name}
+          label={startCase(optionItem.name)}
           checked={
             !isEmpty(selectedOptionItems) &&
             selectedOptionItems.some(

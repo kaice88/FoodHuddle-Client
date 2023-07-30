@@ -90,9 +90,15 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
                 {menuItem.foodName}
               </Title>
             ) : (
-              <Title lineClamp={2} order={6} fw={500}>
-                {menuItem.foodName}
-              </Title>
+              <>
+                <Spoiler maxHeight={20} showLabel="Show more" hideLabel="Hide">
+                  {" "}
+                  <Title lineClamp={2} order={6} fw={500}>
+                    {menuItem.foodName}
+                  </Title>
+                  <Text size="xs">{menuItem.description}</Text>
+                </Spoiler>
+              </>
             )}
 
             <Flex justify={"space-between"} align="flex-end">
@@ -110,7 +116,12 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
           </div>
         </div>
 
-        <Textarea autosize label="Note" {...form.getInputProps("note")} />
+        <Textarea
+          autosize
+          label={<Title order={6}>Note</Title>}
+          placeholder="No ice please!!!"
+          {...form.getInputProps("note")}
+        />
 
         {!isEmpty(menuItem.options) && (
           <ScrollArea mt={8} h={200}>

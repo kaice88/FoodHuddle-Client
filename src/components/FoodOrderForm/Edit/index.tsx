@@ -24,6 +24,7 @@ import { PriceDisplay } from "../../FoodMenu/FoodMenuItem";
 
 import useFoodStore from "@/store/foodStore";
 import { useMemo } from "react";
+import { calculateFoodOrderItemTotal } from "@/utils/food";
 
 const { closeModal } = useModal();
 interface EditOrderFormProps {
@@ -82,7 +83,6 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
       ],
     };
 
-    console.log(updatedFoodOrderItem);
     updateFoodOrderItem(updatedFoodOrderItem);
     closeModal();
   });
@@ -121,7 +121,12 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
           </div>
         </div>
 
-        <Textarea autosize label="Note" {...form.getInputProps("note")} />
+        <Textarea
+          autosize
+          label={<Title order={6}>Note</Title>}
+          placeholder="No ice please!!!"
+          {...form.getInputProps("note")}
+        />
 
         <ScrollArea mt={8} h={200}>
           <Flex direction="column" gap={16}>

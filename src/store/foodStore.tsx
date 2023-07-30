@@ -1,3 +1,4 @@
+import { notificationShow } from "@/components/Notification";
 import { FoodOrderItem, Menu, MenuItem } from "@/types/food";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
@@ -18,7 +19,7 @@ type Actions = {
 };
 
 const useFoodStore = create(
-  immer<State & Actions>((set) => ({
+  immer<State & Actions>((set, get) => ({
     currentShop: "",
     foodOrderList: [],
     currentMenu: [],
@@ -39,10 +40,25 @@ const useFoodStore = create(
           (item) => item.id !== id
         );
       }),
-    addFoodOrderItem: (item: FoodOrderItem) =>
+    addFoodOrderItem: (item: FoodOrderItem) => {
+      const foodOrderList = get().foodOrderList;
+      const existingFoodOrderItem = foodOrderList.find(
+        (foodOrderItem) => foodOrderItem.foodName === item.foodName
+      );
+
+      if (existingFoodOrderItem) {
+        notificationShow(
+          "error",
+          "Add Food",
+          "You already have this in your order. Please modify in the table below."
+        );
+        return;
+      }
+
       set((state) => {
         state.foodOrderList.push(item);
-      }),
+      });
+    },
     setCurrentShop: (shop: string) => {
       set((state) => {
         state.currentShop = shop;

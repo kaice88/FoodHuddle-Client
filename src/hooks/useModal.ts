@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { modals } from "@mantine/modals";
 
 const useModal = (
-  title: string = "",
+  title: string | ReactNode = "",
   modalContent: React.ReactElement | null = null
 ) => {
   const openModal = () => {

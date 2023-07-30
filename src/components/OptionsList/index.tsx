@@ -1,42 +1,33 @@
-import { List, ThemeIcon } from "@mantine/core";
-import { IconCategory, IconShoppingCartPlus } from "@tabler/icons-react";
-import type { SelectedOptions } from "@/types/food";
-import { startCase } from "lodash";
+import { List } from "@mantine/core";
+import { IconShoppingCartPlus } from "@tabler/icons-react";
+import startCase from "lodash/startCase";
+
+import type { OptionDetail, SelectedOptions } from "@/types/food";
+import { moneyFormat } from "@/utils";
 
 interface OptionsListProp {
   options: SelectedOptions[];
 }
 
 function OptionsList({ options }: OptionsListProp) {
-  const selectedOptions = options.filter((o) => o.detail.length > 0);
+  let selectedOptions: OptionDetail[] = [];
+
+  options
+    .filter((o) => o.detail.length > 0)
+    .forEach((o) => {
+      selectedOptions = selectedOptions.concat(o.detail);
+    });
+
   return (
     <List
-      spacing="xs"
-      size="sm"
       center
-      icon={
-        <ThemeIcon>
-          <IconCategory />
-        </ThemeIcon>
-      }
+      spacing="xs"
+      size="xs"
+      icon={<IconShoppingCartPlus size={16} />}
     >
-      {selectedOptions.map((category) => (
+      {selectedOptions.map((o) => (
         <List.Item>
-          {category.category}
-          <List
-            icon={
-              <ThemeIcon>
-                <IconShoppingCartPlus />
-              </ThemeIcon>
-            }
-          >
-            {" "}
-            {category.detail.map((o) => (
-              <List.Item>
-                {o.name} : {o.price}
-              </List.Item>
-            ))}
-          </List>
+          {`${startCase(o.name)} : ${moneyFormat(o.price, "VND", "vi-VN")}`}
         </List.Item>
       ))}
     </List>

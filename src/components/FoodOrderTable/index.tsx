@@ -9,8 +9,12 @@ import useModal from "@/hooks/useModal";
 import useFoodStore from "@/store/foodStore";
 
 import type { FoodOrderItem } from "@/types/food";
-import { ActionIcon, Group, Text, Button } from "@mantine/core";
-import { IconEditCircle, IconEraser } from "@tabler/icons-react";
+import { ActionIcon, Group, Text, Button, Title, Flex } from "@mantine/core";
+import {
+  IconEditCircle,
+  IconEraser,
+  IconShoppingBagCheck,
+} from "@tabler/icons-react";
 
 import ReusablePopover from "../Popover";
 import EditOrderForm from "../FoodOrderForm/Edit";
@@ -40,11 +44,34 @@ function FoodOrderTable() {
         Cell: ({ row }) => {
           return moneyFormat(row.getValue("originPrice"), "VND", "vi-VN");
         },
+        size: 100,
+        mantineTableHeadCellProps: {
+          align: "center",
+        },
+        mantineTableBodyCellProps: {
+          align: "center",
+        },
       },
-      { accessorKey: "quantity", header: "Quantity" },
+      {
+        accessorKey: "quantity",
+        header: "Quantity",
+        mantineTableHeadCellProps: {
+          align: "center",
+        },
+        mantineTableBodyCellProps: {
+          align: "center",
+        },
+        size: 100,
+      },
       {
         accessorKey: "options",
         header: "Options",
+        mantineTableHeadCellProps: {
+          align: "center",
+        },
+        mantineTableBodyCellProps: {
+          align: "center",
+        },
         Cell: ({ row }) => {
           const options = row.getValue("options");
           if (isOptionsEmpty(options)) {
@@ -52,7 +79,7 @@ function FoodOrderTable() {
           }
           return (
             <ReusablePopover
-              title={"Options"}
+              title="Options"
               popoverContent={<OptionsList options={row.getValue("options")} />}
             />
           );
@@ -61,11 +88,17 @@ function FoodOrderTable() {
       { accessorKey: "note", header: "Note" },
       {
         accessorKey: "id",
+        mantineTableHeadCellProps: {
+          align: "center",
+        },
+        mantineTableBodyCellProps: {
+          align: "center",
+        },
         header: "Actions",
         Cell: ({ row }) => {
           const id = row.getValue("id");
           const { openModal } = useModal(
-            "EDIT",
+            <Title order={4}>{"Order Customization"}</Title>,
             <EditOrderForm foodOrderItem={find(foodOrderList, { id })} />
           );
 
@@ -98,9 +131,10 @@ function FoodOrderTable() {
     columns,
     data: foodOrderList,
     state: {
-      density: "xs",
+      density: "xl",
     },
     enableTopToolbar: false,
+    enableBottomToolbar: false,
   });
 
   useEffect(() => {
@@ -116,11 +150,19 @@ function FoodOrderTable() {
   }, []);
 
   return (
-    <>
-      {" "}
-      <MantineReactTable table={table} />
+    <Flex direction="column" mt={8} gap={16}>
+      <Title order={3}>
+        <IconShoppingBagCheck /> What chu got?
+      </Title>
+      <MantineReactTable
+        table={table}
+        mantineTableProps={{
+          striped: true,
+        }}
+      />
       <Group position="right">
         <Button
+          radius="sm"
           onClick={() => {
             editFoodOrderList({
               sessionId: parseInt(sessionId!),
@@ -136,7 +178,7 @@ function FoodOrderTable() {
             )}{" "}
         </Button>
       </Group>
-    </>
+    </Flex>
   );
 }
 

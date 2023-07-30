@@ -1,7 +1,13 @@
+.orderTab {
+  padding: calc(2 * $content-gutter);
+}
+
 .foodMenuItem {
   display: flex;
-  width: 280px;
-  height: 130px;
+
+  flex: 0 0 280px; /* flex-grow: 0, flex-shrink: 0, flex-basis: 280px */
+  height: 140px;
+
   padding: $content-gutter;
   border-radius: 16px;
   background-color: #f7f7f7;
@@ -33,7 +39,9 @@
 
 .menu {
   width: 100%;
-  padding: calc(2 * $content-gutter);
+  padding: $content-gutter;
+  justify-content: space-around;
+  max-height: 280 + calc(4 * $content-gutter);
 }
 
 .mantine-Checkbox-body {
@@ -43,6 +51,7 @@
 
 .menuItemForm {
   width: 100%;
-  border-radius: 8px;
-  min-height: 160px;
+  border-radius: 16px;
+  max-height: 250px;
+  height: auto;
 }
