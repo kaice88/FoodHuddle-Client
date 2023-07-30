@@ -1,4 +1,4 @@
-import { FoodOrderItem, MenuItem, Option } from "@/types/food";
+import { FoodOrderItem, OptionDetail } from "@/types/food";
 import {
   Button,
   Group,
@@ -13,7 +13,6 @@ import {
 } from "@mantine/core";
 
 import { useForm } from "@mantine/form";
-import { v4 as uuidv4 } from "uuid";
 
 import useModal from "@/hooks/useModal";
 import OptionsGroup from "../OptionsGroup";
@@ -25,7 +24,7 @@ import { PriceDisplay } from "../../FoodMenu/FoodMenuItem";
 
 import useFoodStore from "@/store/foodStore";
 import { useMemo } from "react";
-import { options } from "@/components/Navbar/Options";
+
 const { closeModal } = useModal();
 interface EditOrderFormProps {
   foodOrderItem: FoodOrderItem;
@@ -62,8 +61,8 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
     validate,
   });
 
-  const optionsChangedHandler = (field: string, value: Option[]) => {
-    form.setFieldValue(field, value);
+  const optionsChangedHandler = (category: string, detail: OptionDetail[]) => {
+    form.setFieldValue(category, detail);
   };
 
   const submitHandler = form.onSubmit((values) => {
@@ -74,13 +73,15 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
       note,
       quantity,
       options: [
-        ...Object.entries(restOptions).map(([category, detail]) => ({
-          category,
-          detail,
-        })),
+        ...Object.entries(restOptions).map(
+          ([category, detail]: [string, OptionDetail]) => ({
+            category,
+            detail,
+          })
+        ),
       ],
     };
-    console.log(foodOrderItem);
+    console.log(updatedFoodOrderItem);
     updateFoodOrderItem(foodOrderItem);
     closeModal();
   });
@@ -126,14 +127,14 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
                 <OptionsGroup
                   optionsChangedHandler={optionsChangedHandler}
                   key={option.id}
-                  optionCategory={option}
+                  option={option}
                   defaultValue={find(get(foodOrderItem, "options"), {
-                    category: option.name,
+                    category: option.category,
                   })}
                 />
-                {!isEmpty(get(form.errors, `${option.name}`)) && (
+                {!isEmpty(get(form.errors, `${option.category}`)) && (
                   <Text color="red" size="sm">
-                    {get(form.errors, option.name)}
+                    {get(form.errors, option.category)}
                   </Text>
                 )}
               </Flex>

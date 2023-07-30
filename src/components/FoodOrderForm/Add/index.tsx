@@ -21,7 +21,7 @@ import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
 
 import { PriceDisplay } from "../../FoodMenu/FoodMenuItem";
-
+import type { OptionDetail } from "@/types/food";
 import useFoodStore from "@/store/foodStore";
 const { closeModal } = useModal();
 interface AddOrderFormProps {
@@ -49,8 +49,8 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
     validate,
   });
 
-  const optionsChangedHandler = (field: string, value: Option[]) => {
-    form.setFieldValue(field, value);
+  const optionsChangedHandler = (category: string, detail: OptionDetail[]) => {
+    form.setFieldValue(category, detail);
   };
 
   const submitHandler = form.onSubmit((values) => {
@@ -64,13 +64,16 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
       note,
       quantity,
       options: [
-        ...Object.entries(restOptions).map(([category, detail]) => ({
-          category,
-          detail,
-        })),
+        ...Object.entries(restOptions).map(
+          ([category, detail]: [string, OptionDetail]) => ({
+            category,
+            detail,
+          })
+        ),
       ],
     };
     addFoodOrderItem(foodOrderItem);
+    console.log(foodOrderItem);
     closeModal();
   });
 
@@ -115,11 +118,11 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
                 <OptionsGroup
                   optionsChangedHandler={optionsChangedHandler}
                   key={option.id}
-                  optionCategory={option}
+                  option={option}
                 />
-                {!isEmpty(get(form.errors, `${option.name}`)) && (
+                {!isEmpty(get(form.errors, `${option.category}`)) && (
                   <Text color="red" size="sm">
-                    {get(form.errors, option.name)}
+                    {get(form.errors, option.category)}
                   </Text>
                 )}
               </Flex>

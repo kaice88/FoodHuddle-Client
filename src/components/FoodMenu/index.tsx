@@ -47,6 +47,7 @@ function FoodMenu() {
     ? divideElementsIntoGroups(menu!, 12)
     : divideElementsIntoGroups(menu!, 9);
 
+  console.log(menu);
   return (
     <Carousel
       orientation={matchesSM ? "vertical" : "horizontal"}
