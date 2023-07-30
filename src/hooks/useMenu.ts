@@ -5,6 +5,7 @@ import axiosInstance from "@/settings/axios";
 import { REQUEST_GET_FOOD_MENU } from "@/constants/apis";
 import useFoodStore from "@/store/foodStore";
 import isEmpty from "lodash/isEmpty";
+import { useEffect } from "react";
 
 const { query } = useRequestProcessor();
 const fetchMenuFoodData = async (sessionId: string) => {
@@ -32,9 +33,9 @@ function useMenu(sessionId: string) {
 
   const { isLoading, data, error } = menuFoodQuery(sessionId, currentShop);
 
-  if (!isEmpty(data)) {
+  useEffect(() => {
     setCurrentMenu(data!);
-  }
+  }, [isLoading]);
 
   return { isLoading, data, error };
 }

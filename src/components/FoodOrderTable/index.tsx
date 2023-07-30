@@ -8,31 +8,33 @@ import {
 import useModal from "@/hooks/useModal";
 import useFoodStore from "@/store/foodStore";
 
-import { ActionIcon, Group, Loader } from "@mantine/core";
+import type { FoodOrderItem } from "@/types/food";
+import { ActionIcon, Group, Loader, Button } from "@mantine/core";
 import { IconEditCircle, IconEraser } from "@tabler/icons-react";
 
 import EditOrderForm from "../FoodOrderForm/Edit";
-import { FoodOrderItem } from "@/types/food";
 import { useParams } from "react-router-dom";
-import { Button } from "antd";
+
 import { find, isEmpty } from "lodash";
 import { moneyFormat } from "@/utils";
 import { calculateFoodOrderListTotal } from "@/utils/food";
-import useOrder from "@/hooks/useOrder";
+import {
+  fetchFoodOrderList,
+  editFoodOrderList,
+  foodOrderListMutation,
+  foodOrderListQuery,
+} from "@/hooks/useOrder";
 
 function FoodOrderTable() {
   const { sessionId } = useParams();
+  const setFoodOrderList = useFoodStore((state) => state.setFoodOrderList);
+  const foodOrderList = useFoodStore((state) => state.foodOrderList);
+
   const deleteFoodOrderItem = useFoodStore(
     (state) => state.deleteFoodOrderItem
   );
-  const foodOrderList = useFoodStore((state) => state.foodOrderList);
 
-  const { isFetchingFoodOrder, mutate, isSubmitting } = useOrder(
-    parseInt(sessionId!)
-  );
-
-  console.log(isSubmitting);
-  const columns = useMemo<MRT_ColumnDef<FoodOrderItem>[]>(
+  const columns: MRT_ColumnDef<FoodOrderItem[]> = useMemo(
     () => [
       { accessorKey: "foodName", header: "Food" },
       {
@@ -79,35 +81,32 @@ function FoodOrderTable() {
     [foodOrderList]
   );
 
-  const table = useMantineReactTable({
-    columns,
-    data: foodOrderList!,
-    state: { density: "xs" },
-    enableTopToolbar: false,
-    enableBottomToolbar: false,
-  });
-
-  if (isFetchingFoodOrder) {
-    return <Loader />;
-  }
+  useEffect(() => {
+    fetchFoodOrderList(parseInt(sessionId!)).then((data) => {
+      setFoodOrderList(data);
+    });
+  }, []);
 
   return (
     <>
       {" "}
-      <MantineReactTable table={table} />;
+      <MantineReactTable columns={columns} data={foodOrderList} />;
       <Group position="right">
         {" "}
         <Button
-          loading={isSubmitting}
           onClick={() => {
-            mutate({
-              sessionId: parseInt(sessionId!),
+            editFoodOrderList({
+              sessionId: parseInt(sessionId),
               foodOrderList,
             });
           }}
         >
-          {"Place order total of: " +
-            calculateFoodOrderListTotal(foodOrderList)}{" "}
+          {"Submit order total of: " +
+            moneyFormat(
+              calculateFoodOrderListTotal(foodOrderList),
+              "VND",
+              "vi-VN"
+            )}{" "}
         </Button>
       </Group>
     </>

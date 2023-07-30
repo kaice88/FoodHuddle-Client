@@ -24,11 +24,11 @@ const useFoodStore = create(
     currentMenu: [],
     updateFoodOrderItem: (updatedItem: FoodOrderItem) =>
       set((state) => {
-        console.log(updatedItem);
         let index = state.foodOrderList.findIndex(
           (item) => item.id === updatedItem.id
         );
 
+        console.log(index);
         if (index !== -1) {
           state.foodOrderList[index] = updatedItem;
         }

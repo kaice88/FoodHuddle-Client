@@ -82,6 +82,7 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
       ],
     };
 
+    console.log(updatedFoodOrderItem);
     updateFoodOrderItem(updatedFoodOrderItem);
     closeModal();
   });
