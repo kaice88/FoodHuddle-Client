@@ -118,12 +118,6 @@ function FoodOrderTable() {
             </Flex>
           );
         },
-        mantineTableHeadCellProps: {
-          align: "center",
-        },
-        mantineTableBodyCellProps: {
-          align: "center",
-        },
       },
     ],
     [foodOrderList]

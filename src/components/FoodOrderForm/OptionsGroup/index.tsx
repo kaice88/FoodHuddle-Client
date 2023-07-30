@@ -44,7 +44,7 @@ function OptionsGroup({
 
   return (
     <div>
-      <Title order={6}>{startCase(option.category)}</Title>
+      <Title order={6}>{option.category.toLocaleUpperCase("vi-VN")}</Title>
       {option.detail.map((optionItem) => (
         <Checkbox
           key={uuidv4()}

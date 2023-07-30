@@ -60,7 +60,7 @@ function FoodMenu() {
         {" "}
         {menuGroups.map((menu) => {
           return (
-            <Carousel.Slide slideGap="lg" key={uuidv4()}>
+            <Carousel.Slide key={uuidv4()}>
               {" "}
               <SimpleGrid
                 breakpoints={[

@@ -11,7 +11,7 @@ function ReusablePopover({ title, popoverContent }: ReusablePopoverProps) {
     <Popover
       width={300}
       zIndex={1000000}
-      position="bottom"
+      position="right"
       withArrow
       shadow="md"
     >

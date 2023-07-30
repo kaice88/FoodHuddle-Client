@@ -50,8 +50,8 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
   const validate = {};
 
   mandatoryOptions.forEach((option) => {
-    validate[option.name] = (value) =>
-      isEmpty(value) ? `${option.name} is required!` : null;
+    validate[option.category] = (value) =>
+      isEmpty(value) ? `${option.category} is required!` : null;
   });
 
   const form = useForm({

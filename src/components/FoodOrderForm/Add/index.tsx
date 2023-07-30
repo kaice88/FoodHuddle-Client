@@ -1,4 +1,4 @@
-import { FoodOrderItem, MenuItem, Option } from "@/types/food";
+import { FoodOrderItem, MenuItem } from "@/types/food";
 import {
   Button,
   Group,
@@ -38,8 +38,8 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
   const validate = {};
 
   mandatoryOptions.forEach((option) => {
-    validate[option.name] = (value) =>
-      isEmpty(value) ? `${option.name} is required!` : null;
+    validate[option.category] = (value) =>
+      isEmpty(value) ? `${option.category} is required!` : null;
   });
 
   const form = useForm({
@@ -56,7 +56,6 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
 
   const submitHandler = form.onSubmit((values) => {
     const { note, quantity, ...restOptions } = values;
-
     const foodOrderItem: FoodOrderItem = {
       id: uuidv4(),
       foodName: menuItem.foodName,
@@ -145,7 +144,14 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
         )}
 
         <Group position="right" mt="md">
-          <Button type="submit">Add</Button>
+          <Button
+            onClick={() => {
+              console.log("helao");
+            }}
+            type="submit"
+          >
+            Add
+          </Button>
         </Group>
       </form>
     </Box>
