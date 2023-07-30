@@ -295,14 +295,14 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.19.0"
 
-"@babel/runtime@^7.10.1", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.16.7", "@babel/runtime@^7.18.0", "@babel/runtime@^7.20.0", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0", "@babel/runtime@^7.22.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.10.1", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.16.7", "@babel/runtime@^7.18.0", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.0", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0", "@babel/runtime@^7.22.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.7":
   version "7.22.6"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.6.tgz"
   integrity sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ==
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.18.3":
+"@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10":
   version "7.22.5"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.5.tgz"
   integrity sha512-ecjvYlnAaZ/KVneE/OdKYBYfgXV3Ptu6zQWmgEF7vwKhQnvVS6bjMD2XYgj+SNvQ1GfK/pjgokfPkC/2CO8CuA==
@@ -681,7 +681,14 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@mantine/core@^6.0.15":
+"@mantine/carousel@^6.0.17":
+  version "6.0.17"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-6.0.17.tgz#d31fc9bc9ef14bd5ea3e9162d4a130b904cb478e"
+  integrity sha512-cKX7zGmWVXdq/mPff5QYaHLR2X6bujbR4YZ3Hs3TD8KuySTZDOHipUD9IAVH1DtYJRE0+FIRb6OeZ7X9/N2Erg==
+  dependencies:
+    "@mantine/utils" "6.0.17"
+
+"@mantine/core@^6.0.17":
   version "6.0.17"
   resolved "https://registry.npmjs.org/@mantine/core/-/core-6.0.17.tgz"
   integrity sha512-g3EDxcTJKisvEGTsGJPCGXiDumwr4O0nGNXwoGLnrg19nh3FAMfEIq18sJJLtRrBuarSbrvgMVYvKx1R6rTOWg==
@@ -708,9 +715,9 @@
     fast-deep-equal "^3.1.3"
     klona "^2.0.5"
 
-"@mantine/hooks@^6.0.15":
+"@mantine/hooks@^6.0.17":
   version "6.0.17"
-  resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-6.0.17.tgz"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-6.0.17.tgz#dc942c87e6dcfa14a70e4e4a162c22eeb4ff3724"
   integrity sha512-7vf2w1NlzKlUynSuyI2DAIKoEOYKYC8k+tlSsk3BRdbzhbJAiWxcYzJy5seg5dFW1WIpKAZ0wiVdHXf/WRlRgg==
 
 "@mantine/modals@^6.0.17":
@@ -929,18 +936,25 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.7.1.tgz"
   integrity sha512-bgVQM4ZJ2u2CM8k1ey70o1ePFXsEzYVZoWghh6WjM8p59jQ7HxzbHW4SbnWFG7V9ig9chLawQxDTZ3xzOF8MkQ==
 
-"@tabler/icons-react@^2.23.0":
-  version "2.23.0"
-  resolved "https://registry.npmjs.org/@tabler/icons-react/-/icons-react-2.23.0.tgz"
-  integrity sha512-+H4mC1EZVCzCRhnPwZEVTI0veVCJuAKlopeCnRlfsYcmzgJm6Ye234c4A2qrLPQoi1Y29uN9+kqCyuYW007jPg==
+"@tabler/icons-react@^2.29.0":
+  version "2.29.0"
+  resolved "https://registry.npmjs.org/@tabler/icons-react/-/icons-react-2.29.0.tgz"
+  integrity sha512-qApkLT6STXr8lL9/2JM+DTECfuGNhL8WRzMPs4twh1M1m64jeYRGRYpYPGYnI4GtwxqO3IuPKzos2XXcLb0C7Q==
   dependencies:
-    "@tabler/icons" "2.23.0"
+    "@tabler/icons" "2.29.0"
     prop-types "^15.7.2"
 
-"@tabler/icons@2.23.0":
-  version "2.23.0"
-  resolved "https://registry.npmjs.org/@tabler/icons/-/icons-2.23.0.tgz"
-  integrity sha512-dU54aBwaxG0H+jQ4BdrqtYFN5L7PZevvlnzyL6XeOZgfDS3+sVNCtuG3JmpTEqQSwGLYC1IEwogPGA/Iit2bOA==
+"@tabler/icons@2.29.0":
+  version "2.29.0"
+  resolved "https://registry.npmjs.org/@tabler/icons/-/icons-2.29.0.tgz"
+  integrity sha512-HhDdIFzL8UmliujHEcPzoWypLmnO9MXFipYzwRnjAYXYpU68Kiw5KROtVxJ3h2cXTXj6ZMQZgXPdr3CEhBCCJw==
+
+"@tanstack/match-sorter-utils@8.8.4":
+  version "8.8.4"
+  resolved "https://registry.npmjs.org/@tanstack/match-sorter-utils/-/match-sorter-utils-8.8.4.tgz"
+  integrity sha512-rKH8LjZiszWEvmi01NR72QWZ8m4xmXre0OOwlRGnjU01Eqz/QnN+cqpty2PJ0efHblq09+KilvyR7lsbzmXVEw==
+  dependencies:
+    remove-accents "0.4.2"
 
 "@tanstack/query-core@4.32.0":
   version "4.32.0"
@@ -955,10 +969,39 @@
     "@tanstack/query-core" "4.32.0"
     use-sync-external-store "^1.2.0"
 
+"@tanstack/react-table@8.9.3":
+  version "8.9.3"
+  resolved "https://registry.npmjs.org/@tanstack/react-table/-/react-table-8.9.3.tgz"
+  integrity sha512-Ng9rdm3JPoSCi6cVZvANsYnF+UoGVRxflMb270tVj0+LjeT/ZtZ9ckxF6oLPLcKesza6VKBqtdF9mQ+vaz24Aw==
+  dependencies:
+    "@tanstack/table-core" "8.9.3"
+
+"@tanstack/react-virtual@3.0.0-beta.54":
+  version "3.0.0-beta.54"
+  resolved "https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.0.0-beta.54.tgz"
+  integrity sha512-D1mDMf4UPbrtHRZZriCly5bXTBMhylslm4dhcHqTtDJ6brQcgGmk8YD9JdWBGWfGSWPKoh2x1H3e7eh+hgPXtQ==
+  dependencies:
+    "@tanstack/virtual-core" "3.0.0-beta.54"
+
+"@tanstack/table-core@8.9.3":
+  version "8.9.3"
+  resolved "https://registry.npmjs.org/@tanstack/table-core/-/table-core-8.9.3.tgz"
+  integrity sha512-NpHZBoHTfqyJk0m/s/+CSuAiwtebhYK90mDuf5eylTvgViNOujiaOaxNDxJkQQAsVvHWZftUGAx1EfO1rkKtLg==
+
+"@tanstack/virtual-core@3.0.0-beta.54":
+  version "3.0.0-beta.54"
+  resolved "https://registry.npmjs.org/@tanstack/virtual-core/-/virtual-core-3.0.0-beta.54.tgz"
+  integrity sha512-jtkwqdP2rY2iCCDVAFuaNBH3fiEi29aTn2RhtIoky8DTTiCdc48plpHHreLwmv1PICJ4AJUUESaq3xa8fZH8+g==
+
 "@types/json-schema@^7.0.9":
   version "7.0.11"
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
+
+"@types/lodash@^4.14.196":
+  version "4.14.196"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.196.tgz#a7c3d6fc52d8d71328b764e28e080b4169ec7a95"
+  integrity sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ==
 
 "@types/mdast@^3.0.0":
   version "3.0.11"
@@ -994,6 +1037,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-slick@^0.23.10":
+  version "0.23.10"
+  resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.10.tgz#56126e6e4e95cdce7771535b2811c2c1931a7caa"
+  integrity sha512-ZiqdencANDZy6sWOWJ54LDvebuXFEhDlHtXU9FFipQR2BcYU2QJxZhvJPW6YK7cocibUiNn+YvDTbt1HtCIBVA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^18.0.28":
   version "18.2.6"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.2.6.tgz"
@@ -1017,6 +1067,11 @@
   version "2.0.6"
   resolved "https://registry.npmjs.org/@types/unist/-/unist-2.0.6.tgz"
   integrity sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==
+
+"@types/uuid@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-9.0.2.tgz#ede1d1b1e451548d44919dc226253e32a6952c4b"
+  integrity sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==
 
 "@typescript-eslint/eslint-plugin@^5.57.1", "@typescript-eslint/eslint-plugin@^5.59.7":
   version "5.62.0"
@@ -1752,6 +1807,24 @@ electron-to-chromium@^1.4.284:
   version "1.4.401"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.401.tgz"
   integrity sha512-AswqHsYyEbfSn0x87n31Na/xttUqEAg7NUjpiyxC20MaWKLyadOYHMzyLdF78N1iw+FK8/2KHLpZxRdyRILgtA==
+
+embla-carousel-react@^8.0.0-rc11:
+  version "8.0.0-rc11"
+  resolved "https://registry.yarnpkg.com/embla-carousel-react/-/embla-carousel-react-8.0.0-rc11.tgz#0e2fde5cafa3cae9c30721e18aee648599527994"
+  integrity sha512-hXOAUMOIa0GF5BtdTTqBuKcjgU+ipul6thTCXOZttqnu2c6VS3SIzUUT+onIIEw+AptzKJcPwGcoAByAGa9eJw==
+  dependencies:
+    embla-carousel "8.0.0-rc11"
+    embla-carousel-reactive-utils "8.0.0-rc11"
+
+embla-carousel-reactive-utils@8.0.0-rc11:
+  version "8.0.0-rc11"
+  resolved "https://registry.yarnpkg.com/embla-carousel-reactive-utils/-/embla-carousel-reactive-utils-8.0.0-rc11.tgz#d5493bd2bfeb68b1cbf65d4c836a4d36779a03de"
+  integrity sha512-pDNVJNCn0dybLkHw93My+cMfkRQ5oLZff6ZCwgmrw+96aPiZUyo5ANywz8Lb70SWWgD/TNBRrtQCquvjHS31Sg==
+
+embla-carousel@8.0.0-rc11:
+  version "8.0.0-rc11"
+  resolved "https://registry.yarnpkg.com/embla-carousel/-/embla-carousel-8.0.0-rc11.tgz#700ab6b3e4825ef9e6ac83238b81e3e1a316c3f4"
+  integrity sha512-Toeaug98PGYzSY56p/xsa+u4zbQbAXgGymwEDUc2wqT+1XCnnUsH42MClglhABJQbobwDYxOabhJrfXyJKUMig==
 
 entities@^4.2.0, entities@^4.4.0:
   version "4.5.0"
@@ -2883,6 +2956,15 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+mantine-react-table@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/mantine-react-table/-/mantine-react-table-1.0.0.tgz"
+  integrity sha512-9WeIQ2N6lJdv5/9NykpxITEISbKJtt/kh32qHNfNZ1l4TpK9fQ0GbYEDGtI5hyuK79F6b29lsSDoPDrsXX+jiQ==
+  dependencies:
+    "@tanstack/match-sorter-utils" "8.8.4"
+    "@tanstack/react-table" "8.9.3"
+    "@tanstack/react-virtual" "3.0.0-beta.54"
 
 match-sorter@^6.0.2, match-sorter@^6.3.1:
   version "6.3.1"
@@ -4221,6 +4303,11 @@ use-sync-external-store@1.2.0, use-sync-external-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"

@@ -1,7 +1,18 @@
 {
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "yoavbls.pretty-ts-errors",
-    "vivaxy.vscode-conventional-commits"
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml"
   ]
-}
+} (edited) 

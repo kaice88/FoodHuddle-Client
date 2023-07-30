@@ -9,8 +9,12 @@ export function useRequestProcessor() {
     })
   }
 
-  function mutation(key: any, mutationFunction: any, options = {}) {
-    return useMutation({
+  function mutation<MutationResponseData, E, MutationData>(
+    key: any,
+    mutationFunction: any,
+    options = {}
+  ) {
+    return useMutation<MutationResponseData, E, MutationData>({
       mutationKey: key,
       mutationFn: mutationFunction,
       ...options,
