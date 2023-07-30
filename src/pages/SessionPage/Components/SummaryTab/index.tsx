@@ -24,8 +24,7 @@ const SummaryTab = ({ sessionId }) => {
   }
 
   const form = useForm({
-    initialValues: {
-      sessionId: Number(sessionId),
+    initialValues: formFees || {
       discount: '',
       shipFee: '',
       others: '',

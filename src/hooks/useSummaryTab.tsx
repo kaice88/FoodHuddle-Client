@@ -35,13 +35,11 @@ function useSummaryTab() {
     {
       enabled: false,
       onSuccess: (data) => {
-        if (data.data.statusCode === 200) {
-          notificationShow('success', 'Success: ', data.data.message)
+        if (data.data.statusCode === 200)
           setFormFees(() => data.data)
-        }
-        else {
+
+        else
           notificationShow('error', 'Error: ', data.data.message)
-        }
       },
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
@@ -57,24 +55,6 @@ function useSummaryTab() {
     return foodNames
   }
 
-  // const handleOptionsSelect = (dataMenu) => {
-  //   const optionsList = !isEmpty(dataMenu)
-  //     ? dataMenu.flatMap((item, idx) => {
-  //         return
-  //       const dataSelects = !isEmpty(item.options)
-  //         ? item.options.flatMap(option =>
-  //           option.detail.map((detailItem, index) => ({
-  //             value: `${option.category}-${detailItem.name}-${detailItem.price}`,
-  //             label: detailItem.name,
-  //             group: option.mandatory ? `${option.category} [required]` : option.category,
-  //             price: detailItem.price,
-  //             key: `${option.category}-${detailItem.name}-${detailItem.price}-${idx}`,
-  //           })),
-  //         )
-  //         : []
-  //       return dataSelects
-  //     })
-  //     : []
   const handleSelect = (options, idx) => {
     const dataSelects = !isEmpty(options)
       ? options.flatMap(option =>
@@ -99,20 +79,6 @@ function useSummaryTab() {
       })
       : []
     return optionsList
-    // // Filter out duplicate items based on value, label, group, and price
-    // const uniqueOptionsList = []
-    // const uniqueKeys = new Set()
-
-    // optionsList.forEach((item) => {
-    //   const key = `${item.value}-${item.label}-${item.group}-${item.price}`
-    //   if (!uniqueKeys.has(key)) {
-    //     uniqueKeys.add(key)
-    //     uniqueOptionsList.push(item)
-    //   }
-    // })
-
-    // // console.log('OptionsList', uniqueOptionsList)
-    // return uniqueOptionsList
   }
 
   const fetchQueryFoodOrderMenu = (sessionId, setFoodOrderMenu, setOptionsSelect) => query(
@@ -129,7 +95,6 @@ function useSummaryTab() {
           notificationShow('error', 'Error: ', data.data.message)
         }
         else {
-          notificationShow('success', 'Success: ', data.data.message)
           setFoodOrderMenu(() => data.data.data)
           setOptionsSelect(handleOptionsSelect(data.data.data))
         }
@@ -198,7 +163,6 @@ function useSummaryTab() {
           notificationShow('error', 'Error: ', data.data.message)
         }
         else {
-          notificationShow('success', 'Success: ', data.data.message)
           setTableViewData(() => handleTransformDataToTableData(data.data.data.foodOrderList))
           setChildrenTableView(() => handleTransformToChildrenTable(data.data.data.foodOrderList))
         }
@@ -236,14 +200,11 @@ function useSummaryTab() {
     {
       enabled: false,
       onSuccess: (data) => {
-        console.log(333333333333)
-        if (data.data.statusCode === 400) {
+        if (data.data.statusCode === 400)
           notificationShow('error', 'Error: ', data.data.message)
-        }
-        else {
-          notificationShow('success', 'Success: ', data.data.message)
+
+        else
           setTableEditData(handleTransformTableEdit(data.data.data.foodOrderList))
-        }
       },
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)

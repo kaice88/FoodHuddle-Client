@@ -7,11 +7,12 @@ import {
 } from 'mantine-react-table'
 import { ActionIcon, Avatar, Flex, MultiSelect, Text, Tooltip, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { IconEdit, IconTrash } from '@tabler/icons-react'
+import { IconAlertCircle, IconEdit, IconTrash } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 import { moneyFormat } from '@/utils/utility'
 import useSummaryTab from '@/hooks/useSummaryTab'
 import MenuOptions from '@/components/MenuOptions'
+import { notificationShow } from '@/components/Notification'
 
 export interface DataEdit {
   id: number
@@ -94,13 +95,14 @@ const EditTable = ({ sessionId }) => {
         editVariant: 'select',
         mantineEditSelectProps: ({ cell, column, row, table }) => {
           const currentValue = cell.getValue()
-
           return {
             required: true,
             value: currentValue,
             data: foodNamesSelect,
-            error: validationErrors?.foodName,
+            maxDropdownHeight: 200,
+            searchable: true,
             onChange: (value) => {
+              // ...Update tableEdit...
               const updatedOptions = foodOrderMenu.filter(eachFood =>
                 eachFood.foodName === value,
               )[0]
@@ -122,6 +124,19 @@ const EditTable = ({ sessionId }) => {
                 }
               })
               setTableEditData(newList)
+              // ...Validate...
+              if (isEmpty(updatedOptions.options)) {
+                setValidationErrors({
+                  ...validationErrors,
+                  [`${rowIndex}_options`]: undefined,
+                })
+              }
+              else {
+                setValidationErrors({
+                  ...validationErrors,
+                  [`${rowIndex}_options`]: 'Please select the item in required categories.',
+                })
+              }
             },
           }
         },
@@ -167,11 +182,6 @@ const EditTable = ({ sessionId }) => {
               })
               setTableEditData(newList)
             },
-            onFocus: () =>
-              setValidationErrors({
-                ...validationErrors,
-                actualPrice: undefined,
-              }),
           }
         },
         Cell: ({ cell }) => {
@@ -185,8 +195,7 @@ const EditTable = ({ sessionId }) => {
         accessorKey: 'options',
         header: 'Options',
         size: 50,
-
-        Edit: ({ cell, column, table, row }) => {
+        Edit: ({ cell, row }) => {
           const currentValue = cell.getValue()
           const valueTransform = !isEmpty(currentValue)
             ? currentValue.flatMap(category =>
@@ -197,49 +206,66 @@ const EditTable = ({ sessionId }) => {
             : []
           const currentFoodName = row.original.foodName
           const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
+          const error = validationErrors[cell.id]
           return (
             <MultiSelect
+              required={true}
               style={{
               }}
+              className="table-edit-summary-tab__multiselect-cell"
               w={200}
               placeholder="Pick"
               value={valueTransform}
+              error= {error && <Tooltip
+                label={`${error}`}
+                color={`${globalTheme.colors.watermelon[0]}`}
+                withArrow
+                position="top-start"
+              >
+                <IconAlertCircle size={15} style={{ color: `${globalTheme.colors.watermelon[0]}` }}/>
+              </Tooltip>}
               onChange={(selectedOptions) => {
-                console.log('selectedOptions', selectedOptions)
-
-                // const transformOptionData = !isEmpty(updatedOptions)
-                //   ? updatedOptions.map((item) => {
-                //     return {
-                //       name: item.label,
-                //       price: item.price,
-                //     }
-                //   })
-                //   : []
+                // ...Validate...//
+                const requiredGroups = data
+                  .filter(item => item.group.includes('[required]'))
+                  .map(item => item.group.split(' [required]')[0])
+                const uniqueRequiredGroups = [...new Set(requiredGroups)]
+                const containsAllRequiredGroups = uniqueRequiredGroups.every((requiredGroup) => {
+                  return selectedOptions.some((selectedOption) => {
+                    const group = selectedOption.split('-')[0]
+                    return group === requiredGroup
+                  })
+                })
+                if (!containsAllRequiredGroups) {
+                  setValidationErrors({
+                    ...validationErrors,
+                    [cell.id]: 'Please select the item in required categories.',
+                  })
+                }
+                else {
+                  setValidationErrors({
+                    ...validationErrors,
+                    [cell.id]: undefined,
+                  })
+                }
+                // ...Update tableEdit...
                 const convertData = (selectedOptions) => {
                   const result = []
-
                   !isEmpty(selectedOptions) && selectedOptions.forEach((item) => {
                     const [category, name, price] = item.split('-')
-
                     const existingCategory = result.find(c => c.category === category)
-
                     if (existingCategory) {
-                      // If the category exists, add the detail to its detail array
                       existingCategory.detail.push({ name, price: Number(price) })
                     }
                     else {
-                      // If the category does not exist, create a new category object
                       result.push({
                         category,
                         detail: [{ name, price: Number(price) }],
                       })
                     }
                   })
-
                   return result
                 }
-                console.log('convertData', convertData(selectedOptions))
-
                 const rowIndex = cell.row.id
                 const currentValueRow = row.original
                 const newList = tableEditData.map((item) => {
@@ -302,17 +328,40 @@ const EditTable = ({ sessionId }) => {
       {
         accessorKey: 'quantity',
         header: 'Quantity',
-        size: 30,
+        size: 35,
         mantineEditTextInputProps: ({ cell, row }) => {
           const currentValue = cell.getValue()
+          const error = validationErrors[cell.id]
           return {
             type: 'number',
             required: true,
+            className: 'table-edit-summary-tab__quantity-cell',
             value: currentValue,
-            error: validationErrors?.quantity,
+            error: error && <Tooltip
+              label={`${error}`}
+              color={`${globalTheme.colors.watermelon[0]}`}
+              withArrow
+              position="top-start"
+            >
+              <IconAlertCircle size={15} style={{ color: `${globalTheme.colors.watermelon[0]}` }}/>
+            </Tooltip>,
             onChange: (event) => {
               event.preventDefault()
               const value = event.currentTarget.value
+              // ...Validate...
+              if (!value || Number(value) < 1) {
+                setValidationErrors({
+                  ...validationErrors,
+                  [cell.id]: 'The quantity must be a valid number greater than 0.',
+                })
+              }
+              else {
+                setValidationErrors({
+                  ...validationErrors,
+                  [cell.id]: undefined,
+                })
+              }
+              // ...Update tableEdit...
               const rowIndex = cell.row.id
               const currentValueRow = row.original
               const newList = tableEditData.map((item) => {
@@ -333,27 +382,32 @@ const EditTable = ({ sessionId }) => {
 
       },
     ],
-    [!isEmpty(foodNamesSelect), !isEmpty(optionsSelect), !isEmpty(tableEditData), optionsSelect],
+    [!isEmpty(foodNamesSelect), !isEmpty(optionsSelect), !isEmpty(tableEditData), optionsSelect, validationErrors],
   )
-
+  // ...Save one Row...
   const handleSaveRow: MRT_TableOptions<DataEdit>['onEditingRowSave'] = async ({
     exitEditingMode,
     row,
     values,
   }) => {
-    console.log('submit', values)
-    const { actualPrice, quantity, ...others } = values
-    const dataOneRow = {
-      rowId: values.id,
-      rowData: {
-        sessionId: Number(sessionId),
-        ...others,
-        actualPrice: Number(actualPrice),
-        quantity: Number(quantity),
-      },
+    if (!validationErrors[`${values.id}_options`] && !validationErrors[`${values.id}_quantity`]) {
+      const { actualPrice, quantity, ...others } = values
+      const dataOneRow = {
+        rowId: values.id,
+        rowData: {
+          sessionId: Number(sessionId),
+          ...others,
+          actualPrice: Number(actualPrice),
+          quantity: Number(quantity),
+        },
+      }
+      await mutationSaveFoodOrderRow.mutate(dataOneRow)
+      exitEditingMode()
     }
-    await mutationSaveFoodOrderRow.mutate(dataOneRow)
-    exitEditingMode()
+    else {
+      validationErrors[`${values.id}_options`] && notificationShow('error', 'Error: ', 'Please select the item in required categories before saving')
+      validationErrors[`${values.id}_quantity`] && notificationShow('error', 'Error: ', 'The quantity must be a valid number greater than 0.')
+    }
   }
   const deleteRowFoodOrder = async (rowId) => {
     const dataOneRow = {
@@ -446,9 +500,7 @@ const EditTable = ({ sessionId }) => {
 
     state: {
       isLoading: fetchQueryFoodOrderEdit.isLoading,
-    // isSaving: isCreatingUser || isUpdatingUser || isDeletingUser,
-    // showAlertBanner: isLoadingUsersError,
-    // showProgressBars: isFetchingUsers,
+      showProgressBars: fetchQueryFoodOrderEdit.isFetching,
     },
   })
 
@@ -456,10 +508,3 @@ const EditTable = ({ sessionId }) => {
 }
 
 export default EditTable
-
-// function validateUser(user: User) {
-//   return {
-//     firstName: !validateRequired(user.firstName) ? 'First Name is Required' : '',
-//     lastName: !validateRequired(user.lastName) ? 'Last Name is Required' : '',
-//   }
-// }
