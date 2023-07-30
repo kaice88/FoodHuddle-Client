@@ -31,9 +31,9 @@ interface AddOrderFormProps {
 function AddOrderForm({ menuItem }: AddOrderFormProps) {
   const addFoodOrderItem = useFoodStore((state) => state.addFoodOrderItem);
 
-  const mandatoryOptions = menuItem.options.filter(
-    (option) => option.mandatory
-  );
+  const mandatoryOptions = menuItem.options
+    ? menuItem.options.filter((option) => option.mandatory)
+    : [];
 
   const validate = {};
 
@@ -41,6 +41,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
     validate[option.name] = (value) =>
       isEmpty(value) ? `${option.name} is required!` : null;
   });
+
   const form = useForm({
     initialValues: {
       quantity: 1,
@@ -73,10 +74,8 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
       ],
     };
     addFoodOrderItem(foodOrderItem);
-    console.log(foodOrderItem);
     closeModal();
   });
-
   return (
     <Box maw={300} mx="auto">
       <form onSubmit={submitHandler}>
@@ -86,12 +85,15 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
             <img src={menuItem.photo} />
           </div>
           <div className="foodMenuItem__info">
-            <Spoiler maxHeight={40} showLabel="Show more" hideLabel="Hide">
+            {isEmpty(menuItem.description) ? (
               <Title lineClamp={2} order={6} fw={500}>
                 {menuItem.foodName}
               </Title>
-              <Text>{menuItem.description}</Text>
-            </Spoiler>
+            ) : (
+              <Title lineClamp={2} order={6} fw={500}>
+                {menuItem.foodName}
+              </Title>
+            )}
 
             <Flex justify={"space-between"} align="flex-end">
               <PriceDisplay
@@ -112,21 +114,21 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
 
         <ScrollArea mt={8} h={200}>
           <Flex direction="column" gap={16}>
-            {" "}
-            {menuItem.options.map((option) => (
-              <Flex key={option.id} direction="column">
-                <OptionsGroup
-                  optionsChangedHandler={optionsChangedHandler}
-                  key={option.id}
-                  option={option}
-                />
-                {!isEmpty(get(form.errors, `${option.category}`)) && (
-                  <Text color="red" size="sm">
-                    {get(form.errors, option.category)}
-                  </Text>
-                )}
-              </Flex>
-            ))}
+            {menuItem.options &&
+              menuItem.options.map((option) => (
+                <Flex key={option.id} direction="column">
+                  <OptionsGroup
+                    optionsChangedHandler={optionsChangedHandler}
+                    key={option.id}
+                    option={option}
+                  />
+                  {!isEmpty(get(form.errors, `${option.category}`)) && (
+                    <Text color="red" size="sm">
+                      {get(form.errors, option.category)}
+                    </Text>
+                  )}
+                </Flex>
+              ))}
           </Flex>
         </ScrollArea>
 

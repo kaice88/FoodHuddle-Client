@@ -42,10 +42,8 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
     "Food Order",
     <AddOrderForm menuItem={foodMenuItem} />
   );
+  console.log(foodMenuItem);
   const orderHandler = () => {
-    if (isEmpty(foodMenuItem.options)) {
-      return;
-    }
     openModal();
   };
   return (

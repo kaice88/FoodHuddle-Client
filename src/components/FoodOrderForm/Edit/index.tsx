@@ -81,8 +81,8 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
         ),
       ],
     };
-    console.log(updatedFoodOrderItem);
-    updateFoodOrderItem(foodOrderItem);
+
+    updateFoodOrderItem(updatedFoodOrderItem);
     closeModal();
   });
 
@@ -95,12 +95,15 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
             <img src={menuItem.photo} />
           </div>
           <div className="foodMenuItem__info">
-            <Spoiler maxHeight={40} showLabel="Show more" hideLabel="Hide">
+            {isEmpty(menuItem.description) ? (
               <Title lineClamp={2} order={6} fw={500}>
                 {menuItem.foodName}
               </Title>
-              <Text>{menuItem.description}</Text>
-            </Spoiler>
+            ) : (
+              <Title lineClamp={2} order={6} fw={500}>
+                {menuItem.foodName}
+              </Title>
+            )}
 
             <Flex justify={"space-between"} align="flex-end">
               <PriceDisplay

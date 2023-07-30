@@ -21,9 +21,17 @@ const useFoodStore = create(
     currentShop: "",
     foodOrderList: [],
     currentMenu: [],
-    updateFoodOrderItem: (item: FoodOrderItem) => {
-      console.log("UPDATED");
-    },
+    updateFoodOrderItem: (updatedItem: FoodOrderItem) =>
+      set((state) => {
+        console.log(updatedItem);
+        let index = state.foodOrderList.findIndex(
+          (item) => item.id === updatedItem.id
+        );
+
+        if (index !== -1) {
+          state.foodOrderList[index] = updatedItem;
+        }
+      }),
     deleteFoodOrderItem: (item: FoodOrderItem) => {},
     addFoodOrderItem: (item: FoodOrderItem) =>
       set((state) => {
