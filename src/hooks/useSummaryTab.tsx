@@ -57,23 +57,65 @@ function useSummaryTab() {
     return foodNames
   }
 
+  // const handleOptionsSelect = (dataMenu) => {
+  //   const optionsList = !isEmpty(dataMenu)
+  //     ? dataMenu.flatMap((item, idx) => {
+  //         return
+  //       const dataSelects = !isEmpty(item.options)
+  //         ? item.options.flatMap(option =>
+  //           option.detail.map((detailItem, index) => ({
+  //             value: `${option.category}-${detailItem.name}-${detailItem.price}`,
+  //             label: detailItem.name,
+  //             group: option.mandatory ? `${option.category} [required]` : option.category,
+  //             price: detailItem.price,
+  //             key: `${option.category}-${detailItem.name}-${detailItem.price}-${idx}`,
+  //           })),
+  //         )
+  //         : []
+  //       return dataSelects
+  //     })
+  //     : []
+  const handleSelect = (options, idx) => {
+    const dataSelects = !isEmpty(options)
+      ? options.flatMap(option =>
+        option.detail.map((detailItem, index) => ({
+          value: `${option.category}-${detailItem.name}-${detailItem.price}`,
+          label: detailItem.name,
+          group: option.mandatory ? `${option.category} [required]` : option.category,
+          price: detailItem.price,
+          key: `${option.category}-${detailItem.name}-${detailItem.price}-${idx}`,
+        })),
+      )
+      : []
+    return dataSelects
+  }
   const handleOptionsSelect = (dataMenu) => {
-    const OptionsList = !isEmpty(dataMenu)
-      ? dataMenu.map((item, index) => {
-        const dataSelects = !isEmpty(item.options)
-          ? item.options.map((item, index) => {
-            return {
-              category: item.category,
-
-            }
-          })
-          : []
+    const optionsList = !isEmpty(dataMenu)
+      ? dataMenu.flatMap((item, idx) => {
+        return {
+          foodName: item.foodName,
+          dataSelects: handleSelect(item.options, idx),
+        }
       })
       : []
-    return OptionsList
+    return optionsList
+    // // Filter out duplicate items based on value, label, group, and price
+    // const uniqueOptionsList = []
+    // const uniqueKeys = new Set()
+
+    // optionsList.forEach((item) => {
+    //   const key = `${item.value}-${item.label}-${item.group}-${item.price}`
+    //   if (!uniqueKeys.has(key)) {
+    //     uniqueKeys.add(key)
+    //     uniqueOptionsList.push(item)
+    //   }
+    // })
+
+    // // console.log('OptionsList', uniqueOptionsList)
+    // return uniqueOptionsList
   }
 
-  const fetchQueryFoodOrderMenu = (sessionId, setFoodOrderMenu) => query(
+  const fetchQueryFoodOrderMenu = (sessionId, setFoodOrderMenu, setOptionsSelect) => query(
     ['get-all-menu'],
     () => axiosInstance.get(REQUEST_GET_FOOD_ORDER_MENU, {
       params: {
@@ -89,6 +131,7 @@ function useSummaryTab() {
         else {
           notificationShow('success', 'Success: ', data.data.message)
           setFoodOrderMenu(() => data.data.data)
+          setOptionsSelect(handleOptionsSelect(data.data.data))
         }
       },
       onError: (error) => {
@@ -193,6 +236,7 @@ function useSummaryTab() {
     {
       enabled: false,
       onSuccess: (data) => {
+        console.log(333333333333)
         if (data.data.statusCode === 400) {
           notificationShow('error', 'Error: ', data.data.message)
         }
@@ -245,7 +289,7 @@ function useSummaryTab() {
     },
   )
 
-  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleOptionsSelect, handleFoodNamesSelect }
+  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleFoodNamesSelect }
 }
 
 export default useSummaryTab

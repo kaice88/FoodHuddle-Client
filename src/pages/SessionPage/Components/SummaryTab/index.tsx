@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, FileButton, Flex, Group, Text } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import NumberInputCustom from './NumberInput'
-import EditTableWithProviders from './TableSummaryEdit'
+import EditTable from './TableSummaryEdit'
 import ViewTable from '@/pages/SessionPage/Components/SummaryTab/TableSummaryView'
 import ImagesUploaded from '@/components/ImagesUploaded'
 import useSummaryTab from '@/hooks/useSummaryTab'
@@ -51,16 +51,6 @@ const SummaryTab = ({ sessionId }) => {
     formData.append('others', values.others ? Number(values.others) : 0)
 
     fetchMutateBill.mutate(formData)
-    // const data = {
-    //   sessionId: Number(sessionId),
-    //   discount: values.discount ? Number(values.discount) : 0,
-    //   shipFee: values.shipFee ? Number(values.shipFee) : 0,
-    //   others: values.others ? Number(values.others) : 0,
-    //   bill: values.bill,
-    // }
-    // console.log(data)
-
-    // fetchMutateBill.mutate(data)
   }
 
   const files = form.getInputProps('bill').value
@@ -119,10 +109,10 @@ const SummaryTab = ({ sessionId }) => {
           {!isOpenEditableTable
             ? (
               <ViewTable sessionId={sessionId}/>
-            )
+              )
             : (
-              <EditTableWithProviders sessionId={sessionId}/>
-            )}
+              <EditTable sessionId={sessionId}/>
+              )}
           <form
             onSubmit={form.onSubmit(values => handleSubmitBill(values))}
 
