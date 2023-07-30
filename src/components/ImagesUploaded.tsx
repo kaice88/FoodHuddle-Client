@@ -4,9 +4,9 @@ import isEmpty from 'lodash/isEmpty'
 import { modals } from '@mantine/modals'
 
 const ImagesUploaded = ({ handleDeleteImage, files }) => {
-  const handleImage = (imageUrl, name) =>
+  const handleImage = imageUrl =>
     modals.open({
-      title: name,
+      title: 'Preview Image',
       centered: true,
       children: (
         <Image
@@ -19,7 +19,7 @@ const ImagesUploaded = ({ handleDeleteImage, files }) => {
   const previews
     = !isEmpty(files)
     && files.map((file, index) => {
-      const imageUrl = URL.createObjectURL(file)
+      const imageUrl = typeof file === 'object' ? URL.createObjectURL(file) : file
       return (
         <div
           key={index}
@@ -37,7 +37,7 @@ const ImagesUploaded = ({ handleDeleteImage, files }) => {
             width={80}
             height={80}
             style={{ objectFit: 'cover', cursor: 'pointer' }}
-            onClick={() => handleImage(imageUrl, file.name)}
+            onClick={() => handleImage(imageUrl)}
           />
           <CloseButton
             radius="xl"

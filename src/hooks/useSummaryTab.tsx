@@ -14,10 +14,10 @@ function useSummaryTab() {
   const mutateBill = sessionId =>
     mutation(
       ['save-bill'],
-      async data => await axiosInstance.put(`${REQUEST_POST_ORDER_BILL}/${sessionId}/fee`, data),
+      async data => await axiosInstance.put(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`, data),
       {
         onSuccess: (data) => {
-          if (data.data.statusCode === 200)
+          if (data.data.status === 'success')
             notificationShow('success', 'Success: ', data.data.message)
 
           else
@@ -31,12 +31,12 @@ function useSummaryTab() {
 
   const fetchQueryFormFees = (sessionId, setFormFees) => query(
     ['get-bill'],
-    () => axiosInstance.get(`${REQUEST_POST_ORDER_BILL}/${sessionId}/fee`),
+    () => axiosInstance.get(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`),
     {
       enabled: false,
       onSuccess: (data) => {
-        if (data.data.statusCode === 200)
-          setFormFees(() => data.data)
+        if (data.data.status === 'success')
+          setFormFees(() => data.data.data)
 
         else
           notificationShow('error', 'Error: ', data.data.message)
@@ -159,12 +159,12 @@ function useSummaryTab() {
     {
       enabled: false,
       onSuccess: (data) => {
-        if (data.data.statusCode === 400) {
-          notificationShow('error', 'Error: ', data.data.message)
-        }
-        else {
+        if (data.data.status === 'success') {
           setTableViewData(() => handleTransformDataToTableData(data.data.data.foodOrderList))
           setChildrenTableView(() => handleTransformToChildrenTable(data.data.data.foodOrderList))
+        }
+        else {
+          notificationShow('error', 'Error: ', data.data.message)
         }
       },
       onError: (error) => {
@@ -200,11 +200,11 @@ function useSummaryTab() {
     {
       enabled: false,
       onSuccess: (data) => {
-        if (data.data.statusCode === 400)
-          notificationShow('error', 'Error: ', data.data.message)
+        if (data.data.status === 'success')
+          setTableEditData(handleTransformTableEdit(data.data.data.foodOrderList))
 
         else
-          setTableEditData(handleTransformTableEdit(data.data.data.foodOrderList))
+          notificationShow('error', 'Error: ', data.data.message)
       },
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
