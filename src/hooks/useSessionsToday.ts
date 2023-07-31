@@ -1,42 +1,32 @@
 import { useState } from 'react'
 
-import { SessionsTodayPageTabs } from '@/enums'
+import type { SessionsTodayPageTabs } from '@/enums'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import type { SessionToday } from '@/types/sessions'
-import { REQUEST_GET_ALL_SESSIONS_TODAY } from '@/constants/apis'
+import { getTodaySessionsApiEndpoint } from '@/utils/sessions'
 
-const { query } = useRequestProcessor()
-
-interface ApiResponse {
+interface SessionsTodayResponse {
   statusCode: number
   data: SessionToday[]
 }
 
 const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
-  const { data, status } = await axiosInstance.get<ApiResponse>(getUrl(tab))
-  if (status === 200)
-    return data.data
-}
-
-const getUrl = (tab: SessionsTodayPageTabs): string => {
-  switch (tab) {
-  case SessionsTodayPageTabs.ALL:
-    return REQUEST_GET_ALL_SESSIONS_TODAY
-  default:
-    return REQUEST_GET_ALL_SESSIONS_TODAY
+  try {
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab))
+    if (status === 200)
+      return data.data
+  }
+  catch (error) {
+    return []
   }
 }
 
 const useSessionTodayData = (tab: SessionsTodayPageTabs) => {
+  const { query } = useRequestProcessor()
   return query<SessionToday[], Error>(
     ['sessionsToday', tab],
     () => fetchSessionsToday(tab),
-    {
-      onSuccess: () => {
-        console.log('success')
-      },
-    },
   )
 }
 

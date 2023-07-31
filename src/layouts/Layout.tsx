@@ -1,37 +1,38 @@
-import { useEffect, useState } from "react";
-import { AppShell, MediaQuery, Burger } from "@mantine/core";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { AppShell } from '@mantine/core'
+import { Outlet, useNavigate } from 'react-router-dom'
 
-import Navbar from "../components/Navbar/Navbar";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Bread from "../components/Bread";
-import useAuth from "@/hooks/useAuth";
-import { LOGIN } from "@/constants/routes";
+import Navbar from '../components/Navbar/Navbar'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import Bread from '../components/Bread'
+import useAuth from '@/hooks/useAuth'
+import { LOGIN } from '@/constants/routes'
 
 export default function Layout() {
-  const [opened, setOpened] = useState(false);
-  const { logout, isAuthenticated, getTokenDuration } = useAuth();
-  const navigate = useNavigate();
+  const [opened, setOpened] = useState(false)
+  const { logout, isAuthenticated, getTokenDuration } = useAuth()
+  const navigate = useNavigate()
 
   const handleOpen = (): void => {
-    setOpened((o) => !o);
-  };
+    setOpened(o => !o)
+  }
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(LOGIN);
-    } else {
-      const tokenDuration = getTokenDuration();
+      navigate(LOGIN)
+    }
+    else {
+      const tokenDuration = getTokenDuration()
 
       const logoutTimeout = setTimeout(() => {
-        logout();
-      }, tokenDuration);
+        logout()
+      }, tokenDuration)
       return () => {
-        clearTimeout(logoutTimeout);
-      };
+        clearTimeout(logoutTimeout)
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated])
 
   return (
     <>
@@ -42,10 +43,10 @@ export default function Layout() {
           navbar={<Navbar opened={opened} />}
           header={<Header opened={opened} handleOpen={handleOpen} />}
           footer={<Footer />}
-          styles={(theme) => ({
+          styles={theme => ({
             main: {
               backgroundColor:
-                theme.colorScheme === "dark"
+                theme.colorScheme === 'dark'
                   ? theme.colors.dark[8]
                   : theme.colors.gray[0],
             },
@@ -58,5 +59,5 @@ export default function Layout() {
         </AppShell>
       )}
     </>
-  );
+  )
 }
