@@ -26,11 +26,11 @@ export default function SessionSummary() {
 
   return (
     <div>
-      {!hidden && <Flex justify="flex-end"><ActionButton value={SessionActions.FINISH} colorName="orange" handleOnClick={handleChangeStatus}></ActionButton></Flex>}
-      <FeeInfo></FeeInfo>
-      <PaymentSummaryTable id={sessionId}></PaymentSummaryTable>
-      <YourPayment paymentStatus={PaymentStatuses.PENDING} id={sessionId}></YourPayment>
-      <PaymentChecklistTable id={sessionId}></PaymentChecklistTable>
+      {!hidden && <Flex justify="flex-end"><ActionButton value={SessionActions.FINISH} colorName="orange" handleOnClick={handleChangeStatus}/></Flex>}
+      <FeeInfo/>
+      <PaymentSummaryTable id={sessionId}/>
+      <YourPayment paymentStatus={PaymentStatuses.PENDING} id={sessionId}/>
+      <PaymentChecklistTable id={sessionId}/>
     </div>
   )
 }

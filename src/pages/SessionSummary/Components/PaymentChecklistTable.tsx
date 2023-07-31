@@ -99,14 +99,14 @@ const PaymentChecklistTable = ({ id }) => {
         accessorKey: 'evidence',
         header: 'Evidence',
         size: 100,
-        Cell: () => <EvidenceModal></EvidenceModal>,
+        Cell: () => <EvidenceModal/>,
       },
       {
         accessorKey: 'paymentStatus',
         header: 'Status',
         size: 100,
         Cell: ({ renderedCellValue }) => {
-          return (<StatusBadge status={renderedCellValue} colorName={PaymentStatusColors[renderedCellValue]}></StatusBadge>)
+          return (<StatusBadge status={renderedCellValue} colorName={PaymentStatusColors[renderedCellValue]}/>)
         },
       },
       {
@@ -116,8 +116,8 @@ const PaymentChecklistTable = ({ id }) => {
           const paymentStatus = row.getValue('paymentStatus')
           const isDisbled = paymentStatus !== PaymentStatuses.PENDING
           return (<Flex gap={10}>
-            <ActionButton colorName={PaymentActionColors.APPROVE} value={PaymentActions.APPROVE} size="xs" disabled={isDisbled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.APPROVE })}></ActionButton>
-            <ActionButton colorName={PaymentActionColors.REJECT} value={PaymentActions.REJECT} size="xs" disabled={isDisbled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.REJECT })}></ActionButton>
+            <ActionButton colorName={PaymentActionColors.APPROVE} value={PaymentActions.APPROVE} size="xs" disabled={isDisbled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.APPROVE })}/>
+            <ActionButton colorName={PaymentActionColors.REJECT} value={PaymentActions.REJECT} size="xs" disabled={isDisbled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.REJECT })}/>
           </Flex>)
         },
       },

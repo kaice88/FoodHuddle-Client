@@ -1,11 +1,16 @@
+import { useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { modals } from '@mantine/modals'
 
+import { useNavigate } from 'react-router-dom'
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_POST_ORDER_BILL } from '@/constants/apis'
+import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_USER_PAYMENT } from '@/constants/apis'
 import axios from '@/settings/axios'
 
 function usePaymentSession(id) {
+  const [paymentSummaryData, setPaymentSummaryData] = useState()
+  // const [userPaymentData, setUserPaymentData] = useState()
+
+  const navigate = useNavigate()
   const handleError = (error) => {
     if (error.code === 'ERR_NETWORK')
       notificationShow('error', 'ERROR', error.message)
@@ -15,12 +20,12 @@ function usePaymentSession(id) {
   const requestPaymentMutation = useMutation({
     mutationKey: ['request-payment'],
     mutationFn: (data) => {
-      return axios.put(`${REQUEST_POST_ORDER_BILL}/20/fee`, data)
+      return axios.put(REQUEST_USER_PAYMENT(id), data)
     },
     onError: handleError,
   })
 
-  const requestPayment = (data) => {
+  const requestPayment = (data, onSuccess) => {
     const formData = new FormData()
     Object.keys(data).forEach((key) => {
       if (key === 'evidence') {
@@ -30,19 +35,18 @@ function usePaymentSession(id) {
       }
       else { formData.append(key, data[key]) }
     })
+    const finalPayment = 50
+    formData.append('finalPayment', finalPayment)
     requestPaymentMutation.mutate(formData,
       {
-        onSuccess: (data) => {
-          notificationShow('success', 'SUCCESS', data.data.message)
-          modals.closeAll()
-        },
+        onSuccess,
       })
   }
 
   const changeStatusPaymentRequestMutation = useMutation({
     mutationKey: ['request-payment'],
     mutationFn: (data) => {
-      return axios.put(`/v1/session/user-payment/${id}/change-statuse`, data)
+      return axios.put(`/v1/session/user-payment/${id}/change-status`, data)
     },
     onError: handleError,
   })
@@ -50,8 +54,8 @@ function usePaymentSession(id) {
   const changeStatusPaymentRequest = (data) => {
     changeStatusPaymentRequestMutation.mutate(data,
       {
-        onSuccess: (data) => {
-          notificationShow('success', 'SUCCESS', data.data.message)
+        onSuccess: (res) => {
+          notificationShow('success', 'SUCCESS', res.data.message)
         },
       })
   }
@@ -65,12 +69,25 @@ function usePaymentSession(id) {
       },
     }),
     enabled: false,
-    onSuccess: (data) => {
-      notificationShow('success', 'Success: ', data.data.message)
+    onSuccess: (res) => {
+      // notificationShow('success', 'Success: ', res.data.message)
+      setPaymentSummaryData(res.data.data)
     },
     onError: handleError,
   })
 
-  return { requestPayment, changeStatusPaymentRequest, fetchPaymentSummary }
+  const fetchUserPayment = useQuery({
+    queryKey: ['user-payment'],
+    queryFn: () => axios.get(REQUEST_USER_PAYMENT(id)),
+    enabled: false,
+    // onSuccess: (res) => {
+    //   // notificationShow('success', 'Success: ', res.data.message)
+    //   setUserPaymentData(res.data.data)
+    //   console.log(res.data.data)
+    // },
+    onError: handleError,
+  })
+
+  return { requestPayment, changeStatusPaymentRequest, fetchUserPayment, fetchPaymentSummary, paymentSummary: paymentSummaryData?.foodOrderList, sessionId: paymentSummaryData?.sessionId }
 }
 export default usePaymentSession

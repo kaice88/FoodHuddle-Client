@@ -15,11 +15,10 @@ const ImagesUploaded = ({ handleDeleteImage, files }) => {
       ),
       className: 'modal_preview_image',
     })
-
   const previews
     = !isEmpty(files)
     && files.map((file, index) => {
-      const imageUrl = URL.createObjectURL(file)
+      const imageUrl = typeof file === 'object' ? URL.createObjectURL(file) : file
       return (
         <div
           key={index}

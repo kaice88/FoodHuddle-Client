@@ -46,14 +46,14 @@ export default function FeeInfo() {
       <Grid grow gutter="xl">
         <Grid.Col sm={12} md={6}>
           <Title sx={() => ({ fontWeight: 700, fontSize: '20px' })} color={theme.colors.duck[0]} py={10}>Fees</Title>
-          <FeeItem title="Shipping fee" value="100000" color={theme.colors.duck[0]}></FeeItem>
-          <FeeItem title="Discount" value="1000600" color={theme.colors.duck[0]}></FeeItem>
-          <FeeItem title="Another fee" value="100000" color={theme.colors.duck[0]}></FeeItem>
+          <FeeItem title="Shipping fee" value="100000" color={theme.colors.duck[0]}/>
+          <FeeItem title="Discount" value="1000600" color={theme.colors.duck[0]}/>
+          <FeeItem title="Another fee" value="100000" color={theme.colors.duck[0]}/>
         </Grid.Col>
         <Grid.Col sm={12} md={6}>
           <Title sx={() => ({ fontWeight: 700, fontSize: '20px' })} color={theme.colors.duck[0]} py={10}>Bill</Title>
           <Flex wrap="wrap" gap="lg">
-            {listBillImages.map((item, index) => <BillItem key={index} srcImage ={item} ></BillItem>)}
+            {listBillImages.map((item, index) => <BillItem key={index} srcImage ={item} />)}
           </Flex>
         </Grid.Col>
       </Grid>

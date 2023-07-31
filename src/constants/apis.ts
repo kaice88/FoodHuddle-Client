@@ -13,3 +13,4 @@ export const REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB = '/v1/food-order/summary'
 export const REQUEST_POST_ORDER_BILL = '/v1/session/fee'
 export const REQUEST_PUT_FOOD_ORDER_ROW = '/v1/food-order/'
 export const REQUEST_GET_FOOD_ORDER_MENU = '/v1/food-order/menu'
+export const REQUEST_USER_PAYMENT = id => `${SESSION_BASE_URL}/${id}/user-payment` 
