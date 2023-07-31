@@ -19,7 +19,9 @@ export default function Layout() {
   }
 
   useEffect(() => {
-    if (!isAuthenticated) { navigate(LOGIN) }
+    if (!isAuthenticated) {
+      navigate(LOGIN)
+    }
     else {
       const tokenDuration = getTokenDuration()
 
@@ -33,27 +35,29 @@ export default function Layout() {
   }, [isAuthenticated])
 
   return (
-    <>{isAuthenticated && <AppShell
-      padding="md"
-      navbarOffsetBreakpoint="sm"
-      navbar={<Navbar opened={opened} />}
-      header={<Header opened={opened} handleOpen={handleOpen} />}
-      footer={<Footer />}
-      styles={theme => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      })}
-    >
-      <Bread></Bread>
-      <div className="content">
-        <Outlet></Outlet>
-      </div>
-    </AppShell>}
+    <>
+      {isAuthenticated && (
+        <AppShell
+          padding="md"
+          navbarOffsetBreakpoint="sm"
+          navbar={<Navbar opened={opened} />}
+          header={<Header opened={opened} handleOpen={handleOpen} />}
+          footer={<Footer />}
+          styles={theme => ({
+            main: {
+              backgroundColor:
+                theme.colorScheme === 'dark'
+                  ? theme.colors.dark[8]
+                  : theme.colors.gray[0],
+            },
+          })}
+        >
+          <Bread></Bread>
+          <div className="content">
+            <Outlet></Outlet>
+          </div>
+        </AppShell>
+      )}
     </>
-
   )
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Tabs } from '@mantine/core'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
+import { Loader, Tabs } from '@mantine/core'
 
 import OrderTab from './Components/OrderTab'
 import HostActions from './Components/HostActions'
@@ -9,19 +9,24 @@ import { SessionStatuses } from '@/enums'
 import { notificationShow } from '@/components/Notification'
 import useSession from '@/hooks/useSession'
 import SessionInfo from '@/components/SessionInfo'
-import axiosInstance from '@/settings/axios'
-
-import { REQUEST_GET_SESSION_INFO } from '@/constants/apis'
-import type { SessionInfoData } from '@/types/sessions'
-import useFoodStore from '@/store/foodStore'
+import useSessionData from '@/hooks/useSessionData'
+import { isHost } from '@/utils/sessions'
+import useAuth from '@/hooks/useAuth'
 
 function SessionPage() {
   const { sessionId } = useParams()
-  const setCurrentShop = useFoodStore(state => state.setCurrentShop)
-  const [sessionData, setSessionData] = useState<SessionInfoData | null>(null)
   const navigate = useNavigate()
-
+  const { sessionData, isLoading, error } = useSessionData(sessionId!)
   const { deleteSession, changeStatus } = useSession(sessionId)
+  const [currentStatus, setCurrentStatus] = useState(sessionData?.status)
+  const { userProfile } = useAuth()
+
+  useEffect(() => {
+    if (sessionData) {
+      setCurrentStatus(sessionData?.status)
+      console.log(isHost(sessionData?.host.googleId, userProfile?.googleId))
+    }
+  }, [sessionData])
 
   const handleDeleteSession = () => {
     deleteSession((data) => {
@@ -33,24 +38,22 @@ function SessionPage() {
   const handlechangeStatus = (status) => {
     changeStatus(status, (data) => {
       notificationShow('success', 'SUCCESS', data.data.message)
+      setCurrentStatus(data.data.statusSession)
       if (status === SessionStatuses.PENDING_PAYMENTS)
         navigate(`/sessions-today/${sessionId}/session-summary`)
     })
   }
 
-  useEffect(() => {
-    axiosInstance
-      .get<SessionInfoData>(REQUEST_GET_SESSION_INFO(sessionId!))
-      .then((response) => {
-        setSessionData(response.data)
-        setCurrentShop(response.data.shopLink)
-      })
-      .catch(error => console.log(error))
-  }, [])
+  if (isLoading)
+    return <Loader className="loader"/>
+
+  if (error)
+    return <div>This session is not found</div>
 
   return (
     <>
-      <HostActions status={sessionData?.status} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} />
+      <span>{currentStatus}</span>
+      {isHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
       <SessionInfo sessionData={sessionData} />
       <Tabs defaultValue={'order'}>
         <Tabs.List>

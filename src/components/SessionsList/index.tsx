@@ -1,11 +1,18 @@
-import type { SessionsListProps } from './types'
-import Session from './SessionCard'
+import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
-function SessionList({ sessionsList }: SessionsListProps) {
+import SessionCard from './SessionCard'
+import type { SessionToday } from '@/types/sessions'
+
+interface SessionTodayListProps {
+  sessionsList: SessionToday[]
+}
+
+function SessionList({ sessionsList }: SessionTodayListProps) {
   return (
     <div className="sessionList">
       {sessionsList.map(session => (
-        <Session key={session.id} session={session} />
+        <SessionCard key={uuidv4()} session={session} />
       ))}
     </div>
   )
