@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { ActionIcon, LoadingOverlay, SimpleGrid, Title } from '@mantine/core'
+import { ActionIcon, Loader, SimpleGrid, Title } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
 import { useMediaQuery } from '@mantine/hooks'
 import { v4 as uuidv4 } from 'uuid'
@@ -29,6 +29,9 @@ function FoodMenu() {
         ? divideElementsIntoGroups(menu, 4)
         : divideElementsIntoGroups(menu, 2)
 
+  if (isLoading)
+    return <Loader className="loader"/>
+
   return (
     <>
       <Title order={3}>
@@ -54,7 +57,6 @@ function FoodMenu() {
           </ActionIcon>
         }
       >
-        <LoadingOverlay visible={isLoading} overlayBlur={2} />
         {menuGroups.map((menu) => {
           return (
             <Carousel.Slide key={uuidv4()}>

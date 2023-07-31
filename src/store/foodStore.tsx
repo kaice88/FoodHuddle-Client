@@ -1,86 +1,84 @@
-import { notificationShow } from "@/components/Notification";
-import { FoodOrderItem, Menu, MenuItem } from "@/types/food";
-import { isOptionsEmpty, isSameSelectedOptions } from "@/utils/food";
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
+import { create } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
+import trim from 'lodash/trim'
+import type { FoodOrderItem, Menu, MenuItem } from '@/types/food'
+import { isSameSelectedOptions } from '@/utils/food'
 
-type State = {
-  currentShop: string;
-  foodOrderList: FoodOrderItem[];
-  currentMenu: MenuItem[];
-};
+interface State {
+  currentShop: string
+  foodOrderList: FoodOrderItem[]
+  currentMenu: MenuItem[]
+}
 
-type Actions = {
-  updateFoodOrderItem: (foodOrderItem: FoodOrderItem) => void;
-  deleteFoodOrderItem: (id: string) => void;
-  addFoodOrderItem: (foodOrderItem: FoodOrderItem) => void;
-  setCurrentShop: (currentShop: string) => void;
-  setCurrentMenu: (currentMenu: Menu) => void;
-  setFoodOrderList: (foodOrderList: FoodOrderItem[]) => void;
-};
+interface Actions {
+  updateFoodOrderItem: (foodOrderItem: FoodOrderItem) => void
+  deleteFoodOrderItem: (id: string) => void
+  addFoodOrderItem: (foodOrderItem: FoodOrderItem) => void
+  setCurrentShop: (currentShop: string) => void
+  setCurrentMenu: (currentMenu: Menu) => void
+  setFoodOrderList: (foodOrderList: FoodOrderItem[]) => void
+}
 
 const useFoodStore = create(
   immer<State & Actions>((set, get) => ({
-    currentShop: "",
+    currentShop: '',
     foodOrderList: [],
     currentMenu: [],
     updateFoodOrderItem: (updatedItem: FoodOrderItem) =>
       set((state) => {
-        let index = state.foodOrderList.findIndex(
-          (item) => item.id === updatedItem.id
-        );
+        const index = state.foodOrderList.findIndex(
+          item => item.id === updatedItem.id,
+        )
 
-        console.log(index);
-        if (index !== -1) {
-          state.foodOrderList[index] = updatedItem;
-        }
+        if (index !== -1)
+          state.foodOrderList[index] = updatedItem
       }),
     deleteFoodOrderItem: (id: string) =>
       set((state) => {
         state.foodOrderList = state.foodOrderList.filter(
-          (item) => item.id !== id
-        );
+          item => item.id !== id,
+        )
       }),
     addFoodOrderItem: (item: FoodOrderItem) => {
-      const foodOrderList = get().foodOrderList;
+      const foodOrderList = get().foodOrderList
       const existingFoodOrderItem = foodOrderList.find(
-        (foodOrderItem) => foodOrderItem.foodName === item.foodName
-      );
+        foodOrderItem => foodOrderItem.foodName === item.foodName,
+      )
 
       if (
-        existingFoodOrderItem &&
-        isSameSelectedOptions(existingFoodOrderItem, item)
+        existingFoodOrderItem
+        && isSameSelectedOptions(existingFoodOrderItem, item)
+        && trim(existingFoodOrderItem.note) === trim(item.note)
       ) {
         set((state) => {
           const existingFoodOrderItem = state.foodOrderList.find(
-            (foodOrderItem) => foodOrderItem.foodName === item.foodName
-          );
-          existingFoodOrderItem!.quantity += item.quantity;
-          existingFoodOrderItem!.note = item.note;
-        });
-        return;
+            foodOrderItem => foodOrderItem.foodName === item.foodName,
+          )
+          existingFoodOrderItem!.quantity += item.quantity
+        })
+        return
       }
 
       set((state) => {
-        state.foodOrderList.push(item);
-      });
+        state.foodOrderList.push(item)
+      })
     },
     setCurrentShop: (shop: string) => {
       set((state) => {
-        state.currentShop = shop;
-      });
+        state.currentShop = shop
+      })
     },
     setCurrentMenu: (menu: Menu) => {
       set((state) => {
-        state.currentMenu = menu;
-      });
+        state.currentMenu = menu
+      })
     },
     setFoodOrderList: (foodOrderList) => {
       set((state) => {
-        state.foodOrderList = foodOrderList;
-      });
+        state.foodOrderList = foodOrderList
+      })
     },
-  }))
-);
+  })),
+)
 
-export default useFoodStore;
+export default useFoodStore

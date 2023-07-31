@@ -1,38 +1,22 @@
-import { useEffect, useState } from 'react'
-import { Tabs } from '@mantine/core'
+import { Loader, Tabs } from '@mantine/core'
 
 import { useParams } from 'react-router-dom'
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 
-import type { AxiosError } from 'axios'
 import OrderTab from './Components/OrderTab'
 import SessionInfo from '@/components/SessionInfo'
-import axiosInstance from '@/settings/axios'
 
-import { REQUEST_GET_SESSION_INFO } from '@/constants/apis'
-import type { SessionInfoData } from '@/types/sessions'
-import useFoodStore from '@/store/foodStore'
+import useSessionData from '@/hooks/useSessionData'
 
 function SessionPage() {
   const { sessionId } = useParams()
-  const setCurrentShop = useFoodStore(state => state.setCurrentShop)
-  const [sessionData, setSessionData] = useState<SessionInfoData | null>(null)
-  const [error, setError] = useState<AxiosError | null>(null)
+  const { sessionData, isLoading, error } = useSessionData(sessionId!)
 
-  useEffect(() => {
-    axiosInstance
-      .get<SessionInfoData>(REQUEST_GET_SESSION_INFO(sessionId!))
-      .then((response) => {
-        setSessionData(response.data)
-        setCurrentShop(response.data.shopLink)
-      })
-      .catch((error) => {
-        setError(error)
-      })
-  }, [])
+  if (isLoading)
+    return <Loader className="loader"/>
 
   if (error)
-    return <div>This sessions doesn't exist</div>
+    return <div>This session is not found</div>
 
   return (
     <>

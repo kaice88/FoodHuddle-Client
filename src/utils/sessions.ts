@@ -3,28 +3,28 @@ import * as APIS from '@/constants/apis'
 
 export const getSessionStatus = (status: SessionStatuses): string => {
   switch (status) {
-    case SessionStatuses.OPEN:
-      return 'open'
+  case SessionStatuses.OPEN:
+    return 'open'
   case SessionStatuses.LOCKED:
-      return 'locked'
+    return 'locked'
   case SessionStatuses.FINISHED:
-      return 'finished'
+    return 'finished'
   case SessionStatuses.PENDING_PAYMENTS:
-      return 'pending'
+    return 'pending'
   default:
-      return 'open'
+    return 'open'
   }
 }
 
 export const getTodaySessionsApiEndpoint = (tab: SessionsTodayPageTabs): string => {
   switch (tab) {
-    case SessionsTodayPageTabs.ALL:
-      return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
-    case SessionsTodayPageTabs.HOSTED :
-      return APIS.REQUEST_GET_HOSTED_SESSIONS_TODAY
-    case SessionsTodayPageTabs.JOINED:
-      return APIS.REQUEST_GET_JOINED_SESSIONS_TODAY
-    default:
-      return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
+  case SessionsTodayPageTabs.ALL:
+    return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
+  case SessionsTodayPageTabs.HOSTED :
+    return APIS.REQUEST_GET_HOSTED_SESSIONS_TODAY
+  case SessionsTodayPageTabs.JOINED:
+    return APIS.REQUEST_GET_JOINED_SESSIONS_TODAY
+  default:
+    return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
   }
 }

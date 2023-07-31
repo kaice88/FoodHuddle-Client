@@ -1,61 +1,62 @@
-import { FoodOrderItem, MenuItem } from "@/types/food";
 import {
-  Button,
-  Group,
   Box,
-  Textarea,
-  ScrollArea,
+  Button,
   Flex,
-  Text,
+  Group,
   NumberInput,
-  Title,
+  ScrollArea,
   Spoiler,
-} from "@mantine/core";
+  Text,
+  Textarea,
+  Title,
+} from '@mantine/core'
 
-import { useForm } from "@mantine/form";
-import { v4 as uuidv4 } from "uuid";
+import { useForm } from '@mantine/form'
+import { v4 as uuidv4 } from 'uuid'
 
-import useModal from "@/hooks/useModal";
-import OptionsGroup from "../OptionsGroup";
-import isEmpty from "lodash/isEmpty";
-import get from "lodash/get";
+import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
+import OptionsGroup from '../OptionsGroup'
 
-import { PriceDisplay } from "../../FoodMenu/FoodMenuItem";
-import type { OptionDetail } from "@/types/food";
-import useFoodStore from "@/store/foodStore";
-const { closeModal } = useModal();
+import { PriceDisplay } from '../../FoodMenu/FoodMenuItem'
+import useModal from '@/hooks/useModal'
+import type { FoodOrderItem, MenuItem, OptionDetail } from '@/types/food'
+
+import useFoodStore from '@/store/foodStore'
+
+const { closeModal } = useModal()
 interface AddOrderFormProps {
-  menuItem: MenuItem;
+  menuItem: MenuItem
 }
 
 function AddOrderForm({ menuItem }: AddOrderFormProps) {
-  const addFoodOrderItem = useFoodStore((state) => state.addFoodOrderItem);
+  const addFoodOrderItem = useFoodStore(state => state.addFoodOrderItem)
 
   const mandatoryOptions = menuItem.options
-    ? menuItem.options.filter((option) => option.mandatory)
-    : [];
+    ? menuItem.options.filter(option => option.mandatory)
+    : []
 
-  const validate = {};
+  const validate = {}
 
   mandatoryOptions.forEach((option) => {
-    validate[option.category] = (value) =>
-      isEmpty(value) ? `${option.category} is required!` : null;
-  });
+    validate[option.category] = value =>
+      isEmpty(value) ? `${option.category} is required!` : null
+  })
 
   const form = useForm({
     initialValues: {
       quantity: 1,
-      note: "",
+      note: '',
     },
     validate,
-  });
+  })
 
   const optionsChangedHandler = (category: string, detail: OptionDetail[]) => {
-    form.setFieldValue(category, detail);
-  };
+    form.setFieldValue(category, detail)
+  }
 
   const submitHandler = form.onSubmit((values) => {
-    const { note, quantity, ...restOptions } = values;
+    const { note, quantity, ...restOptions } = values
     const foodOrderItem: FoodOrderItem = {
       id: uuidv4(),
       foodName: menuItem.foodName,
@@ -68,39 +69,41 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
           ([category, detail]: [string, OptionDetail]) => ({
             category,
             detail,
-          })
+          }),
         ),
       ],
-    };
-    addFoodOrderItem(foodOrderItem);
-    closeModal();
-  });
+    }
+    addFoodOrderItem(foodOrderItem)
+    closeModal()
+  })
   return (
     <Box maw={300} mx="auto">
       <form onSubmit={submitHandler}>
         <div className="foodMenuItem menuItemForm">
           <div className="foodMenuItem__imageWrapper">
-            {" "}
+            {' '}
             <img src={menuItem.photo} />
           </div>
           <div className="foodMenuItem__info">
-            {isEmpty(menuItem.description) ? (
-              <Title lineClamp={2} order={6} fw={500}>
-                {menuItem.foodName}
-              </Title>
-            ) : (
-              <>
-                <Spoiler maxHeight={20} showLabel="Show more" hideLabel="Hide">
-                  {" "}
-                  <Title lineClamp={2} order={6} fw={500}>
-                    {menuItem.foodName}
-                  </Title>
-                  <Text size="xs">{menuItem.description}</Text>
-                </Spoiler>
-              </>
-            )}
+            {isEmpty(menuItem.description)
+              ? (
+                <Title lineClamp={2} order={6} fw={500}>
+                  {menuItem.foodName}
+                </Title>
+              )
+              : (
+                <>
+                  <Spoiler maxHeight={20} showLabel="Show more" hideLabel="Hide">
+                    {' '}
+                    <Title lineClamp={2} order={6} fw={500}>
+                      {menuItem.foodName}
+                    </Title>
+                    <Text size="xs">{menuItem.description}</Text>
+                  </Spoiler>
+                </>
+              )}
 
-            <Flex justify={"space-between"} align="flex-end">
+            <Flex justify={'space-between'} align="flex-end">
               <PriceDisplay
                 discountPrice={menuItem.discountPrice}
                 price={menuItem.price}
@@ -109,7 +112,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
                 maw={60}
                 min={1}
                 size="xs"
-                {...form.getInputProps("quantity")}
+                {...form.getInputProps('quantity')}
               />
             </Flex>
           </div>
@@ -117,15 +120,15 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
 
         <Textarea
           autosize
-          label={<Title order={6}>Note</Title>}
+          label={<Title transform="uppercase" order={6}>Note</Title>}
           placeholder="No ice please!!!"
-          {...form.getInputProps("note")}
+          {...form.getInputProps('note')}
         />
 
         {!isEmpty(menuItem.options) && (
           <ScrollArea mt={8} h={200}>
             <Flex direction="column" gap={16}>
-              {menuItem.options.map((option) => (
+              {menuItem.options.map(option => (
                 <Flex key={option.id} direction="column">
                   <OptionsGroup
                     optionsChangedHandler={optionsChangedHandler}
@@ -146,7 +149,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
         <Group position="right" mt="md">
           <Button
             onClick={() => {
-              console.log("helao");
+              console.log('helao')
             }}
             type="submit"
           >
@@ -155,7 +158,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
         </Group>
       </form>
     </Box>
-  );
+  )
 }
 
-export default AddOrderForm;
+export default AddOrderForm

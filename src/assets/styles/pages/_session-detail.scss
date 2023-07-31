@@ -56,3 +56,14 @@
   max-height: 250px;
   height: auto;
 }
+
+.button-addOrder{
+  background-color: $orange;
+  @include transition();
+  color:#f7f7f7;
+}
+
+.button-addOrder:hover{
+  background-color:#f7f7f7;
+  color:$orange;
+}
