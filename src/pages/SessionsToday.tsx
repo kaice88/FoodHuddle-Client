@@ -17,6 +17,7 @@ export default function SessionTodayPage() {
     setActiveTab,
   } = useSessionsToday(SessionsTodayPageTabs.ALL)
 
+  
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
     <Flex justify="center" align="flex-start" direction="column">
@@ -40,7 +41,7 @@ export default function SessionTodayPage() {
           size={700}
         >
           <Box maw={600} mx="auto">
-            <SessionInfo />
+            <SessionInfo isCreateFirst={true}/>
           </Box>
         </Modal>
         <Group position="center">

@@ -81,12 +81,12 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
   const form = useForm<FormValue>({
     initialValues: isCreateFirst
       ? {
-        title: '',
-        shopLink: '',
-        description: '',
-        hostPaymentInfo: '',
-        qrImages: [],
-      }
+          title: '',
+          shopLink: '',
+          description: '',
+          hostPaymentInfo: '',
+          qrImages: [],
+        }
       : null, // ...Place your data session info...//
 
     validate: {

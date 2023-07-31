@@ -1,0 +1,121 @@
+.child-table{
+    tbody > tr:last-child td{
+        border-bottom: none;
+
+    }
+    .head-title{
+        th:first-child{
+            text-align: left;
+        }
+        th{
+            width: fit-content;
+            text-align: center;
+            padding-bottom: 3px;
+            color: #2F4858;
+            font-weight: bold;
+            border-bottom: 2px solid rgb(247, 247, 247)
+        }
+    }
+    .body-content{
+        td{
+            width: fit-content;
+            text-align: center;
+            padding: 0px;
+            color: #2F4858;
+            border-top: 2px solid rgb(247, 247, 247)
+        }
+    }
+
+}
+.table-edit-summary-tab{
+    thead tr th:first-child{
+        padding-left: 5px;
+    }
+    thead tr th {
+        width: fit-content;
+        padding: 16px 10px 16px 0px;
+        // font-weight: bold;
+        border-bottom: 2px solid rgb(247, 247, 247)
+    }
+    tbody tr td:first-child{
+        text-align: center;
+    }
+    tbody tr td:nth-last-child(2){
+        text-align: center;
+    }
+    &__multiselect-cell, &__quantity-cell{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        .mantine-InputWrapper-error{
+            width: 13%;
+        }
+        .mantine-MultiSelect-wrapper{
+            width: 95%;
+        }
+    }
+}
+
+.form-fees{
+    padding: 20px;
+    width: 80%;
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow: 1px 1px 3px 3px #e2dddd;
+    &__fill{
+        width: 100%;
+        &__cost{
+            margin: auto;
+            width: 50%;
+        }
+        &__bill{
+            margin: auto;
+            width: 50%;
+        }
+    }
+    @include breakpoint-down("desktop") {
+        width: 50%;
+      }
+    @include breakpoint-down("small-desktop") {
+        width: 50%;
+      }
+    @include breakpoint-down("extra-smalldesktop") {
+        width: 80%
+      }
+      @include breakpoint-down("tablet") {
+        width: 100%;
+      }
+      @include breakpoint-down("phone") {
+        padding: 10px 2px;
+        &__fill{
+            flex-direction: column;
+            &__cost{
+                margin: auto;
+                
+            }
+            &__bill{
+                width: 100%;
+                margin: auto;
+                div{
+                    justify-content: center;
+
+                }
+                
+            }
+        }
+      }
+}
+
+
+.menu-container {
+    max-height: 150px;
+    overflow: auto;
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: adjust-color($color: $dark-lavender , $lightness: 15%, $alpha: 1)
+  }
+
+}

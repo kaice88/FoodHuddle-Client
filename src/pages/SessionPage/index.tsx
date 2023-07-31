@@ -4,14 +4,16 @@ import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 import { Loader, Tabs } from '@mantine/core'
 
 import OrderTab from './Components/OrderTab'
+import SummaryTab from './Components/SummaryTab'
 import HostActions from './Components/HostActions'
 import { SessionStatuses } from '@/enums'
 import { notificationShow } from '@/components/Notification'
 import useSession from '@/hooks/useSession'
 import SessionInfo from '@/components/SessionInfo'
 import useSessionData from '@/hooks/useSessionData'
-import { isHost } from '@/utils/sessions'
+import { checkIfUserIsHost } from '@/utils/sessions'
 import useAuth from '@/hooks/useAuth'
+import { isEmpty } from 'lodash'
 
 function SessionPage() {
   const { sessionId } = useParams()
@@ -20,11 +22,14 @@ function SessionPage() {
   const { deleteSession, changeStatus } = useSession(sessionId)
   const [currentStatus, setCurrentStatus] = useState(sessionData?.status)
   const { userProfile } = useAuth()
+  const isHost = checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId)
 
   useEffect(() => {
-    if (sessionData) {
-      setCurrentStatus(sessionData?.status)
-      console.log(isHost(sessionData?.host.googleId, userProfile?.googleId))
+    setCurrentStatus(sessionData?.status)
+    console.log(currentStatus,sessionData?.status)
+    if(currentStatus === 'PENDING PAYMENTS') {
+      console.log(currentStatus)
+      navigate(`/sessions-today/${sessionId}/session-summary`)
     }
   }, [sessionData])
 
@@ -52,8 +57,10 @@ function SessionPage() {
 
   return (
     <>
-      <span>{currentStatus}</span>
-      {isHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
+     {
+      !isEmpty(sessionData) && 
+      <><span>{currentStatus}</span>
+      {checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
       <SessionInfo sessionData={sessionData} />
       <Tabs defaultValue={'order'}>
         <Tabs.List>
@@ -67,7 +74,12 @@ function SessionPage() {
         <Tabs.Panel value="order">
           <OrderTab />
         </Tabs.Panel>
-      </Tabs>
+        <Tabs.Panel value="summary">
+        <SummaryTab sessionId={sessionId}/>
+      </Tabs.Panel>
+      </Tabs></>
+     }
+     
     </>
   )
 }
