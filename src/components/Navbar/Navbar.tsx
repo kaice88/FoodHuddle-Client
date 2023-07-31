@@ -1,10 +1,10 @@
-import { Navbar } from "@mantine/core";
+import { Navbar } from "@mantine/core"
 
-import MainLink from "../NavigationLink";
-import { options } from "./Options";
+import MainLink from "../NavigationLink"
+import { options } from "./Options"
 
 export default function DashboardNavbar({ opened }) {
-  const links = options.map((link) => <MainLink {...link} key={link.label} />);
+  const links = options.map((link) => <MainLink {...link} key={link.label} />)
 
   return (
     <Navbar
@@ -18,5 +18,5 @@ export default function DashboardNavbar({ opened }) {
         {links}
       </Navbar.Section>
     </Navbar>
-  );
+  )
 }

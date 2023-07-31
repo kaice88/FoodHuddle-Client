@@ -38,7 +38,7 @@ const useFoodStore = create(
 
         if (index !== -1)
           state.foodOrderList[index] = updatedItem
-          state.areChangesUnsaved = 
+          state.areChangesUnsaved = true
       }),
     deleteFoodOrderItem: (id: string) =>
       set((state) => {

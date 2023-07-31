@@ -1,11 +1,11 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom"
 
-import LoginPage from "./pages/Login";
-import SessionTodayPage from "./pages/SessionsToday";
-import Layout from "./layouts/Layout";
-import ErrorPage from "./pages/Error";
-import * as ROUTES from "@/constants/routes";
-import SessionPage from "./pages/SessionPage";
+import LoginPage from "./pages/Login"
+import SessionTodayPage from "./pages/SessionsToday"
+import Layout from "./layouts/Layout"
+import ErrorPage from "./pages/Error"
+import * as ROUTES from "@/constants/routes"
+import SessionPage from "@/pages/SessionPage"
 
 export const router = createBrowserRouter([
   {
@@ -36,4 +36,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+])

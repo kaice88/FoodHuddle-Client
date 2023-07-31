@@ -1,4 +1,4 @@
-import { LoadingOverlay } from '@mantine/core';
+import { LoadingOverlay } from '@mantine/core'
 
 export function loadingShow() {
   return (

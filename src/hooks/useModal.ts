@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import { modals } from "@mantine/modals";
+import React, { ReactNode } from "react"
+import { modals } from "@mantine/modals"
 
 const useModal = (
   title: string | ReactNode = "",
@@ -10,18 +10,18 @@ const useModal = (
       modals.open({
         title,
         children: modalContent,
-      });
+      })
     }
-  };
+  }
 
   const closeModal = (cb?: () => void) => {
     if (typeof cb === "function") {
-      cb();
+      cb()
     }
-    modals.closeAll();
-  };
+    modals.closeAll()
+  }
 
-  return { openModal, closeModal };
-};
+  return { openModal, closeModal }
+}
 
-export default useModal;
+export default useModal
