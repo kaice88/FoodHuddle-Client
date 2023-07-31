@@ -394,7 +394,7 @@ const EditTable = ({ sessionId }) => {
         border: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
       },
       style: {
-        overflow: 'initial',
+        overflow: 'auto',
       },
       className: 'table-edit-summary-tab',
     }),
