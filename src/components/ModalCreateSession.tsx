@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
+import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from './Notification'
-import UploadImages from './UploadFile'
+import ImagesUploaded from './ImagesUploaded'
 import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
@@ -14,7 +15,6 @@ interface FormValue {
   description: string
   hostPaymentInfo: string
   qrImages: Array<File>
-  status: string
 }
 
 interface FormatDataSessionInfo {
@@ -23,12 +23,12 @@ interface FormatDataSessionInfo {
   description: string
   host_payment_info: string
   qr_images: Array<File>
-  status: string
 }
 
-const SessionInfo: React.FC = () => {
+const SessionInfo: React.FC = ({ isCreateFirst }) => {
   const navigate = useNavigate()
   const { query, mutation } = useRequestProcessor()
+
   const fetchQuerySessionInfo = query(
     ['paymentInfo'],
     () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
@@ -38,7 +38,7 @@ const SessionInfo: React.FC = () => {
         form.setFieldValue('hostPaymentInfo', data.data.hostPaymentInfor)
       },
       onError: (error) => {
-        notificationShow('error', 'ERROR', error.message)
+        notificationShow('error', 'Error: ', error.response.data.message)
       },
     },
   )
@@ -46,34 +46,48 @@ const SessionInfo: React.FC = () => {
     const handlefetchSessionInfo = async () => {
       await fetchQuerySessionInfo.refetch()
     }
-    handlefetchSessionInfo()
+    if (isCreateFirst) {
+      handlefetchSessionInfo()
+    }
+    else {
+      // ...Call Get Session Info Existed...//
+    }
   }, [])
 
   const fetchMutationSessionInfo = mutation(
     ['sessionInfo'],
-    async (dataForm: FormatDataSessionInfo) =>
-      await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
+    async (data: FormatDataSessionInfo) =>
+      await axiosInstance.post(REQUEST_POST_SESSION_INFO, data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      ),
     {
       onError: (error) => {
-        notificationShow('error', 'Error: ', error.message)
+        notificationShow('error', 'Error: ', error.response.data.message)
       },
       onSuccess: (data) => {
         const { id, message } = data.data
         notificationShow('success', 'Success: ', message)
-        navigate(`/sessions-today/${id}`)
+
+        if (isCreateFirst)
+          navigate(`/sessions-today/${id}`)
       },
     },
   )
   // ......Config form.................................................
   const form = useForm<FormValue>({
-    initialValues: {
-      title: '',
-      shopLink: '',
-      description: '',
-      hostPaymentInfo: '',
-      qrImages: [],
-      status: 'OPEN',
-    },
+    initialValues: isCreateFirst
+      ? {
+        title: '',
+        shopLink: '',
+        description: '',
+        hostPaymentInfo: '',
+        qrImages: [],
+      }
+      : null, // ...Place your data session info...//
 
     validate: {
       title: value => (value ? null : 'Title is required'),
@@ -81,20 +95,28 @@ const SessionInfo: React.FC = () => {
       hostPaymentInfo: value => (value ? null : 'Payment Infomation is required'),
     },
   })
+
   // .....Handle submit.............................................
   const handleSubmitNewSession = async (values: FormValue) => {
-    const dataForm = {
-      title: values.title,
-      shop_link: values.shopLink,
-      description: values.description,
-      host_payment_info: values.hostPaymentInfo,
-      qr_images: '',
-      status: values.status,
-    }
+    const dataForm = new FormData()
+    !isEmpty(values.qrImages)
+      ? values.qrImages.forEach((file) => {
+        dataForm.append('qr_images', file)
+      })
+      : dataForm.append('qr_images', [])
+
+    dataForm.append('title', values.title)
+    dataForm.append('shop_link', values.shopLink)
+    dataForm.append('description', values.description)
+    dataForm.append('host_payment_info', values.hostPaymentInfo)
     fetchMutationSessionInfo.mutate(dataForm)
   }
-  const handleOnChangeUploadFile = (value: File[]) => {
-    form.setFieldValue('qrImages', value)
+
+  const files = form.getInputProps('qrImages').value
+  const handleDeleteImage = (index) => {
+    const updatedFiles = [...files]
+    updatedFiles.splice(index, 1)
+    form.setFieldValue('qrImages', updatedFiles)
   }
 
   return (
@@ -145,8 +167,21 @@ const SessionInfo: React.FC = () => {
               QR code
             </Text>
             <Group position="center">
-              <UploadImages handleOnChange={handleOnChangeUploadFile} />
+              <FileButton
+                accept="image/png,image/jpeg"
+                multiple
+                {...form.getInputProps('qrImages')}
+              >
+                {props => (
+                  <Button variant="light" size="xs" color="indigo" {...props}>
+        Upload image
+                  </Button>
+                )}
+              </FileButton>
             </Group>
+          </Flex>
+          <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
+            <ImagesUploaded handleDeleteImage={handleDeleteImage} files={files} />
           </Flex>
         </Flex>
       </Flex>
