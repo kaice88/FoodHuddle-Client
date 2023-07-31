@@ -32,10 +32,13 @@ const SummaryTab = ({ sessionId }) => {
   useEffect(() => {
     const handlefetchFetchFormFees = async () => {
       await fetchFormFees.refetch()
-      formFees !== null && form.setValues(formFees)
     }
     handlefetchFetchFormFees()
   }, [])
+
+  useEffect(() => {
+    formFees !== null && form.setValues(formFees)
+  }, [formFees])
 
   const handleSubmitBill = async (values) => {
     const formData = new FormData()
