@@ -8,6 +8,7 @@ interface State {
   currentShop: string
   foodOrderList: FoodOrderItem[]
   currentMenu: MenuItem[]
+  areChangesUnsaved: boolean
 }
 
 interface Actions {
@@ -17,6 +18,7 @@ interface Actions {
   setCurrentShop: (currentShop: string) => void
   setCurrentMenu: (currentMenu: Menu) => void
   setFoodOrderList: (foodOrderList: FoodOrderItem[]) => void
+  setAreChangesUnsaved: (areChangesUnsaved: boolean) => void
 }
 
 const useFoodStore = create(
@@ -24,6 +26,10 @@ const useFoodStore = create(
     currentShop: '',
     foodOrderList: [],
     currentMenu: [],
+    areChangesUnsaved: false,
+    setAreChangesUnsaved: (areChangesUnsaved: boolean) => set((state) => {
+      state.areChangesUnsaved = areChangesUnsaved
+    }),
     updateFoodOrderItem: (updatedItem: FoodOrderItem) =>
       set((state) => {
         const index = state.foodOrderList.findIndex(
@@ -32,6 +38,7 @@ const useFoodStore = create(
 
         if (index !== -1)
           state.foodOrderList[index] = updatedItem
+          state.areChangesUnsaved = 
       }),
     deleteFoodOrderItem: (id: string) =>
       set((state) => {

@@ -148,6 +148,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
 
         <Group position="right" mt="md">
           <Button
+            sx={{}}
             onClick={() => {
               console.log('helao')
             }}
