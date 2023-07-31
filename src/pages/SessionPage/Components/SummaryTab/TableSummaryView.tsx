@@ -26,6 +26,15 @@ const ViewTable = ({ sessionId }) => {
     }
     handlefetchTableFoodOrderView()
   }, [])
+
+  useEffect(() => {
+    const pollingInterval = setInterval(() => {
+      fetchQueryTableFoodOrderView.refetch()
+    }, 10000); 
+
+    return () => clearInterval(pollingInterval);
+  }, []);
+
   const columns = useMemo<MRT_ColumnDef<FoodRowCover>[]>(
     () => [
       {

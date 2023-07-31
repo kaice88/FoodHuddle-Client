@@ -43,8 +43,15 @@ const SummaryTab = ({ sessionId }) => {
   const handleSubmitBill = async (values) => {
     const formData = new FormData()
     values.receiptScreenshot.forEach((file) => {
+      if(typeof file === 'object'){
       formData.append('receiptScreenshot', file)
-    })
+    }else{
+      const fileExtension = file.split('.').pop();
+      const fileTransform = new File(['file'],file, {
+        type: `image/${fileExtension}`,
+      })
+      formData.append('receiptScreenshot', fileTransform)
+    }})
     formData.append('discountAmount', values.discountAmount ? Number(values.discountAmount) : 0)
     formData.append('shippingFee', values.shippingFee ? Number(values.shippingFee) : 0)
     formData.append('otherFee', values.otherFee ? Number(values.otherFee) : 0)
