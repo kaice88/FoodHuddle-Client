@@ -2,7 +2,7 @@ import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/co
 import { useDisclosure } from '@mantine/hooks'
 import { IconSquarePlus } from '@tabler/icons-react'
 
-import SessionInfo from '../components/Modal'
+import SessionInfo from '../components/ModalCreateSession'
 import { TABS_CONFIG } from '@/constants/sessions'
 import SessionList from '@/components/SessionsList'
 import useSessionsToday from '@/hooks/useSessionsToday'
