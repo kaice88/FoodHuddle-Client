@@ -1,5 +1,6 @@
 import { notificationShow } from "@/components/Notification";
 import { FoodOrderItem, Menu, MenuItem } from "@/types/food";
+import { isOptionsEmpty, isSameSelectedOptions } from "@/utils/food";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
@@ -46,12 +47,17 @@ const useFoodStore = create(
         (foodOrderItem) => foodOrderItem.foodName === item.foodName
       );
 
-      if (existingFoodOrderItem) {
-        notificationShow(
-          "error",
-          "Add Food",
-          "You already have this in your order. Please modify in the table below."
-        );
+      if (
+        existingFoodOrderItem &&
+        isSameSelectedOptions(existingFoodOrderItem, item)
+      ) {
+        set((state) => {
+          const existingFoodOrderItem = state.foodOrderList.find(
+            (foodOrderItem) => foodOrderItem.foodName === item.foodName
+          );
+          existingFoodOrderItem!.quantity += item.quantity;
+          existingFoodOrderItem!.note = item.note;
+        });
         return;
       }
 

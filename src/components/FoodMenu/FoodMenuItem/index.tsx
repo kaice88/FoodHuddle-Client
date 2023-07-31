@@ -65,12 +65,12 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
 
           <ActionIcon
             aria-label="Add to list of order items"
-            variant="filled"
-            color="red"
             onClick={orderHandler}
+            variant="light"
+            sx={{ backgroundColor: "#FF6B00", color: "white" }}
           >
             {" "}
-            <IconPlus size={"1rem"} />
+            <IconPlus size={50} stroke={2.2} />
           </ActionIcon>
         </Flex>
       </div>

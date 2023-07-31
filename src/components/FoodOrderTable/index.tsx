@@ -22,7 +22,11 @@ import { useParams } from "react-router-dom";
 
 import { find } from "lodash";
 import { moneyFormat } from "@/utils";
-import { calculateFoodOrderListTotal, isOptionsEmpty } from "@/utils/food";
+import {
+  calculateFoodOrderItemTotal,
+  calculateFoodOrderListTotal,
+  isOptionsEmpty,
+} from "@/utils/food";
 import { fetchFoodOrderList, editFoodOrderList } from "@/hooks/useOrder";
 import OptionsList from "../OptionsList";
 
@@ -78,6 +82,28 @@ function FoodOrderTable() {
             />
           );
         },
+      },
+      {
+        accessorKey: "total",
+        header: "Total",
+        mantineTableHeadCellProps: {
+          align: "center",
+        },
+        mantineTableBodyCellProps: {
+          align: "center",
+        },
+        Cell: ({ row }) => {
+          return (
+            <Text fw={700} sx={{ color: "#FF6B00" }}>
+              {moneyFormat(
+                calculateFoodOrderItemTotal(row._valuesCache),
+                "VND",
+                "vi-VN"
+              )}
+            </Text>
+          );
+        },
+        size: 100,
       },
       { accessorKey: "note", header: "Note" },
       {

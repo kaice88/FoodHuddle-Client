@@ -45,13 +45,13 @@ function FoodMenu() {
         withIndicators
         withControls
         nextControlIcon={
-          <ActionIcon color="red">
+          <ActionIcon sx={{ color: "#FF6B00" }}>
             {" "}
             <IconArrowBigRightFilled />
           </ActionIcon>
         }
         previousControlIcon={
-          <ActionIcon color="red">
+          <ActionIcon sx={{ color: "#FF6B00" }}>
             {" "}
             <IconArrowBigLeftFilled />
           </ActionIcon>
