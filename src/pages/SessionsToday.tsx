@@ -1,13 +1,13 @@
-import { Loader, Tabs } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { Box, Button, Flex, Group, Modal, Text } from "@mantine/core";
-import { IconSquarePlus } from "@tabler/icons-react";
+import { Loader, Tabs } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
+import { Box, Button, Flex, Group, Modal, Text } from "@mantine/core"
+import { IconSquarePlus } from "@tabler/icons-react"
 
-import SessionInfo from "../components/Modal";
-import SessionList from "@/components/SessionsList";
-import useSessionsToday from "@/hooks/useSessionsToday";
-import { SessionsTodayPageTabs } from "@/enums";
-import { TABS_CONFIG } from "@/constants/sessions";
+import SessionInfo from "../components/Modal"
+import SessionList from "@/components/SessionsList"
+import useSessionsToday from "@/hooks/useSessionsToday"
+import { SessionsTodayPageTabs } from "@/enums"
+import { TABS_CONFIG } from "@/constants/sessions"
 
 export default function SessionTodayPage() {
   const {
@@ -16,9 +16,9 @@ export default function SessionTodayPage() {
     error,
     activeTab,
     setActiveTab,
-  } = useSessionsToday(SessionsTodayPageTabs.ALL);
+  } = useSessionsToday(SessionsTodayPageTabs.ALL)
 
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
     <Flex justify="center" align="flex-start" direction="column">
       <Text fw={700} fz="lg">
@@ -28,7 +28,7 @@ export default function SessionTodayPage() {
         style={{ backgroundColor: "orange", padding: "2px", width: "55px" }}
       ></div>
     </Flex>
-  );
+  )
 
   return (
     <>
@@ -86,5 +86,5 @@ export default function SessionTodayPage() {
         </Tabs.Panel>
       </Tabs>
     </>
-  );
+  )
 }
