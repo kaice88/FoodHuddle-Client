@@ -26,11 +26,6 @@ function SessionPage() {
 
   useEffect(() => {
     setCurrentStatus(sessionData?.status)
-    console.log(currentStatus,sessionData?.status)
-    if(currentStatus === 'PENDING PAYMENTS') {
-      console.log(currentStatus)
-      navigate(`/sessions-today/${sessionId}/session-summary`)
-    }
   }, [sessionData])
 
   const handleDeleteSession = () => {
