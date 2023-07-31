@@ -37,17 +37,14 @@ const SessionsHistory = () => {
     }
 
     console.log('333333333333', window.location)
-    // history.push({
-    //   pathname,
-    //   search: decodeURIComponent(searchParams.toString()),
-    // })
+    history.push({
+      pathname,
+      search: decodeURIComponent(searchParams.toString()),
+    })
   }
-  // const { pathname, search: query } = this.props.location
 
   const handleSubmit = async (values) => {
     console.log(values)
-    // console.log(form.values)
-    // call API
   }
   const handleReset = () => {
     form.reset()
@@ -114,10 +111,10 @@ const SessionsHistory = () => {
           {isLoading
             ? (
               <Loader className="loader" />
-              )
+            )
             : (
               <SessionList sessionsList={sessions} />
-              )}
+            )}
         </Tabs.Panel>
       </Tabs>
     </>
