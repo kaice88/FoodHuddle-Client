@@ -1,101 +1,82 @@
 import { Button, Flex, Loader, MultiSelect, Tabs } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import SessionList from '@/components/SessionsList'
 import useSessionsToday from '@/hooks/useSessionsToday'
 import { SessionsTodayPageTabs } from '@/enums'
 import { TABS_CONFIG } from '@/constants/sessions'
 import SEARCH_PARAMS from '@/constants/searchParams'
-
 const SessionsHistory = () => {
   const page = 'HISTORY'
+  const [queryParameters] = useSearchParams()
+  const navigate = useNavigate()
+
   const {
     isLoading,
     data: sessions,
     error,
     activeTab,
     setActiveTab,
+    setStatus,
   } = useSessionsToday(SessionsTodayPageTabs.ALL, page)
+
   const form = useForm<FormValue>({
     initialValues: {
-      status: ['all'],
+      status: [],
     },
   })
+  useEffect(() => {
+    setStatus(decodeURIComponent(queryParameters.toString()))
+    const outputArray = queryParameters.get('status')?.split(',')
+    const value = outputArray?.map((item) => item)
+    form.setFieldValue('status', value)
+    navigate(`?${decodeURIComponent(queryParameters.toString())}`)
+  }, [])
 
-  const handleRefresh = (data) => {
+  const onFilterChange = (data) => {
     const {
       status,
     } = data
-    console.log(data, status)
-    const { pathname, search: query } = window.location
-    const searchParams = new URLSearchParams(query)
+
     if (status && status.length > 0) {
-      searchParams.set(SEARCH_PARAMS.STATUS, status.join())
-      console.log(3, searchParams)
+      queryParameters.set(SEARCH_PARAMS.STATUS, status.join())
     }
     else {
-      searchParams.delete(SEARCH_PARAMS.STATUS)
+      queryParameters.delete(SEARCH_PARAMS.STATUS)
     }
+    setStatus(decodeURIComponent(queryParameters.toString()))
 
-    console.log('333333333333', window.location)
-    history.push({
-      pathname,
-      search: decodeURIComponent(searchParams.toString()),
-    })
+    navigate(`?${decodeURIComponent(queryParameters.toString())}`)
   }
 
-  const handleSubmit = async (values) => {
-    console.log(values)
-  }
-  const handleReset = () => {
-    form.reset()
-  }
-  const onFilterChange = (value) => {
-    handleRefresh(value)
-  }
-  const handleStatusChange = (selectedStatus, fieldName) => {
-    form.setFieldValue(fieldName, selectedStatus)
+  const handleStatusChange = (value, fieldName) => {
+    form.setFieldValue(fieldName, value)
     const updateFormFields = {
       ...form.values,
-      [fieldName]: selectedStatus,
+      [fieldName]: value,
     }
     onFilterChange(updateFormFields)
   }
 
   return (
     <>
-      <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
-        <Flex gap="md" justify="center" align="center" direction="row" style={{ width: '50%' }}>
+      <form>
+        <Flex gap="md" justify="flex-end" align="center" direction="row" style={{ width: '100%' }}>
           <MultiSelect
             data={[
-              { value: 'open', label: 'OPEN' },
-              { value: 'locked', label: 'LOCKED' },
-              { value: 'finish', label: 'FINISHED' },
-              { value: 'paymentNeeded', label: 'PAYMENT NEEDED' },
-              { value: 'all', label: 'ALL' },
+              { value: 'OPEN', label: 'Open' },
+              { value: 'LOCKED', label: 'Locked' },
+              { value: 'FINISHED', label: 'Finished' },
+              { value: 'PENDING-PAYMENTS', label: 'Pending Payments' },
             ]}
-            placeholder="Pick"
+            placeholder="All status"
             transitionProps={{ duration: 150, transition: 'pop-top-left', timingFunction: 'ease' }}
             defaultValue={['all']}
-            style={{ width: '50%' }}
+            style={{ width: '25%' }}
             {...form.getInputProps('status')}
             onChange={value => handleStatusChange(value, 'status')}
           />
-          <Button
-            type="submit"
-            size="15px"
-            styles={theme => ({
-              root: {
-                backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.9),
-                color: theme.colors.orange[0],
-                ...theme.fn.hover({
-                  backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.8),
-                }),
-                padding: '10px',
-              },
-            })}
-          >
-          Search
-          </Button>
         </Flex>
       </form>
       <Tabs value={activeTab} onTabChange={setActiveTab}>

@@ -11,9 +11,10 @@ interface SessionsTodayResponse {
   data: SessionToday[]
 }
 
-const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page) => {
+const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page, status) => {
+  const params = status ? `?${status}` : ''
   try {
-    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab, page))
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab, page, params))
     if (status === 200)
       return data.data
   }
@@ -22,20 +23,20 @@ const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page) => {
   }
 }
 
-const useSessionTodayData = (tab: SessionsTodayPageTabs, page) => {
+const useSessionTodayData = (tab: SessionsTodayPageTabs, page, status) => {
   const { query } = useRequestProcessor()
   return query<SessionToday[], Error>(
-    ['sessionsToday', tab],
-    () => fetchSessionsToday(tab, page),
+    ['sessionsToday', tab, status],
+    () => fetchSessionsToday(tab, page, status),
   )
 }
 
 const useSessionsToday = (tab: SessionsTodayPageTabs, page) => {
   const [activeTab, setActiveTab] = useState(tab)
+  const [status, setStatus] = useState('')
+  const { data, isLoading, error } = useSessionTodayData(activeTab, page, status)
 
-  const { data, isLoading, error } = useSessionTodayData(activeTab, page)
-
-  return { activeTab, setActiveTab, data, isLoading, error }
+  return { activeTab, setActiveTab, data, isLoading, error, setStatus }
 }
 
 export default useSessionsToday
