@@ -3,7 +3,7 @@ import { useDisclosure } from "@mantine/hooks"
 import { Box, Button, Flex, Group, Modal, Text } from "@mantine/core"
 import { IconSquarePlus } from "@tabler/icons-react"
 
-import SessionInfo from "../components/Modal"
+import SessionInfo from "@/components/SessionInfo"
 import SessionList from "@/components/SessionsList"
 import useSessionsToday from "@/hooks/useSessionsToday"
 import { SessionsTodayPageTabs } from "@/enums"
