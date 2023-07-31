@@ -37,11 +37,11 @@ export const isSameSelectedOptions = (
     return false;
   }
 
-  const sortedOptions1 = [...item1.options].sort(
-    (a, b) => a.category === b.category
+  const sortedOptions1 = [...item1.options].sort((a, b) =>
+    a.category.localeCompare(b.category)
   );
-  const sortedOptions2 = [...item2.options].sort(
-    (a, b) => a.category === b.category
+  const sortedOptions2 = [...item2.options].sort((a, b) =>
+    a.category.localeCompare(b.category)
   );
 
   return sortedOptions1.every((option1, index) => {
@@ -55,11 +55,11 @@ export const isSameSelectedOptions = (
       return false;
     }
 
-    const sortedDetails1 = [...option1.detail].sort(
-      (a, b) => a.name === b.name
+    const sortedDetails1 = [...option1.detail].sort((a, b) =>
+      a.name.localeCompare(b.name)
     );
-    const sortedDetails2 = [...option2.detail].sort(
-      (a, b) => a.name === b.name
+    const sortedDetails2 = [...option2.detail].sort((a, b) =>
+      a.name.localeCompare(b.name)
     );
 
     return sortedDetails1.every((detail1, index) => {

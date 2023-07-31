@@ -70,17 +70,25 @@ function FoodOrderTable() {
       {
         accessorKey: "options",
         header: "Options",
+        size: 250,
+        mantineTableHeadCellProps: {
+          align: "center",
+        },
+        mantineTableBodyCellProps: {
+          align: "left",
+        },
         Cell: ({ row }) => {
           const options = row.getValue("options");
           if (isOptionsEmpty(options)) {
             return <Text>No options</Text>;
           }
-          return (
-            <ReusablePopover
-              title="Options"
-              popoverContent={<OptionsList options={row.getValue("options")} />}
-            />
-          );
+          return <OptionsList options={row.getValue("options")} />;
+          // return (
+          //   <ReusablePopover
+          //     title="Options"
+          //     popoverContent={<OptionsList options={row.getValue("options")} />}
+          //   />
+          // );
         },
       },
       {
