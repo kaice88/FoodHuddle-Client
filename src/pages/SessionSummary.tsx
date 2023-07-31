@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import ActionButton from '@/components/ActionButton'
 import useSession from '@/hooks/useSession'
-import { SessionActions, SessionStatuses } from '@/enums'
+import { SessionActionColor, SessionActions, SessionStatuses } from '@/enums'
 import { notificationShow } from '@/components/Notification'
 
 export default function SessionSummary() {
@@ -18,8 +18,8 @@ export default function SessionSummary() {
     )
   }
   return (
-    <Flex>
-      {!hidden && <ActionButton value={SessionActions.FINISH} colorName="orange" handleOnClick={handleChangeStatus}></ActionButton>}
+    <Flex justify="flex-end">
+      {!hidden && <ActionButton value={SessionActions.FINISH} colorName={SessionActionColor.FINISH} handleOnClick={handleChangeStatus}/>}
     </Flex>
   )
 }

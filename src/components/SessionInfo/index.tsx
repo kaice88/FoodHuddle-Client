@@ -1,12 +1,10 @@
-import { REQUEST_GET_SESSION_INFO } from "../../constants/apis";
-import React, { useEffect, useState } from "react";
-import axiosInstance from "@/settings/axios";
+import React from 'react'
 
-import { List, Group, Flex, Text, Image } from "@mantine/core";
-import Link from "antd/es/typography/Link";
+import { Group, List, Text } from '@mantine/core'
+import Link from 'antd/es/typography/Link'
 
 interface SessionInfoProps {
-  sessionData: SessionInfo;
+  sessionData: SessionInfo
 }
 
 function SessionInfo({ sessionData }: SessionInfoProps) {
@@ -19,17 +17,16 @@ function SessionInfo({ sessionData }: SessionInfoProps) {
           </List.Item>
           <List.Item>
             <Text>
-              Link shop :{" "}
+              Link shop :
               <Link href={sessionData?.shopLink} target="_blank">
                 Shop
-              </Link>{" "}
+              </Link>
             </Text>
           </List.Item>
           <List.Item>
             <Text>{`Date : ${sessionData?.date}`}</Text>
           </List.Item>
           <List.Item>
-            {" "}
             <Text>{`Notes: ${sessionData?.description}`}</Text>
           </List.Item>
         </List>
@@ -46,7 +43,7 @@ function SessionInfo({ sessionData }: SessionInfoProps) {
         </div>
       </Group>
     </div>
-  );
+  )
 }
 
-export default SessionInfo;
+export default SessionInfo

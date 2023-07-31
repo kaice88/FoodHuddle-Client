@@ -17,3 +17,10 @@ export enum SessionActions {
   SPLIT_PAYMENT = 'SPLIT PAYMENT',
   FINISH = 'FINISH',
 }
+
+export enum SessionActionColor {
+  DELETE = 'orange',
+  LOCK_ORDER = 'bashfulPink',
+  SPLIT_PAYMENT = 'watermelon',
+  FINISH = 'orange',
+}

@@ -17,7 +17,6 @@ import useFoodStore from '@/store/foodStore'
 
 function SessionPage() {
   const { sessionId } = useParams()
-  const [currentStatus, setCurrentStatus] = useState('OPEN')
   const setCurrentShop = useFoodStore(state => state.setCurrentShop)
   const [sessionData, setSessionData] = useState<SessionInfoData | null>(null)
   const navigate = useNavigate()
@@ -34,7 +33,6 @@ function SessionPage() {
   const handlechangeStatus = (status) => {
     changeStatus(status, (data) => {
       notificationShow('success', 'SUCCESS', data.data.message)
-      setCurrentStatus(data.data.statusSession)
       if (status === SessionStatuses.PENDING_PAYMENTS)
         navigate(`/sessions-today/${sessionId}/session-summary`)
     })
@@ -52,7 +50,7 @@ function SessionPage() {
 
   return (
     <>
-      <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>
+      <HostActions status={sessionData?.status} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} />
       <SessionInfo sessionData={sessionData} />
       <Tabs defaultValue={'order'}>
         <Tabs.List>

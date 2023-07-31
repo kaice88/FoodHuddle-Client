@@ -5,7 +5,6 @@ import FoodOrderTable from '@/components/FoodOrderTable'
 function OrderTab() {
   return (
     <div className="orderTab">
-      {' '}
       <FoodMenu />
       <FoodOrderTable />
     </div>
