@@ -7,8 +7,8 @@ export const notificationShow = (type: string, title: string, message: string) =
   notifications.show({
     withCloseButton: true,
     autoClose: 5000,
-    title: `${title}`,
-    message: `${message}`,
+    title,
+    message,
     color,
     icon,
     loading: false,
