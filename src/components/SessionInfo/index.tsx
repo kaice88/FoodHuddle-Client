@@ -1,35 +1,32 @@
-import { REQUEST_GET_SESSION_INFO } from "../../constants/apis";
-import React, { useEffect, useState } from "react";
-import axiosInstance from "@/settings/axios";
-
-import { List, Group, Flex, Text, Image } from "@mantine/core";
-import Link from "antd/es/typography/Link";
+import React from 'react'
+import { Group, List, Loader, Text } from '@mantine/core'
+import { isEmpty } from 'lodash'
 
 interface SessionInfoProps {
-  sessionData: SessionInfo;
+  sessionData: SessionInfo
 }
 
 function SessionInfo({ sessionData }: SessionInfoProps) {
   return (
     <div className="sessionInfo">
       <Group position="center">
-        <List>
+        {isEmpty(sessionData) ? <Loader/> : <><List>
           <List.Item>
             <Text>{`Host : ${sessionData?.host}`}</Text>
           </List.Item>
           <List.Item>
             <Text>
-              Link shop :{" "}
-              <Link href={sessionData?.shopLink} target="_blank">
+              Link shop :{' '}
+              <a href={sessionData?.shopLink} target="_blank" rel="noreferrer">
                 Shop
-              </Link>{" "}
+              </a>{' '}
             </Text>
           </List.Item>
           <List.Item>
             <Text>{`Date : ${sessionData?.date}`}</Text>
           </List.Item>
           <List.Item>
-            {" "}
+            {' '}
             <Text>{`Notes: ${sessionData?.description}`}</Text>
           </List.Item>
         </List>
@@ -43,10 +40,10 @@ function SessionInfo({ sessionData }: SessionInfoProps) {
           {/* {Object.values(sessionData?.qrImages).map((img) => (
             <Image src={img} width={100} height={100} />
           ))} */}
-        </div>
+        </div></>}
       </Group>
     </div>
-  );
+  )
 }
 
-export default SessionInfo;
+export default SessionInfo
