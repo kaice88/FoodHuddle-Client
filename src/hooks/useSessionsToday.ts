@@ -1,22 +1,20 @@
 import { useState } from 'react'
 
-import { SessionsTodayPageTabs } from '@/enums'
+import type { SessionsTodayPageTabs } from '@/enums'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import type { SessionToday } from '@/types/sessions'
-import { REQUEST_GET_ALL_SESSIONS_TODAY } from '@/constants/apis'
+import { getTodaySessionsApiEndpoint } from '@/utils/sessions'
 
-const { query } = useRequestProcessor()
-
-interface ApiResponse {
+interface SessionsTodayResponse {
   statusCode: number
   data: SessionToday[]
 }
 
-const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
+const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page) => {
   try {
-    const { data, status } = await axiosInstance.get<ApiResponse>(getUrl(tab))
-    if (status == 200)
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab, page))
+    if (status === 200)
       return data.data
   }
   catch (error) {
@@ -24,31 +22,18 @@ const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
   }
 }
 
-const getUrl = (tab: SessionsTodayPageTabs): string => {
-  switch (tab) {
-  case SessionsTodayPageTabs.ALL:
-    return REQUEST_GET_ALL_SESSIONS_TODAY
-    default:
-    return REQUEST_GET_ALL_SESSIONS_TODAY
-  }
-}
-
-const useSessionTodayData = (tab: SessionsTodayPageTabs) => {
+const useSessionTodayData = (tab: SessionsTodayPageTabs, page) => {
+  const { query } = useRequestProcessor()
   return query<SessionToday[], Error>(
     ['sessionsToday', tab],
-    () => fetchSessionsToday(tab),
-    {
-      onSuccess: () => {
-        console.log('success')
-      },
-    },
+    () => fetchSessionsToday(tab, page),
   )
 }
 
-const useSessionsToday = (tab: SessionsTodayPageTabs) => {
+const useSessionsToday = (tab: SessionsTodayPageTabs, page) => {
   const [activeTab, setActiveTab] = useState(tab)
 
-  const { data, isLoading, error } = useSessionTodayData(activeTab)
+  const { data, isLoading, error } = useSessionTodayData(activeTab, page)
 
   return { activeTab, setActiveTab, data, isLoading, error }
 }

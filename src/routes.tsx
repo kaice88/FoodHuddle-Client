@@ -4,6 +4,7 @@ import SessionTodayPage from './pages/SessionsToday'
 import Layout from './layouts/Layout'
 import ErrorPage from './pages/Error'
 import SessionPage from './pages/SessionPage'
+import SessionsHistory from './pages/SessionsHistory'
 import * as ROUTES from '@/constants/routes'
 
 export const router = createBrowserRouter([
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.SESSIONS_HISTORY,
-        element: <SessionTodayPage></SessionTodayPage>,
+        element: <SessionsHistory />,
       },
     ],
   },

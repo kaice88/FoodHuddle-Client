@@ -4,10 +4,10 @@ import SessionList from '@/components/SessionsList'
 import useSessionsToday from '@/hooks/useSessionsToday'
 import { SessionsTodayPageTabs } from '@/enums'
 import { TABS_CONFIG } from '@/constants/sessions'
+import SEARCH_PARAMS from '@/constants/searchParams'
 
 const SessionsHistory = () => {
   const page = 'HISTORY'
-
   const {
     isLoading,
     data: sessions,
@@ -21,18 +21,47 @@ const SessionsHistory = () => {
     },
   })
 
+  const handleRefresh = (data) => {
+    const {
+      status,
+    } = data
+    console.log(data, status)
+    const { pathname, search: query } = window.location
+    const searchParams = new URLSearchParams(query)
+    if (status && status.length > 0) {
+      searchParams.set(SEARCH_PARAMS.STATUS, status.join())
+      console.log(3, searchParams)
+    }
+    else {
+      searchParams.delete(SEARCH_PARAMS.STATUS)
+    }
+
+    console.log('333333333333', window.location)
+    // history.push({
+    //   pathname,
+    //   search: decodeURIComponent(searchParams.toString()),
+    // })
+  }
+  // const { pathname, search: query } = this.props.location
+
   const handleSubmit = async (values) => {
     console.log(values)
-    console.log(form.values)
+    // console.log(form.values)
     // call API
   }
   const handleReset = () => {
     form.reset()
   }
-  const handleStatusChange = (selectedStatus) => {
-    console.log('Selected Status:', selectedStatus)
-    form.setFieldValue('status', selectedStatus)
-    // call API
+  const onFilterChange = (value) => {
+    handleRefresh(value)
+  }
+  const handleStatusChange = (selectedStatus, fieldName) => {
+    form.setFieldValue(fieldName, selectedStatus)
+    const updateFormFields = {
+      ...form.values,
+      [fieldName]: selectedStatus,
+    }
+    onFilterChange(updateFormFields)
   }
 
   return (
@@ -50,9 +79,9 @@ const SessionsHistory = () => {
             placeholder="Pick"
             transitionProps={{ duration: 150, transition: 'pop-top-left', timingFunction: 'ease' }}
             defaultValue={['all']}
-            style={{ width: '25%' }}
+            style={{ width: '50%' }}
             {...form.getInputProps('status')}
-            onChange={handleStatusChange}
+            onChange={value => handleStatusChange(value, 'status')}
           />
           <Button
             type="submit"
@@ -85,10 +114,10 @@ const SessionsHistory = () => {
           {isLoading
             ? (
               <Loader className="loader" />
-            )
+              )
             : (
               <SessionList sessionsList={sessions} />
-            )}
+              )}
         </Tabs.Panel>
       </Tabs>
     </>
