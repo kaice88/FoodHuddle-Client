@@ -250,7 +250,84 @@ function useSummaryTab() {
     },
   )
 
-  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleFoodNamesSelect }
+  const transformDataForMultiSelect = (currentFoodName, optionsSelect, currentValue, valueTransform) => {
+    // ...Get options only for current foodName...
+    const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
+
+    const requiredGroups = currentValue.map(item => item.category)
+    const optionsNoSlected = data.filter(item => !valueTransform.includes(item.value))
+    const optionSelected = data.filter(item => valueTransform.includes(item.value))
+    const dataCheckDisabled = optionsNoSlected.map((item) => {
+      const isItemDisabled = requiredGroups.some((requiredGroup) => {
+        const normalizedRequiredGroup = `${requiredGroup} [required]`
+        return item.group === normalizedRequiredGroup
+      })
+      if (isItemDisabled) {
+        return {
+          ...item,
+          disabled: true,
+        }
+      }
+      else {
+        return item
+      }
+    })
+    const dataSelectFinal = [
+      ...dataCheckDisabled,
+      ...optionSelected,
+    ]
+    return dataSelectFinal
+  }
+
+  const convertOptionsValueToDataTableEdit = (selectedOptions, rowIndex, currentValueRow, tableEditData) => {
+    const convertData = (selectedOptions) => {
+      const result = []
+      !isEmpty(selectedOptions) && selectedOptions.forEach((item) => {
+        const [category, name, price] = item.split('-')
+        const existingCategory = result.find(c => c.category === category)
+        if (existingCategory) {
+          existingCategory.detail.push({ name, price: Number(price) })
+        }
+        else {
+          result.push({
+            category,
+            detail: [{ name, price: Number(price) }],
+          })
+        }
+      })
+      return result
+    }
+
+    const newList = tableEditData.map((item) => {
+      if (item.id == rowIndex) {
+        return {
+          ...currentValueRow,
+          options: convertData(selectedOptions),
+        }
+      }
+      else {
+        return item
+      }
+    })
+    return newList
+  }
+
+  const updateTableEdit = (tableEditData, name, value, rowIndex, currentValueRow) => {
+    const newList = tableEditData.map((item) => {
+      if (item.id == rowIndex) {
+        return {
+          ...currentValueRow,
+          [name]: value,
+        }
+      }
+      else {
+        return item
+      }
+    })
+    console.log(newList)
+    return newList
+  }
+  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleFoodNamesSelect, transformDataForMultiSelect, convertOptionsValueToDataTableEdit, updateTableEdit }
 }
 
 export default useSummaryTab

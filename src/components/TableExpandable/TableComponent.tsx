@@ -34,7 +34,8 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
     enablePagination: false,
     mantineTableBodyCellProps: ({ row }) => ({
       style: {
-        backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
+        backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.9)}`,
+        boxShadow: '1px 1px 3px 3px black',
         borderBottom: '2px solid white',
         padding: '10px',
       },
@@ -94,6 +95,7 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
         },
       },
     }),
+    initialState: { expanded: true },
     mantinePaperProps: ({ table }) => ({
       style: {
         border: 'none',

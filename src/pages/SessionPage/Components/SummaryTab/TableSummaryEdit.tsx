@@ -47,7 +47,7 @@ const EditTable = ({ sessionId }) => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({})
   const [foodOrderMenu, setFoodOrderMenu] = useState([])
   const [optionsSelect, setOptionsSelect] = useState([])
-  const { queryFoodOrderEdit, mutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFoodOrderMenu, handleFoodNamesSelect } = useSummaryTab()
+  const { queryFoodOrderEdit, mutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFoodOrderMenu, handleFoodNamesSelect, transformDataForMultiSelect, convertOptionsValueToDataTableEdit, updateTableEdit } = useSummaryTab()
   const fetchQueryFoodOrderEdit = queryFoodOrderEdit(sessionId, setTableEditData)
   const queryFoodOrderMenu = fetchQueryFoodOrderMenu(sessionId, setFoodOrderMenu, setOptionsSelect)
   const foodNamesSelect = handleFoodNamesSelect(foodOrderMenu)
@@ -166,20 +166,7 @@ const EditTable = ({ sessionId }) => {
             error: validationErrors?.actualPrice,
             onChange: (event) => {
               event.preventDefault()
-              const value = event.currentTarget.value
-              const rowIndex = cell.row.id
-              const currentValueRow = row.original
-              const newList = tableEditData.map((item) => {
-                if (item.id == rowIndex) {
-                  return {
-                    ...currentValueRow,
-                    actualPrice: value,
-                  }
-                }
-                else {
-                  return item
-                }
-              })
+              const newList = updateTableEdit(tableEditData, 'actualPrice', event.currentTarget.value, cell.row.id, row.original)
               setTableEditData(newList)
             },
           }
@@ -205,7 +192,7 @@ const EditTable = ({ sessionId }) => {
               ))
             : []
           const currentFoodName = row.original.foodName
-          const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
+          const data = transformDataForMultiSelect(currentFoodName, optionsSelect, currentValue, valueTransform)
           const error = validationErrors[cell.id]
           return (
             <MultiSelect
@@ -249,36 +236,9 @@ const EditTable = ({ sessionId }) => {
                   })
                 }
                 // ...Update tableEdit...
-                const convertData = (selectedOptions) => {
-                  const result = []
-                  !isEmpty(selectedOptions) && selectedOptions.forEach((item) => {
-                    const [category, name, price] = item.split('-')
-                    const existingCategory = result.find(c => c.category === category)
-                    if (existingCategory) {
-                      existingCategory.detail.push({ name, price: Number(price) })
-                    }
-                    else {
-                      result.push({
-                        category,
-                        detail: [{ name, price: Number(price) }],
-                      })
-                    }
-                  })
-                  return result
-                }
                 const rowIndex = cell.row.id
                 const currentValueRow = row.original
-                const newList = tableEditData.map((item) => {
-                  if (item.id == rowIndex) {
-                    return {
-                      ...currentValueRow,
-                      options: convertData(selectedOptions),
-                    }
-                  }
-                  else {
-                    return item
-                  }
-                })
+                const newList = convertOptionsValueToDataTableEdit(selectedOptions, rowIndex, currentValueRow, tableEditData)
                 setTableEditData(newList)
               }}
               itemComponent={SelectItem}
@@ -305,20 +265,7 @@ const EditTable = ({ sessionId }) => {
             error: validationErrors?.note,
             onChange: (event) => {
               event.preventDefault()
-              const value = event.currentTarget.value
-              const rowIndex = cell.row.id
-              const currentValueRow = row.original
-              const newList = tableEditData.map((item) => {
-                if (item.id == rowIndex) {
-                  return {
-                    ...currentValueRow,
-                    note: value,
-                  }
-                }
-                else {
-                  return item
-                }
-              })
+              const newList = updateTableEdit(tableEditData, 'note', event.currentTarget.value, cell.row.id, row.original)
               setTableEditData(newList)
             },
           }
@@ -362,19 +309,7 @@ const EditTable = ({ sessionId }) => {
                 })
               }
               // ...Update tableEdit...
-              const rowIndex = cell.row.id
-              const currentValueRow = row.original
-              const newList = tableEditData.map((item) => {
-                if (item.id == rowIndex) {
-                  return {
-                    ...currentValueRow,
-                    quantity: value,
-                  }
-                }
-                else {
-                  return item
-                }
-              })
+              const newList = updateTableEdit(tableEditData, 'quantity', value, cell.row.id, row.original)
               setTableEditData(newList)
             },
           }
