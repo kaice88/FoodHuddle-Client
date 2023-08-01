@@ -1,6 +1,5 @@
-import { SessionTodayList } from "@/types/sessions";
-import type { SessionProps } from "./SessionCard/types";
+import type { SessionTodayList } from '@/types/sessions'
 
 export interface SessionTodayListProps {
-  sessionsList: SessionTodayList[];
+  sessionsList: SessionTodayList[]
 }

@@ -14,10 +14,10 @@ function useSummaryTab() {
   const mutateBill = sessionId =>
     mutation(
       ['save-bill'],
-      async data => await axiosInstance.put(`${REQUEST_POST_ORDER_BILL}/${sessionId}/fee`, data),
+      async data => await axiosInstance.put(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`, data),
       {
         onSuccess: (data) => {
-          if (data.data.statusCode === 200)
+          if (data.data.status === 'success')
             notificationShow('success', 'Success: ', data.data.message)
 
           else
@@ -31,17 +31,15 @@ function useSummaryTab() {
 
   const fetchQueryFormFees = (sessionId, setFormFees) => query(
     ['get-bill'],
-    () => axiosInstance.get(`${REQUEST_POST_ORDER_BILL}/${sessionId}/fee`),
+    () => axiosInstance.get(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`),
     {
       enabled: false,
       onSuccess: (data) => {
-        if (data.data.statusCode === 200) {
-          notificationShow('success', 'Success: ', data.data.message)
-          setFormFees(() => data.data)
-        }
-        else {
+        if (data.data.status === 'success')
+          setFormFees(() => data.data.data)
+
+        else
           notificationShow('error', 'Error: ', data.data.message)
-        }
       },
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
@@ -57,23 +55,33 @@ function useSummaryTab() {
     return foodNames
   }
 
+  const handleSelect = (options, idx) => {
+    const dataSelects = !isEmpty(options)
+      ? options.flatMap(option =>
+        option.detail.map((detailItem, index) => ({
+          value: `${option.category}-${detailItem.name}-${detailItem.price}`,
+          label: detailItem.name,
+          group: option.mandatory ? `${option.category} [required]` : option.category,
+          price: detailItem.price,
+          key: `${option.category}-${detailItem.name}-${detailItem.price}-${idx}`,
+        })),
+      )
+      : []
+    return dataSelects
+  }
   const handleOptionsSelect = (dataMenu) => {
-    const OptionsList = !isEmpty(dataMenu)
-      ? dataMenu.map((item, index) => {
-        const dataSelects = !isEmpty(item.options)
-          ? item.options.map((item, index) => {
-            return {
-              category: item.category,
-
-            }
-          })
-          : []
+    const optionsList = !isEmpty(dataMenu)
+      ? dataMenu.flatMap((item, idx) => {
+        return {
+          foodName: item.foodName,
+          dataSelects: handleSelect(item.options, idx),
+        }
       })
       : []
-    return OptionsList
+    return optionsList
   }
 
-  const fetchQueryFoodOrderMenu = (sessionId, setFoodOrderMenu) => query(
+  const fetchQueryFoodOrderMenu = (sessionId, setFoodOrderMenu, setOptionsSelect) => query(
     ['get-all-menu'],
     () => axiosInstance.get(REQUEST_GET_FOOD_ORDER_MENU, {
       params: {
@@ -87,8 +95,8 @@ function useSummaryTab() {
           notificationShow('error', 'Error: ', data.data.message)
         }
         else {
-          notificationShow('success', 'Success: ', data.data.message)
           setFoodOrderMenu(() => data.data.data)
+          setOptionsSelect(handleOptionsSelect(data.data.data))
         }
       },
       onError: (error) => {
@@ -151,13 +159,12 @@ function useSummaryTab() {
     {
       enabled: false,
       onSuccess: (data) => {
-        if (data.data.statusCode === 400) {
-          notificationShow('error', 'Error: ', data.data.message)
-        }
-        else {
-          notificationShow('success', 'Success: ', data.data.message)
+        if (data.data.status === 'success') {
           setTableViewData(() => handleTransformDataToTableData(data.data.data.foodOrderList))
           setChildrenTableView(() => handleTransformToChildrenTable(data.data.data.foodOrderList))
+        }
+        else {
+          notificationShow('error', 'Error: ', data.data.message)
         }
       },
       onError: (error) => {
@@ -193,13 +200,11 @@ function useSummaryTab() {
     {
       enabled: false,
       onSuccess: (data) => {
-        if (data.data.statusCode === 400) {
-          notificationShow('error', 'Error: ', data.data.message)
-        }
-        else {
-          notificationShow('success', 'Success: ', data.data.message)
+        if (data.data.status === 'success')
           setTableEditData(handleTransformTableEdit(data.data.data.foodOrderList))
-        }
+
+        else
+          notificationShow('error', 'Error: ', data.data.message)
       },
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
@@ -245,7 +250,84 @@ function useSummaryTab() {
     },
   )
 
-  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleOptionsSelect, handleFoodNamesSelect }
+  const transformDataForMultiSelect = (currentFoodName, optionsSelect, currentValue, valueTransform) => {
+    // ...Get options only for current foodName...
+    const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
+
+    const requiredGroups = currentValue.map(item => item.category)
+    const optionsNoSlected = data.filter(item => !valueTransform.includes(item.value))
+    const optionSelected = data.filter(item => valueTransform.includes(item.value))
+    const dataCheckDisabled = optionsNoSlected.map((item) => {
+      const isItemDisabled = requiredGroups.some((requiredGroup) => {
+        const normalizedRequiredGroup = `${requiredGroup} [required]`
+        return item.group === normalizedRequiredGroup
+      })
+      if (isItemDisabled) {
+        return {
+          ...item,
+          disabled: true,
+        }
+      }
+      else {
+        return item
+      }
+    })
+    const dataSelectFinal = [
+      ...dataCheckDisabled,
+      ...optionSelected,
+    ]
+    return dataSelectFinal
+  }
+
+  const convertOptionsValueToDataTableEdit = (selectedOptions, rowIndex, currentValueRow, tableEditData) => {
+    const convertData = (selectedOptions) => {
+      const result = []
+      !isEmpty(selectedOptions) && selectedOptions.forEach((item) => {
+        const [category, name, price] = item.split('-')
+        const existingCategory = result.find(c => c.category === category)
+        if (existingCategory) {
+          existingCategory.detail.push({ name, price: Number(price) })
+        }
+        else {
+          result.push({
+            category,
+            detail: [{ name, price: Number(price) }],
+          })
+        }
+      })
+      return result
+    }
+
+    const newList = tableEditData.map((item) => {
+      if (item.id == rowIndex) {
+        return {
+          ...currentValueRow,
+          options: convertData(selectedOptions),
+        }
+      }
+      else {
+        return item
+      }
+    })
+    return newList
+  }
+
+  const updateTableEdit = (tableEditData, name, value, rowIndex, currentValueRow) => {
+    const newList = tableEditData.map((item) => {
+      if (item.id == rowIndex) {
+        return {
+          ...currentValueRow,
+          [name]: value,
+        }
+      }
+      else {
+        return item
+      }
+    })
+    console.log(newList)
+    return newList
+  }
+  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleFoodNamesSelect, transformDataForMultiSelect, convertOptionsValueToDataTableEdit, updateTableEdit }
 }
 
 export default useSummaryTab

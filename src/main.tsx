@@ -5,7 +5,9 @@ import App from './app.tsx'
 import './assets/styles/main.scss'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <GoogleOAuthProvider clientId={import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID}>
+  <GoogleOAuthProvider
+    clientId={import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID}
+  >
     <React.StrictMode>
       <App />
     </React.StrictMode>

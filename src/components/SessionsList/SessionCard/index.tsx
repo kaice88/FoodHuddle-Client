@@ -1,11 +1,14 @@
-import React from 'react'
-
 import { IconUsers } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
+import { SessionStatuses } from "@/enums";
+import { ActionIcon } from "@mantine/core";
+import { IconLink } from "@tabler/icons-react";
+
+import { getSessionStatus } from '@/utils/sessions'
 import StatusBadge from '../../StatusBadge'
 import type { SessionProps } from './types'
-import { SessionStatuses } from '@/enums'
+
 import CopyClipBoard from '@/components/CopyClipboard'
 
 const getStatusClassName = (status: SessionStatuses): string => {
@@ -15,14 +18,7 @@ const getStatusClassName = (status: SessionStatuses): string => {
   if (status === SessionStatuses.LOCKED)
     return 'locked'
 
-  if (status === SessionStatuses.FINISHED)
-    return 'finished'
-
-  if (status === SessionStatuses.PENDING_PAYMENTS)
-    return 'pending'
-}
-
-function Session({ session }: SessionProps) {
+function SessionCard({ session }: SessionCardProps) {
   return (
     <div className="sessionWrapper">
       <div className="session">
@@ -55,4 +51,4 @@ function Session({ session }: SessionProps) {
   )
 }
 
-export default Session
+export default SessionCard

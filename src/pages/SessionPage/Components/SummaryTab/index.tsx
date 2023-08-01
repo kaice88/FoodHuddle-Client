@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, FileButton, Flex, Group, Text } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import NumberInputCustom from './NumberInput'
-import EditTableWithProviders from './TableSummaryEdit'
+import EditTable from './TableSummaryEdit'
 import ViewTable from '@/pages/SessionPage/Components/SummaryTab/TableSummaryView'
 import ImagesUploaded from '@/components/ImagesUploaded'
 import useSummaryTab from '@/hooks/useSummaryTab'
@@ -12,10 +12,8 @@ const SummaryTab = ({ sessionId }) => {
   const fetchMutateBill = mutateBill(sessionId)
   const [isOpenEditableTable, setIsOpenEditableTable] = useState(false)
   const [formFees, setFormFees] = useState({})
-
   const { fetchQueryFormFees } = useSummaryTab()
   const fetchFormFees = fetchQueryFormFees(sessionId, setFormFees)
-
   const handleTranformToEditTable = () => {
     setIsOpenEditableTable(true)
   }
@@ -25,14 +23,12 @@ const SummaryTab = ({ sessionId }) => {
 
   const form = useForm({
     initialValues: {
-      sessionId: Number(sessionId),
-      discount: '',
-      shipFee: '',
-      others: '',
-      bill: [],
+      discountAmount: '',
+      shippingFee: '',
+      otherFee: '',
+      receiptScreenshot: [],
     },
   })
-
   useEffect(() => {
     const handlefetchFetchFormFees = async () => {
       await fetchFormFees.refetch()
@@ -40,36 +36,28 @@ const SummaryTab = ({ sessionId }) => {
     handlefetchFetchFormFees()
   }, [])
 
+  useEffect(() => {
+    formFees !== null && form.setValues(formFees)
+  }, [formFees])
+
   const handleSubmitBill = async (values) => {
     const formData = new FormData()
-    values.bill.forEach((file) => {
-      formData.append('bill', file)
+    values.receiptScreenshot.forEach((file) => {
+      formData.append('receiptScreenshot', file)
     })
-    formData.append('sessionId', Number(sessionId))
-    formData.append('discount', values.discount ? Number(values.discount) : 0)
-    formData.append('shipFee', values.shipFee ? Number(values.shipFee) : 0)
-    formData.append('others', values.others ? Number(values.others) : 0)
+    formData.append('discountAmount', values.discountAmount ? Number(values.discountAmount) : 0)
+    formData.append('shippingFee', values.shippingFee ? Number(values.shippingFee) : 0)
+    formData.append('otherFee', values.otherFee ? Number(values.otherFee) : 0)
 
     fetchMutateBill.mutate(formData)
-    // const data = {
-    //   sessionId: Number(sessionId),
-    //   discount: values.discount ? Number(values.discount) : 0,
-    //   shipFee: values.shipFee ? Number(values.shipFee) : 0,
-    //   others: values.others ? Number(values.others) : 0,
-    //   bill: values.bill,
-    // }
-    // console.log(data)
-
-    // fetchMutateBill.mutate(data)
   }
 
-  const files = form.getInputProps('bill').value
+  const files = form.getInputProps('receiptScreenshot').value
   const handleDeleteImage = (index) => {
     const updatedFiles = [...files]
     updatedFiles.splice(index, 1)
-    form.setFieldValue('bill', updatedFiles)
+    form.setFieldValue('receiptScreenshot', updatedFiles)
   }
-
   const isHostRole = true
 
   return (
@@ -119,10 +107,10 @@ const SummaryTab = ({ sessionId }) => {
           {!isOpenEditableTable
             ? (
               <ViewTable sessionId={sessionId}/>
-              )
+            )
             : (
-              <EditTableWithProviders sessionId={sessionId}/>
-              )}
+              <EditTable sessionId={sessionId}/>
+            )}
           <form
             onSubmit={form.onSubmit(values => handleSubmitBill(values))}
 
@@ -140,9 +128,9 @@ const SummaryTab = ({ sessionId }) => {
                 direction="column"
                 className="form-fees__fill__cost"
               >
-                <NumberInputCustom field="discount" form={form} label="Discount: "/>
-                <NumberInputCustom field="shipFee" form={form} label="Delivery cost: "/>
-                <NumberInputCustom field="others" form={form} label="Others: "/>
+                <NumberInputCustom field="discountAmount" form={form} label="Discount: "/>
+                <NumberInputCustom field="shippingFee" form={form} label="Delivery cost: "/>
+                <NumberInputCustom field="otherFee" form={form} label="OtherFee: "/>
               </Flex>
               <Flex
                 gap="md"
@@ -165,7 +153,7 @@ const SummaryTab = ({ sessionId }) => {
                     <FileButton
                       accept="image/png,image/jpeg"
                       multiple
-                      {...form.getInputProps('bill')}
+                      {...form.getInputProps('receiptScreenshot')}
                     >
                       {props => (
                         <Button variant="light" size="xs" color="indigo" {...props}>
@@ -176,7 +164,7 @@ const SummaryTab = ({ sessionId }) => {
                   </Group>
                 </Flex>
                 <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
-                  <ImagesUploaded handleDeleteImage={handleDeleteImage} files={files} />
+                  <ImagesUploaded handleDeleteImage={handleDeleteImage} files={ files}/>
                 </Flex>
               </Flex>
             </Flex>

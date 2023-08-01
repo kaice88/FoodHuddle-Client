@@ -1,56 +1,41 @@
-import React, { useState } from "react";
+import { useState } from 'react'
 
-import { SessionsTodayPageTabs } from "@/enums";
-import axiosInstance from "@/settings/axios";
-import { useRequestProcessor } from "@/settings/react-query";
-import type { SessionToday } from "@/types/sessions";
-import { REQUEST_GET_ALL_SESSIONS_TODAY } from "@/constants/apis";
+import type { SessionsTodayPageTabs } from '@/enums'
+import axiosInstance from '@/settings/axios'
+import { useRequestProcessor } from '@/settings/react-query'
+import type { SessionToday } from '@/types/sessions'
+import { getTodaySessionsApiEndpoint } from '@/utils/sessions'
 
-const { query } = useRequestProcessor();
-
-interface ApiResponse {
-  statusCode: number;
-  data: SessionToday[];
+interface SessionsTodayResponse {
+  statusCode: number
+  data: SessionToday[]
 }
 
 const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
   try {
-    const { data, status } = await axiosInstance.get<ApiResponse>(getUrl(tab));
-    if (status == 200) {
-      return data.data;
-    }
-  } catch (error) {
-    return [];
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab))
+    if (status === 200)
+      return data.data
   }
-};
-
-const getUrl = (tab: SessionsTodayPageTabs): string => {
-  switch (tab) {
-    case SessionsTodayPageTabs.ALL:
-      return REQUEST_GET_ALL_SESSIONS_TODAY;
-    default:
-      return REQUEST_GET_ALL_SESSIONS_TODAY;
+  catch (error) {
+    return []
   }
-};
+}
 
 const useSessionTodayData = (tab: SessionsTodayPageTabs) => {
+  const { query } = useRequestProcessor()
   return query<SessionToday[], Error>(
-    ["sessionsToday", tab],
+    ['sessionsToday', tab],
     () => fetchSessionsToday(tab),
-    {
-      onSuccess: () => {
-        console.log("success");
-      },
-    }
-  );
-};
+  )
+}
 
 const useSessionsToday = (tab: SessionsTodayPageTabs) => {
-  const [activeTab, setActiveTab] = useState(tab);
+  const [activeTab, setActiveTab] = useState(tab)
 
-  const { data, isLoading, error } = useSessionTodayData(activeTab);
+  const { data, isLoading, error } = useSessionTodayData(activeTab)
 
-  return { activeTab, setActiveTab, data, isLoading, error };
-};
+  return { activeTab, setActiveTab, data, isLoading, error }
+}
 
-export default useSessionsToday;
+export default useSessionsToday

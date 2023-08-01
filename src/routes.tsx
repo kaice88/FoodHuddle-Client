@@ -12,7 +12,7 @@ import * as ROUTES from '@/constants/routes'
 export const router = createBrowserRouter([
   {
     path: ROUTES.LOGIN,
-    element: <LoginPage></LoginPage>,
+    element: <LoginPage />,
   },
   {
     path: ROUTES.HOME,
@@ -21,11 +21,11 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to={ROUTES.SESSIONS_TODAY}></Navigate>,
+        element: <Navigate to={ROUTES.SESSIONS_TODAY}/>,
       },
       {
         path: ROUTES.SESSIONS_TODAY,
-        element: <SessionTodayPage></SessionTodayPage>,
+        element: <SessionTodayPage />,
       },
       {
         path: ROUTES.SESSION_DETAIL,
@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.SESSIONS_HISTORY,
-        element: <SessionTodayPage></SessionTodayPage>,
+        element: <SessionTodayPage />,
       },
     ],
   },

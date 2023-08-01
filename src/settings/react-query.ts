@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export function useRequestProcessor() {
   function query<D, E>(key: any, queryFunction: any, options = {}) {
@@ -6,16 +6,20 @@ export function useRequestProcessor() {
       queryKey: key,
       queryFn: queryFunction,
       ...options,
-    });
+    })
   }
 
-  function mutation(key: any, mutationFunction: any, options = {}) {
-    return useMutation({
+  function mutation<MutationResponseData, E, MutationData>(
+    key: any,
+    mutationFunction: any,
+    options = {}
+  ) {
+    return useMutation<MutationResponseData, E, MutationData>({
       mutationKey: key,
       mutationFn: mutationFunction,
       ...options,
-    });
+    })
   }
 
-  return { query, mutation };
+  return { query, mutation }
 }

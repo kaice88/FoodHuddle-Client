@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from './Notification'
 import ImagesUploaded from './ImagesUploaded'
 import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
@@ -14,7 +15,6 @@ interface FormValue {
   description: string
   hostPaymentInfo: string
   qrImages: Array<File>
-  status: string
 }
 
 interface FormatDataSessionInfo {
@@ -23,12 +23,12 @@ interface FormatDataSessionInfo {
   description: string
   host_payment_info: string
   qr_images: Array<File>
-  status: string
 }
 
-const SessionInfo: React.FC = () => {
+const SessionInfo: React.FC = ({ isCreateFirst }) => {
   const navigate = useNavigate()
   const { query, mutation } = useRequestProcessor()
+
   const fetchQuerySessionInfo = query(
     ['paymentInfo'],
     () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
@@ -46,13 +46,24 @@ const SessionInfo: React.FC = () => {
     const handlefetchSessionInfo = async () => {
       await fetchQuerySessionInfo.refetch()
     }
-    handlefetchSessionInfo()
+    if (isCreateFirst) {
+      handlefetchSessionInfo()
+    }
+    else {
+      // ...Call Get Session Info Existed...//
+    }
   }, [])
 
   const fetchMutationSessionInfo = mutation(
     ['sessionInfo'],
-    async (dataForm: FormatDataSessionInfo) =>
-      await axiosInstance.post(REQUEST_POST_SESSION_INFO, dataForm),
+    async (data: FormatDataSessionInfo) =>
+      await axiosInstance.post(REQUEST_POST_SESSION_INFO, data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      ),
     {
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
@@ -60,19 +71,23 @@ const SessionInfo: React.FC = () => {
       onSuccess: (data) => {
         const { id, message } = data.data
         notificationShow('success', 'Success: ', message)
-        navigate(`/sessions-today/${id}`)
+
+        if (isCreateFirst)
+          navigate(`/sessions-today/${id}`)
       },
     },
   )
   // ......Config form.................................................
   const form = useForm<FormValue>({
-    initialValues: {
-      title: '',
-      shopLink: '',
-      description: '',
-      hostPaymentInfo: '',
-      qrImages: [],
-    },
+    initialValues: isCreateFirst
+      ? {
+          title: '',
+          shopLink: '',
+          description: '',
+          hostPaymentInfo: '',
+          qrImages: [],
+        }
+      : null, // ...Place your data session info...//
 
     validate: {
       title: value => (value ? null : 'Title is required'),
@@ -80,20 +95,21 @@ const SessionInfo: React.FC = () => {
       hostPaymentInfo: value => (value ? null : 'Payment Infomation is required'),
     },
   })
+
   // .....Handle submit.............................................
   const handleSubmitNewSession = async (values: FormValue) => {
-    // console.log(values)
-    const files = new FormData()
-    // values.qrImages.forEach((file) => {
-    //   files.append('qr_images', file)
-    // })
-    files.append('qr_images', '')
-    files.append('status', 'OPEN')
-    files.append('title', values.title)
-    files.append('shop_link', values.shopLink)
-    files.append('description', values.description)
-    files.append('host_payment_info', values.hostPaymentInfo)
-    fetchMutationSessionInfo.mutate(files)
+    const dataForm = new FormData()
+    !isEmpty(values.qrImages)
+      ? values.qrImages.forEach((file) => {
+        dataForm.append('qr_images', file)
+      })
+      : dataForm.append('qr_images', [])
+
+    dataForm.append('title', values.title)
+    dataForm.append('shop_link', values.shopLink)
+    dataForm.append('description', values.description)
+    dataForm.append('host_payment_info', values.hostPaymentInfo)
+    fetchMutationSessionInfo.mutate(dataForm)
   }
 
   const files = form.getInputProps('qrImages').value
@@ -158,7 +174,7 @@ const SessionInfo: React.FC = () => {
               >
                 {props => (
                   <Button variant="light" size="xs" color="indigo" {...props}>
-                          Upload image
+        Upload image
                   </Button>
                 )}
               </FileButton>

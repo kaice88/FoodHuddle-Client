@@ -1,7 +1,7 @@
 @charset 'UTF-8';
-
 @import "abstracts/variables";
 @import "abstracts/mixins";
+
 
 @import "layout/navbar";
 @import "layout/header";
@@ -9,10 +9,12 @@
 @import "layout/footer";
 
 @import "components/breadscumbs";
-@import "components/modalCreateSesstion";
+@import "components/modalCreateSession";
+@import "components/popover";
 
 @import "pages/login";
 @import "pages/sessions";
 @import "pages/summary-tab";
+@import "pages/session-detail";
 
 @import "base/base";

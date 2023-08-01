@@ -43,7 +43,17 @@
     tbody tr td:nth-last-child(2){
         text-align: center;
     }
-  
+    &__multiselect-cell, &__quantity-cell{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        .mantine-InputWrapper-error{
+            width: 13%;
+        }
+        .mantine-MultiSelect-wrapper{
+            width: 95%;
+        }
+    }
 }
 
 .form-fees{
@@ -98,7 +108,7 @@
 
 
 .menu-container {
-    max-height: 400px;
+    max-height: 150px;
     overflow: auto;
   &::-webkit-scrollbar {
     width: 2px;
