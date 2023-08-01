@@ -1,9 +1,9 @@
-import React from 'react'
 import { Group, List, Loader, Text } from '@mantine/core'
 import { isEmpty } from 'lodash'
+import { SessionInfoData } from '@/types/sessions'
 
 interface SessionInfoProps {
-  sessionData: SessionInfo
+  sessionData: SessionInfoData
 }
 
 function SessionInfo({ sessionData }: SessionInfoProps) {
@@ -17,7 +17,7 @@ function SessionInfo({ sessionData }: SessionInfoProps) {
           <List.Item>
             <Text>
               Link shop :{' '}
-              <a href={sessionData?.shopLink} target="_blank" rel="noreferrer">
+              <a href={sessionData.shopLink} target="_blank" rel="noreferrer">
                 Shop
               </a>{' '}
             </Text>

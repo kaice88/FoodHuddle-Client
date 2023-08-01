@@ -21,9 +21,9 @@
     "@react-oauth/google": "^0.11.0",
     "@tabler/icons-react": "^2.29.0",
     "@tanstack/react-query": "^4.32.0",
-    "axios": "^1.4.0",
     "@types/lodash": "^4.14.196",
     "@types/uuid": "^9.0.2",
+    "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.9",
     "decimal.js": "^10.4.3",
@@ -43,7 +43,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
-    "@antfu/eslint-config-react": "^0.39.6",
+    "@antfu/eslint-config-react": "^0.39.8",
     "@types/node": "^20.3.3",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",

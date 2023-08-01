@@ -5,7 +5,7 @@ import {
   useMantineReactTable,
 } from 'mantine-react-table'
 
-import { ActionIcon, Button, Flex, Group, Text, Title } from '@mantine/core'
+import { ActionIcon, Button, Flex, Group, Image, Text, Title } from '@mantine/core'
 import {
   IconEditCircle,
   IconEraser,
@@ -39,6 +39,9 @@ function FoodOrderTable() {
 
   const columns: MRT_ColumnDef<FoodOrderItem[]> = useMemo(
     () => [
+      { accessorKey: 'foodImage', header: 'Food',Cell:(({row})=>{
+        return <Image   src={row.getValue("foodImage")}/>
+      }) },
       { accessorKey: 'foodName', header: 'Food' },
       {
         accessorKey: 'originPrice',
@@ -46,7 +49,6 @@ function FoodOrderTable() {
         Cell: ({ row }) => {
           return moneyFormat(row.getValue('originPrice'), 'VND', 'vi-VN')
         },
-        size: 100,
         mantineTableHeadCellProps: {
           align: 'center',
         },
@@ -63,12 +65,10 @@ function FoodOrderTable() {
         mantineTableBodyCellProps: {
           align: 'center',
         },
-        size: 100,
       },
       {
         accessorKey: 'options',
         header: 'Options',
-        size: 100,
         mantineTableHeadCellProps: {
           align: 'center',
         },
@@ -103,9 +103,11 @@ function FoodOrderTable() {
             </Text>
           )
         },
-        size: 100,
+
       },
-      { accessorKey: 'note', header: 'Note' },
+      { accessorKey: 'note', header: 'Note' , mantineTableHeadCellProps: {
+        align: 'center',
+      }},
       {
         accessorKey: 'id',
         mantineTableHeadCellProps: {
@@ -153,8 +155,19 @@ function FoodOrderTable() {
     columns,
     data: foodOrderList,
     state: {
-      density: 'xl',
+      density: "xs",
+      columnSizing:{
+        "quantity": 100,
+        "note":150,
+        "total":150,
+        "id":120,
+        "originPrice":130,
+        "options":120,
+      }
     },
+    enableSorting:false,
+    enableColumnActions:false,
+    enableColumnResizing:true,
     enableTopToolbar: false,
     enableBottomToolbar: false,
   })

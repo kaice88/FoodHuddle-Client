@@ -57,7 +57,7 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
           {foodMenuItem.foodName}
         </Title>
 
-        <Flex justify={'space-between'}>
+        <Flex justify={'space-between'} align={"flex-end"}>
           <PriceDisplay
             discountPrice={foodMenuItem.discountPrice}
             price={foodMenuItem.price}
@@ -68,9 +68,10 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
             className="button-addOrder"
             onClick={orderHandler}
             variant="light"
+            size={"sm"}
           >
             {' '}
-            <IconPlus size={50} stroke={2.2} />
+            <IconPlus stroke={2.2} />
           </ActionIcon>
         </Flex>
       </div>
