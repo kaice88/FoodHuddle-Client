@@ -1,11 +1,12 @@
 import { useEffect, useMemo } from 'react'
 import { Avatar, Flex, Text, Title, useMantineTheme } from '@mantine/core'
-import { IconBowl, IconCoin } from '@tabler/icons-react'
+import { IconBowl, IconCoin, IconListCheck, IconWallet } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 
 import Table from '@/components/TableExpandable/TableComponent'
 import { calculatePaymentAmount, moneyFormat } from '@/utils/utility'
 import usePaymentSession from '@/hooks/usePaymentSession'
+import ItemName from '@/components/ItemName'
 
 const paymentSummary2 =  [
   {
@@ -89,12 +90,7 @@ export default function SessionSummary({ id }) {
         size: 200,
         header: '',
         Cell: ({ renderedCellValue }) => (
-          <Flex gap="sm" justify="flex-start" align="center" direction="row" >
-            <Avatar src={renderedCellValue.photo} alt={renderedCellValue.name} radius="xl" size={35}/>
-            <Text color={globalTheme.fn.darken(globalTheme.colors.orange[0], 0.1)} style={{ width: 'fix-content' }} >
-              {renderedCellValue.name}
-            </Text>
-          </Flex>
+          <ItemName name={renderedCellValue.name} picture={renderedCellValue.photo} ></ItemName>
         ),
       },
       {
@@ -171,7 +167,10 @@ export default function SessionSummary({ id }) {
 
   return (
     <div style={{padding:'10px 0'}}>
-    <Title sx={() => ({ fontWeight: 500, fontSize: '20px' })} color={globalTheme.colors.duck[0]} py={10}>Payment Summary</Title>
+      <Flex align='center' gap='xs'>
+        <IconWallet size='1.5rem' color={globalTheme.colors.duck[0]}/>
+        <Title sx={() => ({ fontWeight: 500, fontSize: '18px' })} color={globalTheme.colors.duck[0]} py={10}>Payment Summary</Title>
+      </Flex>
     <Table columns={columns} data={data} elements={dataChild} isLoading={fetchPaymentSummary.isLoading} isTableGroupedByFood={false} />
     </div>
   )

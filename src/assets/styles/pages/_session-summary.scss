@@ -1,0 +1,28 @@
+.payment-checklist-table {
+    thead tr th {
+        .mantine-TableHeadCell-Content {
+            justify-content: center;
+        }
+    }
+    .mantine-Text-root {
+       padding: 0;
+    }
+    &__bottom {
+        min-height: 0;
+        background-color: #f8f9fa;
+    }
+
+    &__top {
+        background-color: #f8f9fa;
+        
+
+        div {
+            padding: 0;
+        }
+    }
+}
+
+.fee-container {
+    background-color: rgba($color: $dark-lavender, $alpha: 0.07);
+    height: 100%;
+}

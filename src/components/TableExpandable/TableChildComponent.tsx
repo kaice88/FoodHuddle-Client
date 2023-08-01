@@ -1,15 +1,15 @@
-import { Avatar, Flex, Table, Text, useMantineTheme } from '@mantine/core'
+import { Table, Text, useMantineTheme } from '@mantine/core'
 import MenuOptions from '../MenuOptions'
 import { moneyFormat } from '@/utils/utility'
 import ItemName from '../ItemName'
-const ChildTable = ({ className, dataChilTable }) => {
+const ChildTable = ({ className, dataChildTable,isTableGroupedByFood = true }) => {
   const globalTheme = useMantineTheme()
 
-  const rows = dataChilTable.map((element, index) => {
+  const rows = dataChildTable.map((element, index) => {
     return (
       <tr key={`${index}-${element.name.name}`}>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
-          {isTableGroupedByFood ? <ItemInfo name={element.name.name} picture={element.name.photo}/> : <ItemInfo name={element.name} picture={element.name.photo}/>}
+          {isTableGroupedByFood ? <ItemName name={element.name.name} picture={element.name.photo}/> : <ItemName name={element.name} picture={element.name.photo}/>}
         </Text></td>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
           {moneyFormat(element.originPrice, 'VND', 'en-US', '')} đ

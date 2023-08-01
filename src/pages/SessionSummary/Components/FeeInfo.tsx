@@ -59,22 +59,28 @@ export default function FeeInfo({id}) {
 
   return (
     <>
-    {isLoading ? <Flex justify='center'><Loader /></Flex> : <Paper shadow="md" p="md" className="fee-info" sx={{ height: '20%' }} >
-      <Grid grow gutter="xl">
+    {isLoading ? <Flex justify='center'><Loader /></Flex> : 
+      <Grid grow gutter='xs'>
         <Grid.Col sm={12} md={6}>
-          <Title sx={() => ({ fontWeight: 700, fontSize: '20px' })} color={theme.colors.duck[0]} py={10}>Fees</Title>
+        <Paper className='fee-container' p="xs" shadow='sm' >
+          <Title sx={() => ({ fontWeight: 700, fontSize: '20px', textAlign:'center'})} color={theme.colors.duck[0]} pb={10}>Fees</Title>
           <FeeItem title="Shipping fee" value={orderBill?.shippingFee} color={theme.colors.duck[0]}/>
           <FeeItem title="Discount" value={orderBill?.discountAmount} color={theme.colors.duck[0]}/>
           <FeeItem title="Another fee" value={orderBill?.otherFee} color={theme.colors.duck[0]}/>
+          </Paper>
         </Grid.Col>
         <Grid.Col sm={12} md={6}>
-          <Title sx={() => ({ fontWeight: 700, fontSize: '20px' })} color={theme.colors.duck[0]} py={10}>Bill</Title>
-          <Flex wrap="wrap" gap="lg">
+        <Paper className='fee-container' p="xs" shadow='xs' >
+          <Title sx={() => ({ fontWeight: 700, fontSize: '20px',textAlign:'center'})} color={theme.colors.duck[0]} pb={10}>Bill</Title>
+          {orderBill?.receiptScreenshot.length === 0 ? <Text style={{textAlign:'center', fontStyle:'italic'}} color={theme.colors.duck[0]}>No data found</Text> :  
+          <Flex wrap="wrap" gap="lg" >
             {orderBill?.receiptScreenshot.map((item, index) => <BillItem key={index} srcImage ={item} />)}
-          </Flex>
+          </Flex> }
+          </Paper>
         </Grid.Col>
+        
       </Grid>
-    </Paper>}
+    }
     </>
   )
 }
