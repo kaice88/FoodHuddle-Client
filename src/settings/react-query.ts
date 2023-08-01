@@ -7,6 +7,7 @@ export function useRequestProcessor() {
       queryFn: queryFunction,
       ...options,
     })
+    })
   }
 
   function mutation<MutationResponseData, E, MutationData>(
