@@ -22,10 +22,12 @@ function SessionPage() {
   const { deleteSession, changeStatus } = useSession(sessionId)
   const [currentStatus, setCurrentStatus] = useState(sessionData?.status)
   const { userProfile } = useAuth()
-  const isHost = checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId)
 
   useEffect(() => {
-    setCurrentStatus(sessionData?.status)
+    if(sessionData)
+     {
+      setCurrentStatus(sessionData.status)
+     }
   }, [sessionData])
 
   const handleDeleteSession = () => {
@@ -55,7 +57,7 @@ function SessionPage() {
      {
       !isEmpty(sessionData) && 
       <><span>{currentStatus}</span>
-      {checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
+      {!checkIfUserIsHost(sessionData.host, userProfile) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} />}
       <SessionInfo sessionData={sessionData} />
       <Tabs defaultValue={'order'}>
         <Tabs.List>

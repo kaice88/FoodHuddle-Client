@@ -8,7 +8,6 @@ import useFoodStore from '@/store/foodStore'
 
 const fetchSessionById = async (sessionId: string) => {
   const response = await axiosInstance.get<SessionInfoData>(REQUEST_GET_SESSION_INFO(sessionId!))
-
   if (response.status === 200)
     return response.data
 }

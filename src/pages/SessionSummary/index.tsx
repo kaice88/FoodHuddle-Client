@@ -8,13 +8,18 @@ import YourPayment from './Components/YourPayment'
 import PaymentChecklistTable from './Components/PaymentChecklistTable'
 import ActionButton from '@/components/ActionButton'
 import useSession from '@/hooks/useSession'
-import { PaymentStatuses, SessionActions, SessionStatuses } from '@/enums'
+import {  SessionActions, SessionStatuses,SessionActionColor } from '@/enums'
 import { notificationShow } from '@/components/Notification'
+import { checkIfUserIsHost } from '@/utils/sessions'
+import useSessionData from '@/hooks/useSessionData'
+import useAuth from '@/hooks/useAuth'
 
 export default function SessionSummary() {
   const [hidden, setHidden] = useState(false)
   const { sessionId } = useParams()
   const { changeStatus } = useSession(sessionId)
+  const { sessionData, isLoading } = useSessionData(sessionId!)
+  const {userProfile} = useAuth()
 
   const handleChangeStatus = () => {
     changeStatus(SessionStatuses.FINISHED, (data) => {
@@ -23,14 +28,18 @@ export default function SessionSummary() {
     },
     )
   }
-
+  
   return (
-    <div>
-      {!hidden && <Flex justify="flex-end"><ActionButton value={SessionActions.FINISH} colorName="orange" handleOnClick={handleChangeStatus}/></Flex>}
-      <FeeInfo/>
+    <>
+    {!isLoading  && <div>
+      {checkIfUserIsHost(sessionData?.host, userProfile) && (sessionData?.status !== SessionStatuses.FINISHED && <Flex justify="flex-end" py={10}><ActionButton value={SessionActions.FINISH} colorName={SessionActionColor.FINISH} handleOnClick={handleChangeStatus}/></Flex>) }
+      <FeeInfo id={sessionId}/>
       <PaymentSummaryTable id={sessionId}/>
-      <YourPayment paymentStatus={PaymentStatuses.PENDING} id={sessionId}/>
-      <PaymentChecklistTable id={sessionId}/>
-    </div>
+      {
+        checkIfUserIsHost(sessionData?.host, userProfile)
+       ? <PaymentChecklistTable id={sessionId}/> : <YourPayment id={sessionId}/>}
+    </div> }
+    </>
+   
   )
 }

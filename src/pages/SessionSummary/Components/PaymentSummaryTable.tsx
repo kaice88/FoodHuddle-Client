@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Avatar, Flex, Text, useMantineTheme } from '@mantine/core'
+import { useEffect, useMemo } from 'react'
+import { Avatar, Flex, Text, Title, useMantineTheme } from '@mantine/core'
 import { IconBowl, IconCoin } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 
@@ -7,116 +7,62 @@ import Table from '@/components/TableExpandable/TableComponent'
 import { calculatePaymentAmount, moneyFormat } from '@/utils/utility'
 import usePaymentSession from '@/hooks/usePaymentSession'
 
-const dataBE = {
-  sessionId: 1,
-  foodOrderList:
- [
-   {
-     user: {
-       googleId: '118000667982679358226',
-       email: 'ngan.phan@nfq.com',
-       name: 'Ngan Phan Khanh',
-       photo: 'https://lh3.googleusercontent.com/a/AAcHTteJ-0ycB1Gz-fYDFq3OFKcet17Br5M4Mw0c2JGm3n4jUA=s96-c',
-     },
-     orders: [
-       {
-         id: 2,
-         foodName: 'Bú',
-         originPrice: 222,
-         quantity: 3,
-         note: 'adddddddddd',
-         options: [
-           {
-             category: 'SIZE',
-             detail: [
-               {
-                 name: 'Size L',
-                 price: 70,
-               },
-             ],
-           },
-           {
-             category: 'TOPPING',
-             detail: [
-               {
-                 name: 'Pudding',
-                 price: 222,
-               },
-               {
-                 name: '50% đá',
-                 price: 0,
-               },
-             ],
-           },
-         ],
-         actualPrice: 30,
-       },
-       {
-         id: 2,
-         foodName: 'Mì quả',
-         originPrice: 222,
-         quantity: 1,
-         note: 'ac',
-         options: [],
-         actualPrice: 200,
-       },
-     ],
-   },
-   {
-     user: {
-       googleId: '118000667982679358226',
-       email: 'ngan.phan@nfq.com',
-       name: 'Ngan Phan Khanh',
-       photo: 'https://lh3.googleusercontent.com/a/AAcHTteJ-0ycB1Gz-fYDFq3OFKcet17Br5M4Mw0c2JGm3n4jUA=s96-c',
-     },
-     orders: [
-       {
-         id: 2,
-         foodName: 'Bún',
-         originPrice: 222,
-         quantity: 1,
-         note: 'ac',
-         options: [
-           {
-             category: 'SIZE',
-             detail: [
-               {
-                 name: 'Size L',
-                 price: 70,
-               },
-             ],
-           },
-           {
-             category: 'TOPPING',
-             detail: [
-               {
-                 name: 'Pudding',
-                 price: 222,
-               },
-               {
-                 name: '50% đá',
-                 price: 0,
-               },
-             ],
-           },
-         ],
-         actualPrice: 222,
-       },
-       {
-         id: 2,
-         foodName: 'Mì quảng',
-         originPrice: 222,
-         quantity: 1,
-         note: 'ac',
-         options: [],
-         actualPrice: 222,
-       },
-     ],
-   },
- ],
-}
+const paymentSummary2 =  [
+  {
+      "user": {
+          "googleId": "118000667982679358226",
+          "email": "ngan.phan@nfq.com",
+          "name": "Ngan Phan Khanh",
+          "photo": "https://lh3.googleusercontent.com/a/AAcHTteJ-0ycB1Gz-fYDFq3OFKcet17Br5M4Mw0c2JGm3n4jUA=s96-c"
+      },
+
+      "orders": [
+          {
+              "id": 2,
+              "foodName": "Bún",
+              "originPrice": 222,
+              "quantity": 1,
+              "note": "ac",
+              "options": [
+                  {
+                      "category": "SIZE",
+                      "detail": [
+                          {
+                              "name": "Size L",
+                              "price": 70
+                          }
+                      ]
+                  },
+                  {
+                      "category": "TOPPING",
+                      "detail": [
+                          {
+                              "name": "Pudding",
+                              "price": 222
+                          },
+                          {
+                              "name": "50% đá",
+                              "price": 0
+                          }
+                      ]
+                  }
+              ],
+              "actualPrice": 222
+          },
+          {
+              "id": 2,
+              "foodName": "Mì quảng",
+              "originPrice": 222,
+              "quantity": 1,
+              "note": "ac",
+              "options": [],
+              "actualPrice": 222
+          }
+      ]
+  }
+]
+
 export default function SessionSummary({ id }) {
-  const [databe, setDataBE] = useState()
   const globalTheme = useMantineTheme()
   const { fetchPaymentSummary, paymentSummary } = usePaymentSession(id)
   useEffect(() => {
@@ -224,6 +170,9 @@ export default function SessionSummary({ id }) {
     : []
 
   return (
+    <div style={{padding:'10px 0'}}>
+    <Title sx={() => ({ fontWeight: 500, fontSize: '20px' })} color={globalTheme.colors.duck[0]} py={10}>Payment Summary</Title>
     <Table columns={columns} data={data} elements={dataChild} isLoading={fetchPaymentSummary.isLoading} isTableGroupedByFood={false} />
+    </div>
   )
 }

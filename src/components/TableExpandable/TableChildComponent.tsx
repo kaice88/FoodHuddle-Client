@@ -6,7 +6,8 @@ import { moneyFormat } from '@/utils/utility'
 const ChildTable = ({ className, dataChilTable, isTableGroupedByFood }) => {
   const globalTheme = useMantineTheme()
 
-  const handleUserName = (name, picture) => {
+
+  const ItemInfo = ({name, picture}) => {
     return (
       <Flex gap="sm" justify="flex-start" align="center" direction="row" >
         <Avatar src={picture} alt={name} radius="xl" size={35}/>
@@ -15,11 +16,12 @@ const ChildTable = ({ className, dataChilTable, isTableGroupedByFood }) => {
         </Text>
       </Flex>)
   }
+
   const rows = dataChilTable.map((element, index) => {
     return (
       <tr key={`${index}-${element.name.name}`}>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
-          {isTableGroupedByFood ? handleUserName(element.name.name, element.name.photo) : element.name}
+          {isTableGroupedByFood ? <ItemInfo name={element.name.name} picture={element.name.photo}/> : <ItemInfo name={element.name} picture={element.name.photo}/>}
         </Text></td>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
           {moneyFormat(element.originPrice, 'VND', 'en-US', '')} đ

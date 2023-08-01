@@ -21,16 +21,19 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
     if (isEmpty(userPayment))
       return
     setFiles(userPayment.evidence)
-    setValue('evidence', files)
+    setValue('evidence', userPayment.evidence)
     setValue('note', userPayment.note)
   }, [])
+
   const handleDeleteImage = (index) => {
     const updatedFiles = [...files]
     updatedFiles.splice(index, 1)
     setFiles(updatedFiles)
+    setValue('evidence', updatedFiles)
   }
 
   const onSubmit = (data) => {
+    
     requestPayment(data, (res) => {
       notificationShow('success', 'SUCCESS', res.data.message)
       closeModal()
@@ -39,7 +42,7 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+   <form onSubmit={handleSubmit(onSubmit)}>
         <Flex align="center" >
           <Title sx={() => ({ fontWeight: 500, fontSize: '14px' })} color="#212529" pr={10}>Evidence</Title>
           <Controller
@@ -69,6 +72,6 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
         <Flex justify="flex-end">
           <Button mt="md" type="submit">OK</Button>
         </Flex>
-      </form>
+      </form> 
     </>)
 }

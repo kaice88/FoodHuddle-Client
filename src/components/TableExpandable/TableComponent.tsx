@@ -32,34 +32,32 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
     enableSorting: false,
     enableTopToolbar: false,
     enablePagination: false,
-    mantineTableBodyCellProps: ({ row }) => ({
+    mantineTableBodyCellProps: () => ({
       style: {
         backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
         borderBottom: '2px solid white',
         padding: '5px',
       },
     }),
-    mantineTableContainerProps: ({ table }) => ({
+    mantineTableContainerProps: () => ({
       sx: {
         maxHeight: '500px',
         backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.9)}`,
         padding: '3px',
-
       },
     }),
     enableBottomToolbar: false,
-    mantineTableBodyRowProps: ({ table }) => ({
+    mantineTableBodyRowProps: () => ({
       style: {
         border: 'none',
         boxShadow: 'none',
         outline: 'none',
         padding: '0px',
         backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 1)}`,
-
       },
 
     }),
-    mantineTableHeadCellProps: ({ table }) => ({
+    mantineTableHeadCellProps: () => ({
       style: {
         border: 'none',
         boxShadow: 'none',
@@ -68,7 +66,7 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
         padding: '10px',
       },
     }),
-    mantineExpandAllButtonProps: ({ table }) => ({
+    mantineExpandAllButtonProps: () => ({
       style: {
         align: 'left',
         color: `${globalTheme.colors.darkLavender[0]}`,
@@ -81,7 +79,7 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
         },
       },
     }),
-    mantineExpandButtonProps: ({ row }) => ({
+    mantineExpandButtonProps: () => ({
       style: {
         scale: '0.7',
         align: 'left',
@@ -94,7 +92,7 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
         },
       },
     }),
-    mantinePaperProps: ({ table }) => ({
+    mantinePaperProps: () => ({
       style: {
         border: 'none',
         boxShadow: 'none',

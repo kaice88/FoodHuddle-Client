@@ -1,27 +1,20 @@
 import { IconUsers } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { SessionStatuses } from "@/enums";
-import { ActionIcon } from "@mantine/core";
-import { IconLink } from "@tabler/icons-react";
-
-import { getSessionStatus } from '@/utils/sessions'
 import StatusBadge from '../../StatusBadge'
-import type { SessionProps } from './types'
-
+import { getSessionStatus } from '@/utils/sessions'
 import CopyClipBoard from '@/components/CopyClipboard'
+import type { SessionToday } from '@/types/sessions'
 
-const getStatusClassName = (status: SessionStatuses): string => {
-  if (status === SessionStatuses.OPEN)
-    return 'open'
-
-  if (status === SessionStatuses.LOCKED)
-    return 'locked'
+interface SessionCardProps {
+  session: SessionToday
+}
 
 function SessionCard({ session }: SessionCardProps) {
   return (
     <div className="sessionWrapper">
       <div className="session">
+        {' '}
         <div className="session__info">
           <Link className="session__title" to={`/sessions-today/${session.id}`}>
             {session.title}
@@ -29,7 +22,7 @@ function SessionCard({ session }: SessionCardProps) {
           <div className="session__host">{session.host}</div>
         </div>
         <div
-          className={`session__status session__status-${getStatusClassName(
+          className={`session__status session__status-${getSessionStatus(
             session.status,
           )}`}
         >

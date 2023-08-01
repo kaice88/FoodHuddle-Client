@@ -7,6 +7,7 @@ export enum PaymentStatuses {
 export enum PaymentActions {
   APPROVE = 'APPROVE',
   REJECT = 'REJECT',
+  APPROVE_ALL = 'APPROVE ALL',
 }
 
 export enum PaymentStatusColors {
@@ -18,4 +19,5 @@ export enum PaymentStatusColors {
 export enum PaymentActionColors {
   APPROVE = 'green',
   REJECT = 'orange',
+  APPROVE_ALL = 'green',
 }
