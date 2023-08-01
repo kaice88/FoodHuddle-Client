@@ -36,9 +36,11 @@ function FoodMenu() {
         <Carousel
           mt={16}
           orientation={sm?"horizontal" : "vertical"}
-          height={490}
+          height={sm? 320: 490}
           className="menu"
-          withControls={false}
+          withControls = {sm?true:false}
+          loop
+          controlSize={10}
         >
           {menuGroups.map((menu) => {
             return (
@@ -48,7 +50,7 @@ function FoodMenu() {
                   breakpoints={[
                     { minWidth: 1500, cols: 4 },
                     { minWidth: 1270, cols: 3 },
-                    { minWidth: 700, cols: 2 },
+                    { minWidth: 699.3, cols: 2 },
                   ]}
                   cols={1}
                   spacing={"md"}
