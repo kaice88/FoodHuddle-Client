@@ -19,7 +19,7 @@ function OrderList() {
   let content;
 
   if(isEmpty(foodOrderList)){
-    content = <Flex align="center" justify="center"> <IconMoodSad size={60}/> <Title order={3}>You haven't chosen any food? Let have yourself something good!</Title></Flex>
+    content = <Flex align="center" justify="center" direction="column"> <IconMoodSad size={60}/> <Title order={3}>You haven't chosen any food? Let have yourself something good!</Title></Flex>
   }else{
     content = <SimpleGrid cols={1} spacing="md" breakpoints={[{ minWidth: 968, cols: 2 }]}> {foodOrderList.map(orderItem => 
     <OrderItem editOrderHandler={()=>{
