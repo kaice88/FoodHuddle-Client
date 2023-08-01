@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { isEmpty } from 'lodash'
 import { useRequestProcessor } from '@/settings/react-query'
 import type { Menu, MenuResponseData } from '@/types/food'
 
@@ -33,8 +34,9 @@ function useMenu(sessionId: string) {
   const { isLoading, data, error } = menuFoodQuery(sessionId, currentShop)
 
   useEffect(() => {
-    setCurrentMenu(data!)
-  }, [isLoading])
+    if (!isEmpty(data))
+      setCurrentMenu(data!)
+  }, [data, setCurrentMenu])
 
   return { isLoading, data, error }
 }

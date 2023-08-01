@@ -1,6 +1,5 @@
-import type { ReactNode } from 'react'
-import type React from 'react'
-import { modals } from '@mantine/modals'
+import React, { ReactNode } from "react"
+import { modals } from "@mantine/modals"
 
 const useModal = (
   title: string | ReactNode = '',
@@ -16,9 +15,9 @@ const useModal = (
   }
 
   const closeModal = (cb?: () => void) => {
-    if (typeof cb === 'function')
+    if (typeof cb === "function") {
       cb()
-
+    }
     modals.closeAll()
   }
 
