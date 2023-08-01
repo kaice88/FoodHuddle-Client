@@ -7,17 +7,18 @@ import {
 } from 'mantine-react-table'
 import { ActionIcon, Avatar, Flex, MultiSelect, Text, Tooltip, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { IconAlertCircle, IconEdit, IconTrash } from '@tabler/icons-react'
+import { IconAlertCircle, IconEdit, IconTrash,IconChefHat} from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 import { moneyFormat } from '@/utils/utility'
 import useSummaryTab from '@/hooks/useSummaryTab'
 import MenuOptions from '@/components/MenuOptions'
 import { notificationShow } from '@/components/Notification'
-
+import ItemName from '@/components/ItemName'
 export interface DataEdit {
   id: number
   user: any
   foodName: string
+  foodImage: string
   originPrice: number
   actualPrice: number
   note: string | null
@@ -53,16 +54,6 @@ const EditTable = ({ sessionId }) => {
   const foodNamesSelect = handleFoodNamesSelect(foodOrderMenu)
   const globalTheme = useMantineTheme()
 
-  const handleUserName = (name, picture) => {
-    return (
-      <Flex gap="sm" justify="flex-start" align="center" direction="row">
-        <Avatar src={picture} alt={name} radius="xl" size={35}/>
-        <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ width: 'fix-content' }} >
-          {name}
-        </Text>
-      </Flex>)
-  }
-
   useEffect(() => {
     const handleFetchQueryFoodOrderEdit = async () => {
       await queryFoodOrderMenu.refetch()
@@ -86,7 +77,21 @@ const EditTable = ({ sessionId }) => {
         enableEditing: false,
         Cell: ({ cell }) => {
           const user = cell.getValue()
-          return handleUserName(user.name, user.photo)
+          return  <ItemName name={user.name} picture={user.photo} />
+        },
+      },
+      {
+        accessorKey: 'foodImage',
+        header: '',
+        size: 30,
+        enableEditing: false,
+        enableSorting:false,
+        Cell: ({ cell }) => {
+          const foodImage = cell.getValue()
+          return foodImage ? <Avatar src={foodImage} alt={foodImage} radius="xl" size={35}/> : 
+          ( <Avatar color="violet" radius="sm">
+          <IconChefHat size="1.5rem" />
+        </Avatar>)
         },
       },
       {
@@ -115,6 +120,7 @@ const EditTable = ({ sessionId }) => {
                     ...currentValueRow,
                     options: [],
                     foodName: value,
+                    foodImage: updatedOptions.photo,
                     originPrice: originalPrice,
                     actualPrice: originalPrice,
                   }

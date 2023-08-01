@@ -6,7 +6,7 @@ import EditTable from './TableSummaryEdit'
 import ViewTable from '@/pages/SessionPage/Components/SummaryTab/TableSummaryView'
 import ImagesUploaded from '@/components/ImagesUploaded'
 import useSummaryTab from '@/hooks/useSummaryTab'
-
+import axios from 'axios'
 const SummaryTab = ({ sessionId }) => {
   const { mutateBill } = useSummaryTab()
   const fetchMutateBill = mutateBill(sessionId)
@@ -40,24 +40,29 @@ const SummaryTab = ({ sessionId }) => {
     formFees !== null && form.setValues(formFees)
   }, [formFees])
 
-  const handleSubmitBill = async (values) => {
-    const formData = new FormData()
-    values.receiptScreenshot.forEach((file) => {
-      if(typeof file === 'object'){
-      formData.append('receiptScreenshot', file)
-    }else{
-      const fileExtension = file.split('.').pop();
-      const fileTransform = new File(['file'],file, {
-        type: `image/${fileExtension}`,
-      })
-      formData.append('receiptScreenshot', fileTransform)
-    }})
-    formData.append('discountAmount', values.discountAmount ? Number(values.discountAmount) : 0)
-    formData.append('shippingFee', values.shippingFee ? Number(values.shippingFee) : 0)
-    formData.append('otherFee', values.otherFee ? Number(values.otherFee) : 0)
-
-    fetchMutateBill.mutate(formData)
+  function getFileNameFromPath(path) {
+    return path.split('/').pop();
   }
+  
+  const handleSubmitBill = async (values) => {
+    const formData = new FormData();
+    for (const file of values.receiptScreenshot) {
+      if (typeof file === 'object') {
+        formData.append('receiptScreenshot', file);
+      } else {
+        const res = await axios.get(file, { responseType: 'blob' });
+        const blob = res.data;
+        const fileName = getFileNameFromPath(file);
+        const fileTransform = new File([blob], fileName, { type: blob.type });
+        formData.append('receiptScreenshot', fileTransform);
+      }
+    }
+    formData.append('discountAmount', values.discountAmount ? Number(values.discountAmount) : 0);
+    formData.append('shippingFee', values.shippingFee ? Number(values.shippingFee) : 0);
+    formData.append('otherFee', values.otherFee ? Number(values.otherFee) : 0);
+  
+    fetchMutateBill.mutate(formData);
+  };
 
   const files = form.getInputProps('receiptScreenshot').value
   const handleDeleteImage = (index) => {
