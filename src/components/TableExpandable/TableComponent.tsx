@@ -9,7 +9,7 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
     data,
     renderDetailPanel: ({ row }) => {
       if (isTableGroupedByFood) {
-        const element = elements.filter(item => row.original.foodName === item.foodName)
+        const element = elements.filter(item => row.original.foodName.name === item.foodName)
         return <ChildTable className="child-table" dataChilTable={element[0].elements} key={row.id}/>
       }
       else {
