@@ -20,6 +20,7 @@ const sessionByIdQuery = (sessionId: string) => {
 
   )
 }
+
 function useSessionData(sessionId: string) {
   const setCurrentShop = useFoodStore(state => state.setCurrentShop)
 

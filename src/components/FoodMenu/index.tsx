@@ -19,41 +19,26 @@ function FoodMenu() {
 
   const xl = useMediaQuery('(min-width: 1500px)')
   const md = useMediaQuery('(min-width: 1270px)')
-  const sm = useMediaQuery('(min-width: 500px)')
+  const sm = useMediaQuery('(min-width: 699.3px)')
 
-  const menuGroups = xl
-    ? divideElementsIntoGroups(menu, 8)
-    : md
-      ? divideElementsIntoGroups(menu, 6)
-      : sm
-        ? divideElementsIntoGroups(menu, 4)
-        : divideElementsIntoGroups(menu, 2)
+  let menuGroups = divideElementsIntoGroups(menu,3)
+
+  if(sm) menuGroups = divideElementsIntoGroups(menu,4)
+  if(md) menuGroups = divideElementsIntoGroups(menu,6)
+  if(xl) menuGroups = divideElementsIntoGroups(menu,8)
+
 
   return (
     <>
       <Title order={3}>
         <IconMeat /> What's popping?
       </Title>
-      <Skeleton radius="lg" h={344}visible={isLoading}>
         <Carousel
-          controlsOffset={-50}
-          controlSize={16}
-          align={'center'}
+          mt={16}
+          orientation={sm?"horizontal" : "vertical"}
+          height={490}
           className="menu"
-          withIndicators
-          withControls
-          nextControlIcon={
-            <ActionIcon sx={{ color: '#FF6B00' }}>
-              {' '}
-              <IconArrowBigRightFilled />
-            </ActionIcon>
-          }
-          previousControlIcon={
-            <ActionIcon sx={{ color: '#FF6B00' }}>
-              {' '}
-              <IconArrowBigLeftFilled />
-            </ActionIcon>
-          }
+          withControls={false}
         >
           {menuGroups.map((menu) => {
             return (
@@ -61,11 +46,13 @@ function FoodMenu() {
                 {' '}
                 <SimpleGrid
                   breakpoints={[
-                    { minWidth: 1500, cols: 4, spacing: 'md' },
-                    { minWidth: 1270, cols: 3, spacing: 'md' },
-                    { minWidth: 500, cols: 2, spacing: 'md' },
+                    { minWidth: 1500, cols: 4 },
+                    { minWidth: 1270, cols: 3 },
+                    { minWidth: 700, cols: 2 },
                   ]}
                   cols={1}
+                  spacing={"md"}
+                  verticalSpacing={"md"}
                   key={uuidv4()}
                 >
                   {menu.map(item => (
@@ -77,7 +64,6 @@ function FoodMenu() {
           })}
 
         </Carousel>
-      </Skeleton>
     </>
   )
 }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import FoodHuddleLogo from '@/assets/images/FoodHuddleLogo.png'
+import FoodHuddleLogo from '@/assets/images/FoodHuddleLogo.png';
 
 interface LogoProps {
   className: string

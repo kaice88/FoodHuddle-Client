@@ -1,14 +1,19 @@
 .orderTab {
-  padding: calc(2 * $content-gutter);
-
+  padding: $content-gutter;
+  @include breakpoint-down("smallphone"){
+    padding: 8px;
+  }
 }
 
+.mantine-Carousel-root {
+  @include breakpoint-down("smallphone"){
+    padding: 0px !important;
+  }
+}
 .foodMenuItem {
-  display: flex;
-
-  flex: 0 0 280px; /* flex-grow: 0, flex-shrink: 0, flex-basis: 280px */
+  display: flex; 
   height: 140px;
-
+  flex: 0 0 280px;
   padding: $content-gutter;
   border-radius: 16px;
   background-color: #f7f7f7;
@@ -16,13 +21,15 @@
 
   &__imageWrapper {
     flex: 1 1 0;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   &__imageWrapper img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
     object-fit: cover;
     border-radius: 16px;
+    height: 100%;
   }
   &__info {
     flex: 2 1 0;
@@ -41,8 +48,6 @@
 .menu {
   width: 100%;
   padding: $content-gutter;
-  justify-content: space-around;
-  max-height: 280 + calc(4 * $content-gutter);
 }
 
 .mantine-Checkbox-body {
@@ -55,6 +60,8 @@
   border-radius: 16px;
   max-height: 250px;
   height: auto;
+  display: flex;
+  align-items: center;
 }
 
 .button-addOrder{
@@ -66,4 +73,12 @@
 .button-addOrder:hover{
   background-color:#f7f7f7;
   color:$orange;
+}
+
+.mantine-SimpleGrid-root{
+  width:100% !important;
+}
+
+.mantine-Carousel-slide{
+  @include flexbox-centering();
 }

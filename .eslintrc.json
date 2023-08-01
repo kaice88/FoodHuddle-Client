@@ -2,7 +2,7 @@
   "env": { "browser": true, "es2020": true },
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "@antfu/eslint-config-react"
+    "@antfu/eslint-config-react",
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": { "ecmaVersion": "latest", "sourceType": "module" },
@@ -11,7 +11,6 @@
   "rules": {
     "react-refresh/only-export-components": "warn",
     "antfu/top-level-function": "off",
-    "@typescript-eslint/indent": "off",
     "indent": [
       "error",
       2,

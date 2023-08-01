@@ -6,6 +6,7 @@ export interface FoodOrderListData {
 export interface FoodOrderItem {
   id: string
   foodName: string
+  foodImage:string
   originPrice: number
   quantity: number
   note: string
