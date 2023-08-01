@@ -5,16 +5,19 @@ import StatusBadge from '../../StatusBadge'
 import { getSessionStatus } from '@/utils/sessions'
 import CopyClipBoard from '@/components/CopyClipboard'
 import type { SessionToday } from '@/types/sessions'
+import {SessionStatuseColors,SessionStatuses} from '@/enums'
 
 interface SessionCardProps {
   session: SessionToday
 }
 
 function SessionCard({ session }: SessionCardProps) {
+
+  const getKeyByValue = (enumObj,enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
+ 
   return (
     <div className="sessionWrapper">
       <div className="session">
-        {' '}
         <div className="session__info">
           <Link className="session__title" to={`/sessions-today/${session.id}`}>
             {session.title}
@@ -26,7 +29,7 @@ function SessionCard({ session }: SessionCardProps) {
             session.status,
           )}`}
         >
-          <StatusBadge status={session.status} />
+          <StatusBadge status={session.status} colorName={SessionStatuseColors[getKeyByValue(SessionStatuses,session.status)]} />
         </div>
         <div className="session__link">
           <div className="session__joiners">
