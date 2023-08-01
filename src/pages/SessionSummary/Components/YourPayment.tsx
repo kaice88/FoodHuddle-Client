@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty'
 import PaymentModal from './PaymentModal'
 import StatusBadge from '@/components/StatusBadge'
 import { PaymentStatusColors, PaymentStatuses } from '@/enums'
-import { moneyFormat } from '@/utils/utility'
 import usePaymentSession from '@/hooks/usePaymentSession'
 
 export default function YourPayment({ id }) {

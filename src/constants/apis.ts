@@ -19,9 +19,15 @@ export const REQUEST_GET_HOST_PAYMENT_INFO = `${SESSION_BASE_URL}/host-payment-i
 export const REQUEST_GET_ALL_SESSIONS_TODAY = `${SESSION_BASE_URL}/get-all-sessions-today`
 export const REQUEST_SESSION = id => `${SESSION_BASE_URL}/${id}`
 export const REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB = '/v1/food-order/summary'
-export const REQUEST_POST_ORDER_BILL = '/v1/session'
-export const REQUEST_PUT_FOOD_ORDER_ROW = '/v1/food-order/'
+
+export const REQUEST_ORDER_BILL = (sessionId: string) =>
+  `/v1/session/${sessionId}/payment`
+
+export const REQUEST_FOOD_ORDER_ROW = (rowId) =>
+  `/v1/food-order/${rowId}`
+
+
 export const REQUEST_GET_FOOD_ORDER_MENU = '/v1/food-order/menu'
 export const REQUEST_USER_PAYMENT = id => `${SESSION_BASE_URL}/${id}/user-payment` 
 export const REQUEST_PAYMENT_CHECKLIST = id => `${SESSION_BASE_URL}/${id}/payment-checklist`
-export const REQUEST_ORDER_BILL = id => `${SESSION_BASE_URL}/${id}/payment` 
+

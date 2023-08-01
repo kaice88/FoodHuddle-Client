@@ -1,20 +1,17 @@
-import { useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_POST_ORDER_BILL, REQUEST_PUT_FOOD_ORDER_ROW } from '@/constants/apis'
+import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_ORDER_BILL, REQUEST_FOOD_ORDER_ROW } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import { calculateTotal } from '@/utils/utility'
 
 function useSummaryTab() {
-  const globalTheme = useMantineTheme()
-
   const { mutation, query } = useRequestProcessor()
 
   const mutateBill = sessionId =>
     mutation(
       ['save-bill'],
-      async data => await axiosInstance.put(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`, data),
+      async data => await axiosInstance.put(REQUEST_ORDER_BILL(sessionId), data),
       {
         onSuccess: (data) => {
           if (data.data.status === 'success')
@@ -31,7 +28,7 @@ function useSummaryTab() {
 
   const fetchQueryFormFees = (sessionId, setFormFees) => query(
     ['get-bill'],
-    () => axiosInstance.get(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`),
+    () => axiosInstance.get(REQUEST_ORDER_BILL(sessionId)),
     {
       enabled: false,
       onSuccess: (data) => {
@@ -117,7 +114,10 @@ function useSummaryTab() {
         return (
           {
             id: Number(index) + 1,
-            foodName: item.foodName,
+            foodName: {
+              name: item.foodName ,
+              image: item.foodImage,
+            },
             total: Number(totalMoneyEachFood),
             quantity: quantityOrderEachFood,
           }
@@ -177,6 +177,7 @@ function useSummaryTab() {
       ? dataBE.map((item, index) => {
         return ({
           id: item.id,
+          foodImage: item.foodImage,
           foodName: item.foodName,
           actualPrice: item.actualPrice,
           note: item.note,
@@ -215,7 +216,7 @@ function useSummaryTab() {
   const fetchMutationSaveFoodOrderRow = mutation(
     ['foodOrderSave'],
     async data =>
-      await axiosInstance.put(`${REQUEST_PUT_FOOD_ORDER_ROW}/${data.rowId}`, data.rowData),
+      await axiosInstance.put(REQUEST_FOOD_ORDER_ROW(data.rowId), data.rowData),
     {
       onSuccess: (data) => {
         if (data.data.status === 'success')
@@ -233,7 +234,7 @@ function useSummaryTab() {
   const fetchMutationDeleteFoodOrderRow = mutation(
     ['foodOrderDelete'],
     async data =>
-      await axiosInstance.delete(`${REQUEST_PUT_FOOD_ORDER_ROW}/${data.rowId}`, {
+      await axiosInstance.delete(REQUEST_FOOD_ORDER_ROW(data.rowId), {
         data: { sessionId: data.sessionId },
       }),
     {
@@ -324,7 +325,6 @@ function useSummaryTab() {
         return item
       }
     })
-    console.log(newList)
     return newList
   }
   return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleFoodNamesSelect, transformDataForMultiSelect, convertOptionsValueToDataTableEdit, updateTableEdit }

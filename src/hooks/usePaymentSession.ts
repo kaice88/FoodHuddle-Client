@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { notificationShow } from '@/components/Notification'
 import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_PAYMENT_CHECKLIST, REQUEST_USER_PAYMENT,REQUEST_ORDER_BILL} from '@/constants/apis'
 import axios from '@/settings/axios'
+import ax from 'axios'
 
 function usePaymentSession(id) {
   const [paymentSummaryData, setPaymentSummaryData] = useState()
@@ -25,17 +26,9 @@ function usePaymentSession(id) {
     onError: handleError,
   })
 
-  const requestPayment = (data, onSuccess) => {
-    const formData = new FormData()
-    Object.keys(data).forEach((key) => {
-      if (key === 'evidence') {
-        data[key].forEach((item) => {
-          formData.append(key, item)
-        })
-      }
-      else { formData.append(key, data[key]) }
-    })
-    requestPaymentMutation.mutate(formData,
+  const requestPayment =  (data, onSuccess) => {
+   
+    requestPaymentMutation.mutate(data,
       {
         onSuccess,
       })

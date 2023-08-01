@@ -2,6 +2,7 @@ import { Button, FileButton, Flex, Textarea, Title } from '@mantine/core'
 import { IconUpload } from '@tabler/icons-react'
 import { Controller, useForm } from 'react-hook-form'
 import isEmpty from 'lodash/isEmpty'
+import ax from 'axios'
 
 import { useEffect, useState } from 'react'
 import ImagesUploaded from '@/components/ImagesUploaded'
@@ -32,9 +33,23 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
     setValue('evidence', updatedFiles)
   }
 
-  const onSubmit = (data) => {
-    
-    requestPayment(data, (res) => {
+  const onSubmit = async (data) => {
+    const formData = new FormData()
+    const evidence = data.evidence
+    await Promise.all (evidence?.map(async (item) => {
+      if (typeof item === 'object') {
+        formData.append('evidence', item);
+      } else {
+        const res = await ax.get(item, { responseType: 'blob' })
+        const blob = res.data;
+        const fileName = item.split('/').pop();
+        const fileTransform = new File([blob], fileName, {type: blob.type});
+        formData.append('evidence', fileTransform);
+      }
+    }))
+    formData.append('note', data.note)
+   
+    requestPayment(formData, (res) => {
       notificationShow('success', 'SUCCESS', res.data.message)
       closeModal()
     })

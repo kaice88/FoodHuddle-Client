@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { type MRT_ColumnDef } from 'mantine-react-table'
-import { Flex, Text, useMantineTheme } from '@mantine/core'
+import { Flex, Text, useMantineTheme  } from '@mantine/core'
 import { IconBowl, IconCoin } from '@tabler/icons-react'
 import Table from '../../../../components/TableExpandable/TableComponent'
 import { moneyFormat } from '@/utils/utility'
 import useSummaryTab from '@/hooks/useSummaryTab'
-
+import ItemName from '@/components/ItemName'
 export interface FoodRowCover {
   id: number
   foodName: string
@@ -26,13 +26,22 @@ const ViewTable = ({ sessionId }) => {
     }
     handlefetchTableFoodOrderView()
   }, [])
+
+  useEffect(() => {
+    const pollingInterval = setInterval(() => {
+      fetchQueryTableFoodOrderView.refetch()
+    }, 10000); 
+
+    return () => clearInterval(pollingInterval);
+  }, []);
+
   const columns = useMemo<MRT_ColumnDef<FoodRowCover>[]>(
     () => [
       {
         accessorKey: 'id',
         header: '',
         size: 30,
-        Cell: ({ renderedCellValue, row }) => (
+        Cell: ({ renderedCellValue }) => (
           <Text fw={700} color={globalTheme.fn.darken(globalTheme.colors.orange[0], 0.1)}>
             {renderedCellValue}
           </Text>
@@ -42,15 +51,13 @@ const ViewTable = ({ sessionId }) => {
         accessorKey: 'foodName',
         size: 300,
         header: '',
-        Cell: ({ renderedCellValue, row }) => (
-          <Text
-            fw={600}
+        Cell: ({ renderedCellValue }) => (
+          <Text  fw={600}
             fs={'16px'}
             color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.5)}
-            style={{ textTransform: 'capitalize' }}
-          >
-            {renderedCellValue}
-          </Text>
+            style={{ textTransform: 'capitalize' }}>
+          <ItemName name={renderedCellValue.name} picture={renderedCellValue.image}/>
+        </Text>
         ),
       },
       {
