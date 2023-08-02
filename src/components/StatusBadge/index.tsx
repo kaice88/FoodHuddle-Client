@@ -4,7 +4,7 @@ import type { StatusBadgeProps } from './types'
 
 function StatusBadge({ status }: StatusBadgeProps) {
   return (
-    <Badge size="xl" variant="light">
+    <Badge size="lg" variant="light">
       {status}
     </Badge>
   )

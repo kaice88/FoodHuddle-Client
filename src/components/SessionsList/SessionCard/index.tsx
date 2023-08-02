@@ -16,40 +16,42 @@ function SessionCard({ session }: SessionCardProps) {
 
   const sessionURL = `${window.location.origin}/sessions/${id}`
   return (
-    <Card maw={rem('100%')} w={rem('340px')} shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section component="a" href={sessionURL}>
         <Image
+          fit="cover"
           src={shopImage || mockShopImage}
           height={160}
-          alt="Norway"
+          alt={title}
         />
       </Card.Section>
+      <Flex direction="column" justify="space-between">
+        <Group position="apart" mt="md" mb="xs">
+          <Box maw={rem('60%')}>  <Text truncate weight={500}>{title}</Text></Box>
+          {<StatusBadge status={status}/>}
+        </Group>
 
-      <Group position="apart" mt="md" mb="xs">
-        <Box maw={rem('200')}>  <Text lineClamp={2} weight={500}>{title.toUpperCase()}</Text></Box>
-        {<StatusBadge status={status}/>}
-      </Group>
+        <Group position="apart" mt="md" mb="xs">
+          <Text size="sm" color="dimmed">
+            {host}
+          </Text>
+          <Flex align="center" justify="center" gap={4}>
+            <CopyClipBoard text={sessionURL}/>
+            <Center>
+              <ThemeIcon color="brand" size={'xs'}>
+                <IconUsers/>
+              </ThemeIcon>
+            </Center>
+            {numberOfJoiners}
+          </Flex>
+        </Group>
 
-      <Group position="apart" mt="md" mb="xs">
-        <Text size="sm" color="dimmed">
-          {host}
-        </Text>
-        <Flex align="center" justify="center" gap={4}>
-          <CopyClipBoard text={sessionURL}/>
-          <Center>
-            <ThemeIcon color="brand" size={'xs'}>
-              <IconUsers/>
-            </ThemeIcon>
-          </Center>
-          {numberOfJoiners}
-        </Flex>
-      </Group>
-
-      <Button variant="light" fullWidth mt="md" radius="md" onClick={() => {
-        navigate(`/sessions/${id}`)
-      }}>
+        <Button variant="light" fullWidth mt="md" radius="md" onClick={() => {
+          navigate(`/sessions/${id}`)
+        }}>
        JOIN NOW!
-      </Button>
+        </Button>
+      </Flex>
     </Card>
   )
 }

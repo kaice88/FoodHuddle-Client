@@ -1,6 +1,6 @@
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { Flex, rem } from '@mantine/core'
+import { SimpleGrid } from '@mantine/core'
 import SessionCard from './SessionCard'
 import type { SessionData } from '@/types/sessions'
 
@@ -10,11 +10,11 @@ interface SessionTodayListProps {
 
 function SessionList({ sessionsList }: SessionTodayListProps) {
   return (
-    <Flex align="center" justify="center" direction="column" gap={rem('16px')}>
+    <SimpleGrid cols={1} spacing="xs" verticalSpacing="xs" breakpoints={[{ minWidth: 'xs', cols: 2, spacing: 'md', verticalSpacing: 'md' }, { minWidth: 'md', cols: 3, spacing: 'lg', verticalSpacing: 'lg' }, { minWidth: 'xl', cols: 4, spacing: 'xl', verticalSpacing: 'xl' }]}>
       {sessionsList.map(session => (
         <SessionCard key={uuidv4()} session={session} />
       ))}
-    </Flex>
+    </SimpleGrid>
   )
 }
 
