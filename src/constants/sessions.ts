@@ -1,4 +1,4 @@
-import { SessionsTodayPageTabs } from "@/enums"
+import { SessionsTodayPageTabs } from '@/enums'
 
 interface Tab {
   value: SessionsTodayPageTabs
@@ -6,8 +6,8 @@ interface Tab {
 }
 
 export const TABS_CONFIG: Tab[] = Object.values(SessionsTodayPageTabs).map(
-  (tab) => ({
+  tab => ({
     value: tab,
     title: tab,
-  })
+  }),
 )
