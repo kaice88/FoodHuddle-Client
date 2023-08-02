@@ -1,4 +1,4 @@
-import { SessionStatuses } from "@/enums"
+import type { SessionStatuses } from '@/enums'
 
 export interface StatusBadgeProps {
   status: SessionStatuses

@@ -11,7 +11,7 @@ interface SessionsTodayResponse {
   data: SessionToday[]
 }
 
-const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
+async function fetchSessionsToday(tab: SessionsTodayPageTabs) {
   try {
     const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab))
     if (status === 200)
@@ -22,7 +22,7 @@ const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
   }
 }
 
-const useSessionTodayData = (tab: SessionsTodayPageTabs) => {
+function useSessionTodayData(tab: SessionsTodayPageTabs) {
   const { query } = useRequestProcessor()
   return query<SessionToday[], Error>(
     ['sessionsToday', tab],
@@ -30,7 +30,7 @@ const useSessionTodayData = (tab: SessionsTodayPageTabs) => {
   )
 }
 
-const useSessionsToday = (tab: SessionsTodayPageTabs) => {
+function useSessionsToday(tab: SessionsTodayPageTabs) {
   const [activeTab, setActiveTab] = useState(tab)
 
   const { data, isLoading, error } = useSessionTodayData(activeTab)

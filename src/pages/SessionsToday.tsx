@@ -1,13 +1,13 @@
-import { Loader, Tabs } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
-import { Box, Button, Flex, Group, Modal, Text } from "@mantine/core"
-import { IconSquarePlus } from "@tabler/icons-react"
+import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 
-import SessionInfo from "@/components/SessionInfo"
-import SessionList from "@/components/SessionsList"
-import useSessionsToday from "@/hooks/useSessionsToday"
-import { SessionsTodayPageTabs } from "@/enums"
-import { TABS_CONFIG } from "@/constants/sessions"
+import { IconSquarePlus } from '@tabler/icons-react'
+
+import SessionInfo from '@/components/SessionInfo'
+import SessionList from '@/components/SessionsList'
+import useSessionsToday from '@/hooks/useSessionsToday'
+import { SessionsTodayPageTabs } from '@/enums'
+import { TABS_CONFIG } from '@/constants/sessions'
 
 export default function SessionTodayPage() {
   const {
@@ -25,7 +25,7 @@ export default function SessionTodayPage() {
         Create new session
       </Text>
       <div
-        style={{ backgroundColor: "orange", padding: "2px", width: "55px" }}
+        style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
       ></div>
     </Flex>
   )
@@ -50,17 +50,17 @@ export default function SessionTodayPage() {
             color="orange"
             size="20px"
             leftIcon={<IconSquarePlus size="0.9rem" />}
-            styles={(theme) => ({
+            styles={theme => ({
               root: {
                 backgroundColor: theme.fn.lighten(
                   theme.colors.darkLavender[0],
-                  0.4
+                  0.4,
                 ),
                 color: theme.colors.red[0],
                 ...theme.fn.hover({
                   backgroundColor: theme.colors.darkLavender[0],
                 }),
-                padding: "10px",
+                padding: '10px',
               },
             })}
           >
@@ -70,7 +70,7 @@ export default function SessionTodayPage() {
       </div>
       <Tabs value={activeTab} onTabChange={setActiveTab}>
         <Tabs.List position="center">
-          {TABS_CONFIG.map((tab) => (
+          {TABS_CONFIG.map(tab => (
             <Tabs.Tab key={tab.value} value={tab.value}>
               {tab.title}
             </Tabs.Tab>
@@ -78,11 +78,13 @@ export default function SessionTodayPage() {
         </Tabs.List>
 
         <Tabs.Panel value={activeTab} pt="xl">
-          {isLoading ? (
-            <Loader className="loader" />
-          ) : (
-            <SessionList sessionsList={sessions} />
-          )}
+          {isLoading
+            ? (
+              <Loader className="loader" />
+              )
+            : (
+              <SessionList sessionsList={sessions} />
+              )}
         </Tabs.Panel>
       </Tabs>
     </>

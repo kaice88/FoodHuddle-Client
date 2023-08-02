@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-const SessionPage = () => {
+function SessionPage() {
   const { id } = useParams()
   return <div>OrderPage{id}</div>
 }
