@@ -3,18 +3,17 @@ import { useState } from 'react'
 import type { SessionsTodayPageTabs } from '@/enums'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
-import type { SessionToday } from '@/types/sessions'
+import type { SessionData } from '@/types/sessions'
 import { getTodaySessionsApiEndpoint } from '@/utils/sessions'
 
 interface SessionsTodayResponse {
   statusCode: number
-  data: SessionToday[]
+  data: SessionData[]
 }
 
-const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page, status) => {
-  const params = status ? `?${status}` : ''
+async function fetchSessionsToday(tab: SessionsTodayPageTabs) {
   try {
-    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab, page, params))
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab))
     if (status === 200)
       return data.data
   }
@@ -23,20 +22,20 @@ const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page, status) => {
   }
 }
 
-const useSessionTodayData = (tab: SessionsTodayPageTabs, page, status) => {
+function useSessionTodayData(tab: SessionsTodayPageTabs) {
   const { query } = useRequestProcessor()
-  return query<SessionToday[], Error>(
-    ['sessionsToday', tab, status],
-    () => fetchSessionsToday(tab, page, status),
+  return query<SessionData[], Error>(
+    ['sessionsToday', tab],
+    () => fetchSessionsToday(tab),
   )
 }
 
-const useSessionsToday = (tab: SessionsTodayPageTabs, page) => {
+function useSessionsToday(tab: SessionsTodayPageTabs) {
   const [activeTab, setActiveTab] = useState(tab)
-  const [status, setStatus] = useState('')
-  const { data, isLoading, error } = useSessionTodayData(activeTab, page, status)
 
-  return { activeTab, setActiveTab, data, isLoading, error, setStatus }
+  const { data, isLoading, error } = useSessionTodayData(activeTab)
+
+  return { activeTab, setActiveTab, data, isLoading, error }
 }
 
 export default useSessionsToday

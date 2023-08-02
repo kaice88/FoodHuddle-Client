@@ -9,10 +9,12 @@
 @import "layout/footer";
 
 @import "components/breadscumbs";
-@import "components/modalCreateSession";
+@import "components/modalCreateSesstion";
+@import "components/popover";
 
 @import "pages/login";
 @import "pages/sessions";
 @import "pages/summary-tab";
+@import "pages/session-detail";
 
 @import "base/base";

@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+
 import { IconSquarePlus } from '@tabler/icons-react'
 import SessionInfo from '../components/ModalCreateSession'
 import SessionList from '@/components/SessionsList'
@@ -11,7 +12,6 @@ export default function SessionTodayPage() {
   const {
     isLoading,
     data: sessions,
-    error,
     activeTab,
     setActiveTab,
   } = useSessionsToday(SessionsTodayPageTabs.ALL)
@@ -39,7 +39,6 @@ export default function SessionTodayPage() {
         <Group position="center">
           <Button
             onClick={open}
-            color="orange"
             size="20px"
             leftIcon={<IconSquarePlus size="0.9rem" />}
             styles={theme => ({

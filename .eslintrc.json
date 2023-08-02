@@ -10,6 +10,7 @@
   "@typescript-eslint/indent":"off",
   "rules": {
     "react-refresh/only-export-components": "warn",
+    "@typescript-eslint/indent": "off",
     "antfu/top-level-function": "off",
     "indent": [
       "error",
