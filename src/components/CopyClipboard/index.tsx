@@ -7,7 +7,7 @@ function CopyClipBoard({ text }: { text: string }) {
 
   return (
     <ActionIcon
-      color={clipboard.copied ? 'green' : 'dark'}
+      size="xs"
       onClick={() => clipboard.copy(text)}
     >
       {clipboard.copied
