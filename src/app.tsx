@@ -15,15 +15,16 @@ export default function App() {
         withNormalizeCSS
         theme={{
           colors: {
-            brand: ['#fff4eb', '#ffddc4', '#ffc69d', '#ffaf76', '#ff994e', '#ff8227', '#ff6b00', '#d85b00', '#b14a00'],
+            brand: ['#FFF0E6', '#FFE1CC', '#FFD3B3', '#FFC499', '#FFB580', '#FFA666', '#FF974D', '#FF8933', '#FF7A1A', '#FF6B00'],
             watermelon: ['#F6415E'],
+            orange: ['#FF6B00'],
             bashfulPink: ['#C5458C'],
             darkLavender: ['#f5f1f7', '#e1d6e8', '#cdbbd9', '#ba9fca', '#a684bb', '#9268ac', '#7d5397', '#66447b', '#4f3560'],
             duck: ['#415481'],
             pickerBluewood: ['#2F4858'],
           },
           primaryColor: 'brand',
-          primaryShade: 6,
+          primaryShade: 9,
         }}
       >
         {' '}

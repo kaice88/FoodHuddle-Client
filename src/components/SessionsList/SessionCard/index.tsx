@@ -1,46 +1,56 @@
+import { Box, Button, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
-import { Link } from 'react-router-dom'
-
-import StatusBadge from '../../StatusBadge'
-import { getSessionStatus } from '@/utils/sessions'
+import { useNavigate } from 'react-router-dom'
+import type { SessionData } from '@/types/sessions'
+import StatusBadge from '@/components/StatusBadge'
 import CopyClipBoard from '@/components/CopyClipboard'
-import type { SessionToday } from '@/types/sessions'
 
 interface SessionCardProps {
-  session: SessionToday
+  session: SessionData
 }
 
 function SessionCard({ session }: SessionCardProps) {
+  const navigate = useNavigate()
+  const mockShopImage = 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+  const { id, title, host, status, shopImage, numberOfJoiners } = session
+
+  const sessionURL = `${window.location.origin}/sessions/${id}`
   return (
-    <div className="sessionWrapper">
-      <div className="session">
-        {' '}
-        <div className="session__info">
-          <Link className="session__title" to={`/sessions-today/${session.id}`}>
-            {session.title}
-          </Link>
-          <div className="session__host">{session.host}</div>
-        </div>
-        <div
-          className={`session__status session__status-${getSessionStatus(
-            session.status,
-          )}`}
-        >
-          <StatusBadge status={session.status} />
-        </div>
-        <div className="session__link">
-          <div className="session__joiners">
-            <IconUsers color="orange" size="1rem" />
-            {session.number_of_joiners}
-          </div>
-          <CopyClipBoard
-            text={`${window.location.origin.toString()}/sessions-today/${
-              session.id
-            }`}
-          />
-        </div>
-      </div>
-    </div>
+    <Card maw={rem('100%')} w={rem('340px')} shadow="sm" padding="lg" radius="md" withBorder>
+      <Card.Section component="a" href={sessionURL}>
+        <Image
+          src={shopImage || mockShopImage}
+          height={160}
+          alt="Norway"
+        />
+      </Card.Section>
+
+      <Group position="apart" mt="md" mb="xs">
+        <Box maw={rem('200')}>  <Text lineClamp={2} weight={500}>{title.toUpperCase()}</Text></Box>
+        {<StatusBadge status={status}/>}
+      </Group>
+
+      <Group position="apart" mt="md" mb="xs">
+        <Text size="sm" color="dimmed">
+          {host}
+        </Text>
+        <Flex align="center" justify="center" gap={4}>
+          <CopyClipBoard text={sessionURL}/>
+          <Center>
+            <ThemeIcon color="brand" size={'xs'}>
+              <IconUsers/>
+            </ThemeIcon>
+          </Center>
+          {numberOfJoiners}
+        </Flex>
+      </Group>
+
+      <Button variant="light" fullWidth mt="md" radius="md" onClick={() => {
+        navigate(`/sessions/${id}`)
+      }}>
+       JOIN NOW!
+      </Button>
+    </Card>
   )
 }
 

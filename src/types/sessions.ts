@@ -1,12 +1,13 @@
 import type { SessionStatuses } from '@/enums'
 
-export interface SessionToday {
+export interface SessionData {
   id: number
   title: string
   host: string
   status: SessionStatuses
-  number_of_joiners: number
-  created_at?: string
+  numberOfJoiners: number
+  createdAt?: string
+  shopImage: string
 }
 
 interface QRImages {

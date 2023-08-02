@@ -3,12 +3,12 @@ import { useState } from 'react'
 import type { SessionsTodayPageTabs } from '@/enums'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
-import type { SessionToday } from '@/types/sessions'
+import type { SessionData } from '@/types/sessions'
 import { getTodaySessionsApiEndpoint } from '@/utils/sessions'
 
 interface SessionsTodayResponse {
   statusCode: number
-  data: SessionToday[]
+  data: SessionData[]
 }
 
 async function fetchSessionsToday(tab: SessionsTodayPageTabs) {
@@ -24,7 +24,7 @@ async function fetchSessionsToday(tab: SessionsTodayPageTabs) {
 
 function useSessionTodayData(tab: SessionsTodayPageTabs) {
   const { query } = useRequestProcessor()
-  return query<SessionToday[], Error>(
+  return query<SessionData[], Error>(
     ['sessionsToday', tab],
     () => fetchSessionsToday(tab),
   )
