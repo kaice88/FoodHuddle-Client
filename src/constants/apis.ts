@@ -16,6 +16,7 @@ export function REQUEST_GET_FOOD_ORDER_LIST(sessionId: number) {
 
 // SESSION
 export const SESSION_BASE_URL = '/v1/session'
+export const REQUEST_UPDATE_SESSION_STATUS = sessionId => `/v1/session/${sessionId}/update-status`
 export const REQUEST_POST_SESSION_INFO = `${SESSION_BASE_URL}`
 export const REQUEST_GET_HOST_PAYMENT_INFO = `${SESSION_BASE_URL}/host-payment-infor`
 export const REQUEST_GET_ALL_SESSIONS_TODAY = `${SESSION_BASE_URL}/today`

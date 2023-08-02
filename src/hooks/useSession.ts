@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_SESSION } from '@/constants/apis'
+import { REQUEST_UPDATE_SESSION_STATUS, SESSION_BASE_URL } from '@/constants/apis'
 import axios from '@/settings/axios'
 
 function useSession(id) {
@@ -15,7 +15,7 @@ function useSession(id) {
   const changeStatusMutation = useMutation({
     mutationKey: ['change-status'],
     mutationFn: (status) => {
-      return axios.put(REQUEST_SESSION(id), {
+      return axios.put(REQUEST_UPDATE_SESSION_STATUS(id), {
         status,
       })
     },
@@ -25,7 +25,7 @@ function useSession(id) {
   const deleteSessionMutation = useMutation({
     mutationKey: ['delete-session'],
     mutationFn: () => {
-      return axios.delete(REQUEST_SESSION(id))
+      return axios.delete(`${SESSION_BASE_URL}/${id}`)
     },
     onError: handleError,
   })
