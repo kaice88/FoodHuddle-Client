@@ -2,7 +2,6 @@ import { Box, Button, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } f
 import { IconUsers } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 import type { SessionData } from '@/types/sessions'
-import StatusBadge from '@/components/StatusBadge'
 import CopyClipBoard from '@/components/CopyClipboard'
 
 interface SessionCardProps {
@@ -28,7 +27,7 @@ function SessionCard({ session }: SessionCardProps) {
       <Flex direction="column" justify="space-between">
         <Group position="apart" mt="md" mb="xs">
           <Box maw={rem('60%')}>  <Text truncate weight={500}>{title}</Text></Box>
-          {<StatusBadge status={status}/>}
+          {/* {<StatusBadge status={status}/>} */}
         </Group>
 
         <Group position="apart" mt="md" mb="xs">

@@ -5,6 +5,7 @@ import { IconBowl, IconCoin } from '@tabler/icons-react'
 import Table from '../../../../components/TableExpandable/TableComponent'
 import { moneyFormat } from '@/utils/utility'
 import useSummaryTab from '@/hooks/useSummaryTab'
+import ItemName from '@/components/ItemName'
 
 export interface FoodRowCover {
   id: number
@@ -13,7 +14,7 @@ export interface FoodRowCover {
   quantity: number
 }
 
-const ViewTable = ({ sessionId }) => {
+function ViewTable({ sessionId }) {
   const globalTheme = useMantineTheme()
   const [tableViewData, setTableViewData] = useState([])
   const [childrenTableView, setChildrenTableView] = useState([])
@@ -26,13 +27,22 @@ const ViewTable = ({ sessionId }) => {
     }
     handlefetchTableFoodOrderView()
   }, [])
+
+  useEffect(() => {
+    const pollingInterval = setInterval(() => {
+      fetchQueryTableFoodOrderView.refetch()
+    }, 10000)
+
+    return () => clearInterval(pollingInterval)
+  }, [])
+
   const columns = useMemo<MRT_ColumnDef<FoodRowCover>[]>(
     () => [
       {
         accessorKey: 'id',
         header: '',
         size: 30,
-        Cell: ({ renderedCellValue, row }) => (
+        Cell: ({ renderedCellValue }) => (
           <Text fw={700} color={globalTheme.fn.darken(globalTheme.colors.orange[0], 0.1)}>
             {renderedCellValue}
           </Text>
@@ -42,14 +52,12 @@ const ViewTable = ({ sessionId }) => {
         accessorKey: 'foodName',
         size: 300,
         header: '',
-        Cell: ({ renderedCellValue, row }) => (
-          <Text
-            fw={600}
+        Cell: ({ renderedCellValue }) => (
+          <Text fw={600}
             fs={'16px'}
             color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.5)}
-            style={{ textTransform: 'capitalize' }}
-          >
-            {renderedCellValue}
+            style={{ textTransform: 'capitalize' }}>
+            <ItemName name={renderedCellValue.name} picture={renderedCellValue.image}/>
           </Text>
         ),
       },

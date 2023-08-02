@@ -1,20 +1,17 @@
-import { useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_POST_ORDER_BILL, REQUEST_PUT_FOOD_ORDER_ROW } from '@/constants/apis'
+import { REQUEST_FOOD_ORDER_ROW, REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_ORDER_BILL } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import { calculateTotal } from '@/utils/utility'
 
 function useSummaryTab() {
-  const globalTheme = useMantineTheme()
-
   const { mutation, query } = useRequestProcessor()
 
   const mutateBill = sessionId =>
     mutation(
       ['save-bill'],
-      async data => await axiosInstance.put(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`, data),
+      async data => await axiosInstance.put(REQUEST_ORDER_BILL(sessionId), data),
       {
         onSuccess: (data) => {
           if (data.data.status === 'success')
@@ -31,7 +28,7 @@ function useSummaryTab() {
 
   const fetchQueryFormFees = (sessionId, setFormFees) => query(
     ['get-bill'],
-    () => axiosInstance.get(`${REQUEST_POST_ORDER_BILL}/${sessionId}/payment`),
+    () => axiosInstance.get(REQUEST_ORDER_BILL(sessionId)),
     {
       enabled: false,
       onSuccess: (data) => {
@@ -117,7 +114,10 @@ function useSummaryTab() {
         return (
           {
             id: Number(index) + 1,
-            foodName: item.foodName,
+            foodName: {
+              name: item.foodName,
+              image: item.foodImage,
+            },
             total: Number(totalMoneyEachFood),
             quantity: quantityOrderEachFood,
           }
@@ -177,6 +177,7 @@ function useSummaryTab() {
       ? dataBE.map((item, index) => {
         return ({
           id: item.id,
+          foodImage: item.foodImage,
           foodName: item.foodName,
           actualPrice: item.actualPrice,
           note: item.note,
@@ -215,7 +216,7 @@ function useSummaryTab() {
   const fetchMutationSaveFoodOrderRow = mutation(
     ['foodOrderSave'],
     async data =>
-      await axiosInstance.put(`${REQUEST_PUT_FOOD_ORDER_ROW}/${data.rowId}`, data.rowData),
+      await axiosInstance.put(REQUEST_FOOD_ORDER_ROW(data.rowId), data.rowData),
     {
       onSuccess: (data) => {
         if (data.data.status === 'success')
@@ -233,7 +234,7 @@ function useSummaryTab() {
   const fetchMutationDeleteFoodOrderRow = mutation(
     ['foodOrderDelete'],
     async data =>
-      await axiosInstance.delete(`${REQUEST_PUT_FOOD_ORDER_ROW}/${data.rowId}`, {
+      await axiosInstance.delete(REQUEST_FOOD_ORDER_ROW(data.rowId), {
         data: { sessionId: data.sessionId },
       }),
     {
@@ -250,7 +251,83 @@ function useSummaryTab() {
     },
   )
 
-  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleFoodNamesSelect }
+  const transformDataForMultiSelect = (currentFoodName, optionsSelect, currentValue, valueTransform) => {
+    // ...Get options only for current foodName...
+    const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
+
+    const requiredGroups = currentValue.map(item => item.category)
+    const optionsNoSlected = data.filter(item => !valueTransform.includes(item.value))
+    const optionSelected = data.filter(item => valueTransform.includes(item.value))
+    const dataCheckDisabled = optionsNoSlected.map((item) => {
+      const isItemDisabled = requiredGroups.some((requiredGroup) => {
+        const normalizedRequiredGroup = `${requiredGroup} [required]`
+        return item.group === normalizedRequiredGroup
+      })
+      if (isItemDisabled) {
+        return {
+          ...item,
+          disabled: true,
+        }
+      }
+      else {
+        return item
+      }
+    })
+    const dataSelectFinal = [
+      ...dataCheckDisabled,
+      ...optionSelected,
+    ]
+    return dataSelectFinal
+  }
+
+  const convertOptionsValueToDataTableEdit = (selectedOptions, rowIndex, currentValueRow, tableEditData) => {
+    const convertData = (selectedOptions) => {
+      const result = []
+      !isEmpty(selectedOptions) && selectedOptions.forEach((item) => {
+        const [category, name, price] = item.split('-')
+        const existingCategory = result.find(c => c.category === category)
+        if (existingCategory) {
+          existingCategory.detail.push({ name, price: Number(price) })
+        }
+        else {
+          result.push({
+            category,
+            detail: [{ name, price: Number(price) }],
+          })
+        }
+      })
+      return result
+    }
+
+    const newList = tableEditData.map((item) => {
+      if (item.id == rowIndex) {
+        return {
+          ...currentValueRow,
+          options: convertData(selectedOptions),
+        }
+      }
+      else {
+        return item
+      }
+    })
+    return newList
+  }
+
+  const updateTableEdit = (tableEditData, name, value, rowIndex, currentValueRow) => {
+    const newList = tableEditData.map((item) => {
+      if (item.id == rowIndex) {
+        return {
+          ...currentValueRow,
+          [name]: value,
+        }
+      }
+      else {
+        return item
+      }
+    })
+    return newList
+  }
+  return { mutateBill, queryTableFoodOrderView: fetchQueryTableFoodOrderView, queryFoodOrderEdit: fetchQueryFoodOrderEdit, mutationSaveFoodOrderRow: fetchMutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFormFees, fetchQueryFoodOrderMenu, handleFoodNamesSelect, transformDataForMultiSelect, convertOptionsValueToDataTableEdit, updateTableEdit }
 }
 
 export default useSummaryTab

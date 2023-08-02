@@ -7,17 +7,19 @@ import {
 } from 'mantine-react-table'
 import { ActionIcon, Avatar, Flex, MultiSelect, Text, Tooltip, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { IconAlertCircle, IconEdit, IconTrash } from '@tabler/icons-react'
+import { IconAlertCircle, IconChefHat, IconEdit, IconTrash } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 import { moneyFormat } from '@/utils/utility'
 import useSummaryTab from '@/hooks/useSummaryTab'
 import MenuOptions from '@/components/MenuOptions'
 import { notificationShow } from '@/components/Notification'
+import ItemName from '@/components/ItemName'
 
 export interface DataEdit {
   id: number
   user: any
   foodName: string
+  foodImage: string
   originPrice: number
   actualPrice: number
   note: string | null
@@ -47,21 +49,11 @@ const EditTable = ({ sessionId }) => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({})
   const [foodOrderMenu, setFoodOrderMenu] = useState([])
   const [optionsSelect, setOptionsSelect] = useState([])
-  const { queryFoodOrderEdit, mutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFoodOrderMenu, handleFoodNamesSelect } = useSummaryTab()
+  const { queryFoodOrderEdit, mutationSaveFoodOrderRow, fetchMutationDeleteFoodOrderRow, fetchQueryFoodOrderMenu, handleFoodNamesSelect, transformDataForMultiSelect, convertOptionsValueToDataTableEdit, updateTableEdit } = useSummaryTab()
   const fetchQueryFoodOrderEdit = queryFoodOrderEdit(sessionId, setTableEditData)
   const queryFoodOrderMenu = fetchQueryFoodOrderMenu(sessionId, setFoodOrderMenu, setOptionsSelect)
   const foodNamesSelect = handleFoodNamesSelect(foodOrderMenu)
   const globalTheme = useMantineTheme()
-
-  const handleUserName = (name, picture) => {
-    return (
-      <Flex gap="sm" justify="flex-start" align="center" direction="row">
-        <Avatar src={picture} alt={name} radius="xl" size={35}/>
-        <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ width: 'fix-content' }} >
-          {name}
-        </Text>
-      </Flex>)
-  }
 
   useEffect(() => {
     const handleFetchQueryFoodOrderEdit = async () => {
@@ -86,7 +78,22 @@ const EditTable = ({ sessionId }) => {
         enableEditing: false,
         Cell: ({ cell }) => {
           const user = cell.getValue()
-          return handleUserName(user.name, user.photo)
+          return <ItemName name={user.name} picture={user.photo} />
+        },
+      },
+      {
+        accessorKey: 'foodImage',
+        header: '',
+        size: 30,
+        enableEditing: false,
+        enableSorting: false,
+        Cell: ({ cell }) => {
+          const foodImage = cell.getValue()
+          return foodImage
+            ? <Avatar src={foodImage} alt={foodImage} radius="xl" size={35}/>
+            : (<Avatar color="violet" radius="sm">
+              <IconChefHat size="1.5rem" />
+            </Avatar>)
         },
       },
       {
@@ -115,6 +122,7 @@ const EditTable = ({ sessionId }) => {
                     ...currentValueRow,
                     options: [],
                     foodName: value,
+                    foodImage: updatedOptions.photo,
                     originPrice: originalPrice,
                     actualPrice: originalPrice,
                   }
@@ -166,20 +174,7 @@ const EditTable = ({ sessionId }) => {
             error: validationErrors?.actualPrice,
             onChange: (event) => {
               event.preventDefault()
-              const value = event.currentTarget.value
-              const rowIndex = cell.row.id
-              const currentValueRow = row.original
-              const newList = tableEditData.map((item) => {
-                if (item.id == rowIndex) {
-                  return {
-                    ...currentValueRow,
-                    actualPrice: value,
-                  }
-                }
-                else {
-                  return item
-                }
-              })
+              const newList = updateTableEdit(tableEditData, 'actualPrice', event.currentTarget.value, cell.row.id, row.original)
               setTableEditData(newList)
             },
           }
@@ -205,7 +200,7 @@ const EditTable = ({ sessionId }) => {
               ))
             : []
           const currentFoodName = row.original.foodName
-          const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
+          const data = transformDataForMultiSelect(currentFoodName, optionsSelect, currentValue, valueTransform)
           const error = validationErrors[cell.id]
           return (
             <MultiSelect
@@ -249,36 +244,9 @@ const EditTable = ({ sessionId }) => {
                   })
                 }
                 // ...Update tableEdit...
-                const convertData = (selectedOptions) => {
-                  const result = []
-                  !isEmpty(selectedOptions) && selectedOptions.forEach((item) => {
-                    const [category, name, price] = item.split('-')
-                    const existingCategory = result.find(c => c.category === category)
-                    if (existingCategory) {
-                      existingCategory.detail.push({ name, price: Number(price) })
-                    }
-                    else {
-                      result.push({
-                        category,
-                        detail: [{ name, price: Number(price) }],
-                      })
-                    }
-                  })
-                  return result
-                }
                 const rowIndex = cell.row.id
                 const currentValueRow = row.original
-                const newList = tableEditData.map((item) => {
-                  if (item.id == rowIndex) {
-                    return {
-                      ...currentValueRow,
-                      options: convertData(selectedOptions),
-                    }
-                  }
-                  else {
-                    return item
-                  }
-                })
+                const newList = convertOptionsValueToDataTableEdit(selectedOptions, rowIndex, currentValueRow, tableEditData)
                 setTableEditData(newList)
               }}
               itemComponent={SelectItem}
@@ -305,20 +273,7 @@ const EditTable = ({ sessionId }) => {
             error: validationErrors?.note,
             onChange: (event) => {
               event.preventDefault()
-              const value = event.currentTarget.value
-              const rowIndex = cell.row.id
-              const currentValueRow = row.original
-              const newList = tableEditData.map((item) => {
-                if (item.id == rowIndex) {
-                  return {
-                    ...currentValueRow,
-                    note: value,
-                  }
-                }
-                else {
-                  return item
-                }
-              })
+              const newList = updateTableEdit(tableEditData, 'note', event.currentTarget.value, cell.row.id, row.original)
               setTableEditData(newList)
             },
           }
@@ -362,19 +317,7 @@ const EditTable = ({ sessionId }) => {
                 })
               }
               // ...Update tableEdit...
-              const rowIndex = cell.row.id
-              const currentValueRow = row.original
-              const newList = tableEditData.map((item) => {
-                if (item.id == rowIndex) {
-                  return {
-                    ...currentValueRow,
-                    quantity: value,
-                  }
-                }
-                else {
-                  return item
-                }
-              })
+              const newList = updateTableEdit(tableEditData, 'quantity', value, cell.row.id, row.original)
               setTableEditData(newList)
             },
           }
@@ -444,22 +387,17 @@ const EditTable = ({ sessionId }) => {
     enableStickyHeader: true,
     enablePagination: false,
     positionActionsColumn: 'last',
-    getRowId: row => row.id,
     mantineTableHeadCellProps: ({ table }) => ({
       sx: {
         padding: '10px 10px 10px 0px',
         width: 'fit-content',
-        backgroundColor: ` ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
         textAlign: 'left',
       },
     }),
     mantineTableContainerProps: ({ table }) => ({
-      sx: {
-        maxHeight: '600px',
-        border: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
-      },
       style: {
-        overflow: 'initial',
+        overflow: 'auto',
+        maxHeight: '600px',
       },
       className: 'table-edit-summary-tab',
     }),
@@ -467,8 +405,6 @@ const EditTable = ({ sessionId }) => {
       style: {
         padding: '7px 5px 7px 5px',
         width: 'fit-content',
-        borderBottom: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
-
       },
     }),
     onEditingRowCancel: () => setValidationErrors({}),
@@ -489,15 +425,7 @@ const EditTable = ({ sessionId }) => {
         </Tooltip>
       </Flex>
     ),
-    mantineBottomToolbarProps: ({ table }) => ({
-      style: {
-        border: 'none',
-        boxShadow: 'none',
-        outline: 'none',
-        backgroundColor: '#f8f9fa',
-      },
-    }),
-
+    enableBottomToolbar: false,
     state: {
       isLoading: fetchQueryFoodOrderEdit.isLoading,
       showProgressBars: fetchQueryFoodOrderEdit.isFetching,

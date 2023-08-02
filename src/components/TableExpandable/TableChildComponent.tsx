@@ -1,25 +1,16 @@
-import React from 'react'
-import { Avatar, Flex, Table, Text, useMantineTheme } from '@mantine/core'
+import { Table, Text, useMantineTheme } from '@mantine/core'
 import MenuOptions from '../MenuOptions'
+import ItemName from '../ItemName'
 import { moneyFormat } from '@/utils/utility'
 
-const ChildTable = ({ className, dataChilTable }) => {
+function ChildTable({ className, dataChilTable }) {
   const globalTheme = useMantineTheme()
 
-  const handleUserName = (name, picture) => {
-    return (
-      <Flex gap="sm" justify="flex-start" align="center" direction="row" >
-        <Avatar src={picture} alt={name} radius="xl" size={35}/>
-        <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ width: 'fix-content' }} >
-          {name}
-        </Text>
-      </Flex>)
-  }
   const rows = dataChilTable.map((element, index) => {
     return (
       <tr key={`${index}-${element.name.name}`}>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
-          {handleUserName(element.name.name, element.name.photo)}
+          <ItemName name={element.name.name} picture={element.name.photo}/>
         </Text></td>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
           {moneyFormat(element.originPrice, 'VND', 'en-US', '')} đ

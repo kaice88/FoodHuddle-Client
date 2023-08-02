@@ -42,3 +42,6 @@ export const getTodaySessionsApiEndpoint = (tab: SessionsTodayPageTabs, page, st
     }
   }
 }
+export function isHost(hostId, userId) {
+  return hostId === userId
+}

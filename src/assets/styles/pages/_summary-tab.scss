@@ -66,7 +66,7 @@
         width: 100%;
         &__cost{
             margin: auto;
-            width: 50%;
+            width: 65%;
         }
         &__bill{
             margin: auto;
@@ -96,9 +96,9 @@
             &__bill{
                 width: 100%;
                 margin: auto;
+                align-items: center;
                 div{
                     justify-content: center;
-
                 }
                 
             }

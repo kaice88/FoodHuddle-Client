@@ -2,7 +2,7 @@ import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/co
 import { useDisclosure } from '@mantine/hooks'
 
 import { IconSquarePlus } from '@tabler/icons-react'
-import SessionInfo from '../components/ModalCreateSession'
+import SessionInfoModal from '../components/ModalCreateSession'
 import SessionList from '@/components/SessionsList'
 import useSessionsToday from '@/hooks/useSessionsToday'
 import { SessionsTodayPageTabs } from '@/enums'
@@ -33,7 +33,7 @@ export default function SessionTodayPage() {
       <div>
         <Modal opened={opened} onClose={close} title={titleModal} centered size={700}>
           <Box maw={600} mx="auto">
-            <SessionInfo isCreateFirst={true}/>
+            <SessionInfoModal isCreateFirst={true}/>
           </Box>
         </Modal>
         <Group position="center">
@@ -43,10 +43,10 @@ export default function SessionTodayPage() {
             leftIcon={<IconSquarePlus size="0.9rem" />}
             styles={theme => ({
               root: {
-                backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.4),
+                backgroundColor: theme.fn.lighten(theme.colors.darkLavender[6], 0.4),
                 color: theme.colors.red[0],
                 ...theme.fn.hover({
-                  backgroundColor: theme.colors.darkLavender[0],
+                  backgroundColor: theme.colors.darkLavender[7],
                 }),
                 padding: '10px',
               },
