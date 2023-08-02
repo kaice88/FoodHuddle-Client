@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom"
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 
 import LoginPage from './pages/Login'
 import SessionTodayPage from './pages/SessionsToday'

@@ -3,7 +3,7 @@ import { CloseButton, Image } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
 import { modals } from '@mantine/modals'
 
-const ImagesUploaded = ({ handleDeleteImage, files }) => {
+function ImagesUploaded({ handleDeleteImage, files }) {
   const handleImage = (imageUrl, name) =>
     modals.open({
       title: name,
