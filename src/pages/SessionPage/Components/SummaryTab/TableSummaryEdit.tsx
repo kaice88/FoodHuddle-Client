@@ -156,7 +156,7 @@ const EditTable = ({ sessionId }) => {
         size: 100,
         enableEditing: false,
         Cell: ({ cell }) => {
-          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
+          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[6], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
             {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
           </Text>
         },
@@ -180,7 +180,7 @@ const EditTable = ({ sessionId }) => {
           }
         },
         Cell: ({ cell }) => {
-          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
+          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[6], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
             {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
           </Text>
         },

@@ -15,7 +15,7 @@ function ChildTable({ className, dataChilTable }) {
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
           {moneyFormat(element.originPrice, 'VND', 'en-US', '')} đ
         </Text></td>
-        <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.85)}`, borderRadius: '5px', width: 'fit-content', margin: 'auto', padding: '5px' }}>
+        <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[6], 0.85)}`, borderRadius: '5px', width: 'fit-content', margin: 'auto', padding: '5px' }}>
           {moneyFormat(element.actualPrice, 'VND', 'en-US', '')} đ
         </Text></td>
         <td>
