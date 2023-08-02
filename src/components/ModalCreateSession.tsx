@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import isEmpty from 'lodash/isEmpty'
-import { notificationShow } from './Notification'
 import ImagesUploaded from './ImagesUploaded'
-import { REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
-import axiosInstance from '@/settings/axios'
-import { useRequestProcessor } from '@/settings/react-query'
+import useSessionInfo from '@/hooks/useSessionInfo'
+import { handleFormData } from '@/utils/utility'
 
 interface FormValue {
   title: string
@@ -17,77 +14,21 @@ interface FormValue {
   qrImages: Array<File>
 }
 
-interface FormatDataSessionInfo {
-  title: string
-  shop_link: string
-  description: string
-  host_payment_info: string
-  qr_images: Array<File>
-}
+const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessionId }) => {
+  const { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo } = useSessionInfo()
+  const fetchEditSessionInfo = mutateEditSessionInfo(sessionId)
 
-const SessionInfo: React.FC = ({ isCreateFirst }) => {
-  const navigate = useNavigate()
-  const { query, mutation } = useRequestProcessor()
-
-  const fetchQuerySessionInfo = query(
-    ['paymentInfo'],
-    () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
-    {
-      enabled: false,
-      onSuccess: (data) => {
-        form.setFieldValue('hostPaymentInfo', data.data.hostPaymentInfor)
-      },
-      onError: (error) => {
-        notificationShow('error', 'Error: ', error.response.data.message)
-      },
-    },
-  )
-  useEffect(() => {
-    const handlefetchSessionInfo = async () => {
-      await fetchQuerySessionInfo.refetch()
-    }
-    if (isCreateFirst) {
-      handlefetchSessionInfo()
-    }
-    else {
-      // ...Call Get Session Info Existed...//
-    }
-  }, [])
-
-  const fetchMutationSessionInfo = mutation(
-    ['sessionInfo'],
-    async (data: FormatDataSessionInfo) =>
-      await axiosInstance.post(REQUEST_POST_SESSION_INFO, data,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      ),
-    {
-      onError: (error) => {
-        notificationShow('error', 'Error: ', error.response.data.message)
-      },
-      onSuccess: (data) => {
-        const { id, message } = data.data
-        notificationShow('success', 'Success: ', message)
-
-        if (isCreateFirst)
-          navigate(`/sessions-today/${id}`)
-      },
-    },
-  )
   // ......Config form.................................................
   const form = useForm<FormValue>({
     initialValues: isCreateFirst
       ? {
-          title: '',
-          shopLink: '',
-          description: '',
-          hostPaymentInfo: '',
-          qrImages: [],
-        }
-      : null, // ...Place your data session info...//
+        title: '',
+        shopLink: '',
+        description: '',
+        hostPaymentInfo: '',
+        qrImages: [],
+      }
+      : sessionData,
 
     validate: {
       title: value => (value ? null : 'Title is required'),
@@ -95,21 +36,38 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
       hostPaymentInfo: value => (value ? null : 'Payment Infomation is required'),
     },
   })
+  const queryHostPaymentInfo = fetchQueryHostPaymentInfo(form)
 
-  // .....Handle submit.............................................
-  const handleSubmitNewSession = async (values: FormValue) => {
+  useEffect(() => {
+    const handlefetchSessionInfo = async () => {
+      await queryHostPaymentInfo.refetch()
+    }
+    if (isCreateFirst)
+      handlefetchSessionInfo()
+  }, [])
+
+  // .....Handle submit................................
+  const handleSubmitNewSession = async (values) => {
     const dataForm = new FormData()
-    !isEmpty(values.qrImages)
-      ? values.qrImages.forEach((file) => {
-        dataForm.append('qr_images', file)
-      })
-      : dataForm.append('qr_images', [])
-
-    dataForm.append('title', values.title)
-    dataForm.append('shop_link', values.shopLink)
-    dataForm.append('description', values.description)
-    dataForm.append('host_payment_info', values.hostPaymentInfo)
-    fetchMutationSessionInfo.mutate(dataForm)
+    if (isCreateFirst) {
+      await handleFormData(dataForm, values.qrImages, 'qr_images')
+      dataForm.append('title', values.title)
+      dataForm.append('shop_link', values.shopLink)
+      dataForm.append('description', values.description)
+      dataForm.append('host_payment_info', values.hostPaymentInfo)
+      mutateSessionInfo.mutate(dataForm)
+    }
+    else {
+      !isEmpty(values.qrImages) ? await handleFormData(dataForm, values.qrImages, 'qr_images') : dataForm.append('qr_images', [])
+      dataForm.append('title', values.title)
+      dataForm.append('shop_link', values.shopLink)
+      dataForm.append('description', values.description)
+      dataForm.append('host_payment_info', values.hostPaymentInfo)
+      dataForm.append('status', values.status)
+      dataForm.append('host', values.host)
+      dataForm.append('date', values.date)
+      fetchEditSessionInfo.mutate(dataForm)
+    }
   }
 
   const files = form.getInputProps('qrImages').value
@@ -120,9 +78,9 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
   }
 
   return (
-    <form onSubmit={form.onSubmit(values => handleSubmitNewSession(values))}>
-      <Flex gap="md" justify="center" align="flex-start" direction="row" style={{ width: '100%' }}>
-        <Flex gap="md" justify="center" align="center" direction="column" style={{ width: '50%' }}>
+    <form onSubmit={form.onSubmit(values => handleSubmitNewSession(values))} className="modal-session-info">
+      <Flex style={{ width: '100%' }} className="modal-session-info__content">
+        <Flex className="modal-session-info__content__left">
           <TextInput
             withAsterisk
             label="Title"
@@ -136,6 +94,7 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
             placeholder="https://shopeefood.vn/da-nang/tra-sua"
             {...form.getInputProps('shopLink')}
             style={{ width: '100%' }}
+            disabled={isEdit}
           />
           <Textarea
             placeholder="Add more detailed descriptions about your session"
@@ -146,18 +105,18 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
             style={{ width: '100%' }}
           />
         </Flex>
-        <Flex gap="md" justify="center" align="center" direction="column" style={{ width: '50%' }}>
+        <Flex className="modal-session-info__content__right">
           <Textarea
             withAsterisk
             placeholder="Payment method: TP Bank/Momo ...; Card name: 'A'; ..."
             label="Payment info"
             autosize
-            maxRows={4}
+            maxRows={5}
             {...form.getInputProps('hostPaymentInfo')}
             style={{ width: '100%' }}
           />
           <Flex
-            style={{ width: '100%' }}
+            style={{ width: '100%', margin: '10px 0px' }}
             gap="md"
             justify="flex-start"
             align="flex-start"
@@ -207,4 +166,4 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
   )
 }
 
-export default SessionInfo
+export default SessionInfoModal

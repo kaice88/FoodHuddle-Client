@@ -11,7 +11,7 @@ const MenuOptions = ({ options }) => {
       <React.Fragment key={`${item.category}-${index}`}>
         <Menu.Label style={{ fontSize: '10px' }} >{item.category}</Menu.Label>
         {
-          item.detail.map((item, index) => {
+           item.detail.map((item, index) => {
             return (
               <Menu.Item
                 key={`${item.name}-${index}`}

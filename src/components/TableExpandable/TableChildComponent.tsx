@@ -1,8 +1,9 @@
-import { Avatar, Flex, Table, Text, useMantineTheme } from '@mantine/core'
+import { Table, Text, useMantineTheme } from '@mantine/core'
 import MenuOptions from '../MenuOptions'
-import { moneyFormat } from '@/utils/utility'
 import ItemName from '../ItemName'
-const ChildTable = ({ className, dataChilTable }) => {
+import { moneyFormat } from '@/utils/utility'
+
+function ChildTable({ className, dataChilTable }) {
   const globalTheme = useMantineTheme()
 
   const rows = dataChilTable.map((element, index) => {

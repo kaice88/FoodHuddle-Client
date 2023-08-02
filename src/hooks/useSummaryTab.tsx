@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_ORDER_BILL, REQUEST_FOOD_ORDER_ROW } from '@/constants/apis'
+import { REQUEST_FOOD_ORDER_ROW, REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_ORDER_BILL } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import { calculateTotal } from '@/utils/utility'
@@ -115,7 +115,7 @@ function useSummaryTab() {
           {
             id: Number(index) + 1,
             foodName: {
-              name: item.foodName ,
+              name: item.foodName,
               image: item.foodImage,
             },
             total: Number(totalMoneyEachFood),

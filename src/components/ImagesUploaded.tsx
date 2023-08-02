@@ -3,7 +3,7 @@ import { CloseButton, Image } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
 import { modals } from '@mantine/modals'
 
-const ImagesUploaded = ({ handleDeleteImage, files }) => {
+function ImagesUploaded({ handleDeleteImage, files, isView }) {
   const handleImage = imageUrl =>
     modals.open({
       title: 'Preview Image',
@@ -39,7 +39,8 @@ const ImagesUploaded = ({ handleDeleteImage, files }) => {
             style={{ objectFit: 'cover', cursor: 'pointer' }}
             onClick={() => handleImage(imageUrl)}
           />
-          <CloseButton
+          {!isView
+          && <CloseButton
             radius="xl"
             variant="hover"
             title="Delete"
@@ -55,7 +56,7 @@ const ImagesUploaded = ({ handleDeleteImage, files }) => {
               color: 'grey',
             }}
             onClick={() => handleDeleteImage(index)}
-          />
+          />}
         </div>
       )
     })
