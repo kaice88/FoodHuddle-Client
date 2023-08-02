@@ -40,7 +40,7 @@ function SessionPage() {
       notificationShow('success', 'SUCCESS', data.data.message)
       setCurrentStatus(data.data.statusSession)
       if (status === SessionStatuses.PENDING_PAYMENTS)
-        navigate(`/sessions-today/${sessionId}/session-summary`)
+        navigate(`/session/${sessionId}`)
     })
   }
 
