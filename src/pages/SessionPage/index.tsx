@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 import { Loader, Tabs } from '@mantine/core'
 
+import isEmpty from 'lodash/isEmpty'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
 import HostActions from './Components/HostActions'
@@ -13,7 +14,6 @@ import SessionInfo from '@/components/SessionInfo'
 import useSessionData from '@/hooks/useSessionData'
 import { checkIfUserIsHost } from '@/utils/sessions'
 import useAuth from '@/hooks/useAuth'
-import { isEmpty } from 'lodash'
 
 function SessionPage() {
   const { sessionId } = useParams()
@@ -40,7 +40,7 @@ function SessionPage() {
       notificationShow('success', 'SUCCESS', data.data.message)
       setCurrentStatus(data.data.statusSession)
       if (status === SessionStatuses.PENDING_PAYMENTS)
-        navigate(`/session/${sessionId}`)
+        navigate(`/sessions-today/${sessionId}`)
     })
   }
 
@@ -52,29 +52,29 @@ function SessionPage() {
 
   return (
     <>
-     {
-      !isEmpty(sessionData) && 
-      <><span>{currentStatus}</span>
-      {checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
-      <SessionInfo sessionData={sessionData} />
-      <Tabs defaultValue={'order'}>
-        <Tabs.List>
-          <Tabs.Tab value="order" icon={<IconShoppingCart />}>
+      {
+        !isEmpty(sessionData)
+      && <><span>{currentStatus}</span>
+        {checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
+        <SessionInfo sessionData={sessionData} />
+        <Tabs defaultValue={'order'}>
+          <Tabs.List>
+            <Tabs.Tab value="order" icon={<IconShoppingCart />}>
             Order
-          </Tabs.Tab>
-          <Tabs.Tab value="summary" icon={<IconSubtask />}>
+            </Tabs.Tab>
+            <Tabs.Tab value="summary" icon={<IconSubtask />}>
             Summary
-          </Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panel value="order">
-          <OrderTab />
-        </Tabs.Panel>
-        <Tabs.Panel value="summary">
-        <SummaryTab sessionId={sessionId}/>
-      </Tabs.Panel>
-      </Tabs></>
-     }
-     
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="order">
+            <OrderTab />
+          </Tabs.Panel>
+          <Tabs.Panel value="summary">
+            <SummaryTab sessionId={sessionId}/>
+          </Tabs.Panel>
+        </Tabs></>
+      }
+
     </>
   )
 }

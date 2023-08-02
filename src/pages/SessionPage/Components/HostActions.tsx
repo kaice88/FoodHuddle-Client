@@ -1,7 +1,7 @@
 import { Flex } from '@mantine/core'
 
-import ActionButton from '@/components/ActionButton'
-import { SessionActionColor, SessionActions, SessionStatuses } from '@/enums'
+import HostActionButton from '../../../components/HostActionButton'
+import { SessionActions, SessionStatuses } from '@/enums'
 
 const HostActions = ({ status, handleDeleteSession, handlechangeStatus }) => {
   return (
@@ -9,19 +9,11 @@ const HostActions = ({ status, handleDeleteSession, handlechangeStatus }) => {
       gap="xs"
       justify="flex-end"
       wrap="wrap">
-      <ActionButton value={SessionActions.DELETE} colorName={SessionActionColor.DELETE} handleOnClick={handleDeleteSession}/>
+      <HostActionButton variant="outline" handleOnClick={handleDeleteSession} value={SessionActions.DELETE}/>
       {
         status === SessionStatuses.OPEN
-          ? (<ActionButton
-            value={SessionActions.LOCK_ORDER}
-            colorName={SessionActionColor.LOCK_ORDER}
-            handleOnClick={() => handlechangeStatus(SessionStatuses.LOCKED)}
-          />)
-          : (<ActionButton
-            value={SessionActions.SPLIT_PAYMENT}
-            colorName={SessionActionColor.SPLIT_PAYMENT}
-            handleOnClick={() => handlechangeStatus(SessionStatuses.PENDING_PAYMENTS)}
-          />)
+          ? (<HostActionButton handleOnClick={() => handlechangeStatus(SessionStatuses.LOCKED)} value={SessionActions.LOCK_ORDER} />)
+          : (<HostActionButton handleOnClick={() => handlechangeStatus(SessionStatuses.PENDING_PAYMENTS)} value={SessionActions.SPLIT_PAYMENT}/>)
       }
     </Flex>)
 }
