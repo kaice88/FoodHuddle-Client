@@ -21,6 +21,4 @@ function useSessionData(sessionId: string) {
   return { sessionData, isLoading, error }
 }
 
-
-
 export default useSessionData

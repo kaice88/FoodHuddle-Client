@@ -14,9 +14,8 @@ interface FormValue {
   qrImages: Array<File>
 }
 
-const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessionId }) => {
+const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessionId, close }) => {
   const { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo } = useSessionInfo()
-  const fetchEditSessionInfo = mutateEditSessionInfo(sessionId)
 
   // ......Config form.................................................
   const form = useForm<FormValue>({
@@ -37,6 +36,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
     },
   })
   const queryHostPaymentInfo = fetchQueryHostPaymentInfo(form)
+  const fetchEditSessionInfo = mutateEditSessionInfo(sessionId, close)
 
   useEffect(() => {
     const handlefetchSessionInfo = async () => {
@@ -150,7 +150,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
             </Group>
           </Flex>
           <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
-            <ImagesUploaded handleDeleteImage={handleDeleteImage} files={files} />
+            <ImagesUploaded handleDeleteImage={handleDeleteImage} files={files} isView={false} />
           </Flex>
         </Flex>
       </Flex>

@@ -14,7 +14,7 @@ function useSessionInfo() {
       enabled: false,
       onSuccess: (data) => {
         form.setFieldValue('hostPaymentInfo', data.data.hostPaymentInfor)
-        form.setFieldValue('qrImages', data.data.qr_images)
+        form.setFieldValue('qrImages', data.data.qrImages)
       },
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
@@ -22,7 +22,7 @@ function useSessionInfo() {
     },
   )
 
-  const mutateEditSessionInfo = sessionId => mutation(
+  const mutateEditSessionInfo = (sessionId, close) => mutation(
     ['sessionInfo'],
     async data =>
       await axiosInstance.put(REQUEST_EDIT_SESSION_INFO(sessionId), data,
@@ -37,8 +37,9 @@ function useSessionInfo() {
         notificationShow('error', 'Error: ', error.response.data.message)
       },
       onSuccess: (data) => {
-        const { id, message } = data.data
+        const { message } = data.data
         notificationShow('success', 'Success: ', message)
+        close()
       },
     },
   )

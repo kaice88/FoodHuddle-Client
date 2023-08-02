@@ -1,4 +1,4 @@
-import { ActionIcon, CloseButton, Image } from '@mantine/core'
+import { CloseButton, Image } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
 import { modals } from '@mantine/modals'
 
@@ -39,7 +39,10 @@ function ImagesUploaded({ handleDeleteImage, files, isView }) {
             onClick={() => handleImage(imageUrl)}
           />
           {!isView
-          && <ActionIcon
+          && <CloseButton
+            radius="xl"
+            variant="hover"
+            title="Delete"
             style={{
               position: 'absolute',
               top: '-2px',
@@ -49,14 +52,10 @@ function ImagesUploaded({ handleDeleteImage, files, isView }) {
               width: 10,
               height: 10,
               backgroundColor: 'rgba(255, 255, 255)',
-            }}>
-            <CloseButton
-              radius="xl"
-              variant="hover"
-              title="Delete"
-              onClick={() => handleDeleteImage(index)}
-            />
-          </ActionIcon>}
+            }}
+            onClick={() => handleDeleteImage(index)}
+          />
+          }
         </div>
       )
     })

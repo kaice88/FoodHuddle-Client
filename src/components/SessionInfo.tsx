@@ -45,7 +45,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
         {isHosted && <div>
           <Modal opened={opened} onClose={close} title={titleModal} centered size={700}>
             <Box maw={600} mx="auto">
-              <SessionInfoModal isCreateFirst={false} sessionData={sessionData} isEdit={true} sessionId={sessionId}/>
+              <SessionInfoModal isCreateFirst={false} sessionData={sessionData} isEdit={true} sessionId={sessionId} close={close}/>
             </Box>
           </Modal>
           <ActionIcon>
