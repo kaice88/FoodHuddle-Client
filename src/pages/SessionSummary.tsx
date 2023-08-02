@@ -1,9 +1,8 @@
 import { Flex } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
-import HostActionButton from '@/components/HostActionButton'
 import useSession from '@/hooks/useSession'
-import { SessionActions, SessionStatuses } from '@/enums'
+import { SessionStatuses } from '@/enums'
 import { notificationShow } from '@/components/Notification'
 
 export default function SessionSummary() {
@@ -19,7 +18,7 @@ export default function SessionSummary() {
   }
   return (
     <Flex justify="flex-end">
-      {!hidden && <HostActionButton value={SessionActions.FINISH} handleOnClick={handleChangeStatus}/>}
+      <p>867</p>
     </Flex>
   )
 }
