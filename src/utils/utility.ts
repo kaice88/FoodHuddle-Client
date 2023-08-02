@@ -1,6 +1,5 @@
 import Decimal from 'decimal.js'
 import axios from 'axios'
-import { notificationShow } from '@/components/Notification'
 
 export function moneyFormat(value,
   currency = 'USD',
@@ -27,16 +26,11 @@ export async function handleFormData(dataForm, values, field) {
       dataForm.append(field, file)
     }
     else {
-      try {
-        const res = await axios.get(file, { responseType: 'blob' })
-        const blob = res.data
-        const fileName = getFileNameFromPath(file)
-        const fileTransform = new File([blob], fileName, { type: blob.type })
-        dataForm.append(field, fileTransform)
-      }
-      catch (error) {
-        notificationShow('error', 'Error: ', error)
-      }
+      const res = await axios.get(file, { responseType: 'blob' })
+      const blob = res.data
+      const fileName = getFileNameFromPath(file)
+      const fileTransform = new File([blob], fileName, { type: blob.type })
+      dataForm.append(field, fileTransform)
     }
   }
   return dataForm

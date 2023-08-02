@@ -1,12 +1,30 @@
 import { useNavigate } from 'react-router-dom'
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_EDIT_SESSION_INFO, REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
+import { REQUEST_EDIT_SESSION_INFO, REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_GET_SESSION_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
+import useSessionInfoStore from '@/store/sessionInfoStore'
 
 function useSessionInfo() {
   const { mutation, query } = useRequestProcessor()
+  const { setSessionInfoData } = useSessionInfoStore()
+
   const navigate = useNavigate()
+
+  const fetchSessionInfo = sessionId => query(
+    ['get-sessionInfo'],
+    () => axiosInstance.get(REQUEST_GET_SESSION_INFO(sessionId!)),
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        setSessionInfoData(data.data)
+      },
+      onError: (error) => {
+        notificationShow('error', 'Error: ', error.response.data.message)
+      },
+    },
+  )
+
   const fetchQueryHostPaymentInfo = form => query(
     ['paymentInfo'],
     () => axiosInstance.get(REQUEST_GET_HOST_PAYMENT_INFO),
@@ -40,6 +58,7 @@ function useSessionInfo() {
         const { message } = data.data
         notificationShow('success', 'Success: ', message)
         close()
+        setSessionInfoData(data.data.data)
       },
     },
   )
@@ -66,7 +85,7 @@ function useSessionInfo() {
     },
   )
 
-  return { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo }
+  return { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo, fetchSessionInfo }
 }
 
 export default useSessionInfo

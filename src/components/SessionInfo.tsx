@@ -27,8 +27,8 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
 
   return (
     <div className="sessionInfo" >
-      <Flex gap="lg" justify="flex-start" align="center" direction="row" style={{ margin: '0px 0px 20px 0px' }}>
-        <Flex justify="center" align="flex-start" direction="column">
+      <Flex gap="lg" justify="flex-start" align="center" direction="row" style={{ margin: '0px 0px 20px 0px' }} wrap={'wrap'}>
+        <Flex justify="center" align="flex-start" direction="column" >
           <Title order={2}>
             {sessionData.title}
           </Title>
@@ -45,7 +45,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
         {isHosted && <div>
           <Modal opened={opened} onClose={close} title={titleModal} centered size={700}>
             <Box maw={600} mx="auto">
-              <SessionInfoModal isCreateFirst={false} sessionData={sessionData} isEdit={true} sessionId={sessionId} close={close}/>
+              <SessionInfoModal isCreateFirst={false} sessionData={sessionData} isEdit={true} sessionId={sessionId} close={close} />
             </Box>
           </Modal>
           <ActionIcon>
