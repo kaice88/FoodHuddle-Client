@@ -38,17 +38,18 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
     const evidence = data.evidence
     await Promise.all (evidence?.map(async (item) => {
       if (typeof item === 'object') {
-        formData.append('evidence', item);
-      } else {
+        formData.append('evidence', item)
+      }
+      else {
         const res = await ax.get(item, { responseType: 'blob' })
-        const blob = res.data;
-        const fileName = item.split('/').pop();
-        const fileTransform = new File([blob], fileName, {type: blob.type});
-        formData.append('evidence', fileTransform);
+        const blob = res.data
+        const fileName = item.split('/').pop()
+        const fileTransform = new File([blob], fileName, { type: blob.type })
+        formData.append('evidence', fileTransform)
       }
     }))
     formData.append('note', data.note)
-   
+
     requestPayment(formData, (res) => {
       notificationShow('success', 'SUCCESS', res.data.message)
       closeModal()
@@ -57,7 +58,7 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
 
   return (
     <>
-   <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Flex align="center" >
           <Title sx={() => ({ fontWeight: 500, fontSize: '14px' })} color="#212529" pr={10}>Evidence</Title>
           <Controller
@@ -87,6 +88,6 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
         <Flex justify="flex-end">
           <Button mt="md" type="submit">OK</Button>
         </Flex>
-      </form> 
+      </form>
     </>)
 }

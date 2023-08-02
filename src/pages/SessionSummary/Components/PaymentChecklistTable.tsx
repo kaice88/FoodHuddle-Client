@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table'
-import { Avatar, Button, Flex, Image, Text, Title, useMantineTheme } from '@mantine/core'
+import { Button, Flex, Image, Text, Title, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import isEmpty from 'lodash/isEmpty'
 import { IconListCheck } from '@tabler/icons-react'
 
 import ActionButton from '@/components/ActionButton'
-import { PaymentActionColors, PaymentActions, PaymentStatusColors, PaymentStatuses } from '@/enums'
+import { PaymentActionColors, PaymentActions, PaymentStatusColors, PaymentStatuses, SessionStatuses } from '@/enums'
 import StatusBadge from '@/components/StatusBadge'
 import usePaymentSession from '@/hooks/usePaymentSession'
 import ItemName from '@/components/ItemName'
-
+import useSessionData from '@/hooks/useSessionData'
 
 // const data =  [
 // //   {
@@ -250,29 +250,27 @@ import ItemName from '@/components/ItemName'
 // //           "evidence": null
 // //         }
 // ]
-const EvidenceModal = ({evidence, globalTheme}) => {
+function EvidenceModal({ evidence, globalTheme }) {
   console.log(evidence.length)
   const openModal = () => modals.open({
     title: 'Image preview',
     centered: true,
     children: (
       <>
-      {evidence.length === 0 ? 
-      // <p>ANC</p>
-      <Text style={{textAlign:'center', fontStyle:'italic'}} color={globalTheme.colors.duck[0]}>No data found</Text> 
-      :
-      <Flex wrap="wrap" gap="lg">
-        {evidence.map((item, index) =>
-          <Image
-            key={index}
-            // width={70}
-            // height={70}
-            src= {item}
-            alt="Evidence"
-            // onClick={handleImage}
-          />)}
-      </Flex>
-  }
+        {evidence.length === 0
+          ? <Text style={{ textAlign: 'center', fontStyle: 'italic' }} color={globalTheme.colors.duck[0]}>No data found</Text>
+          : <Flex wrap="wrap" gap="lg">
+            {evidence.map((item, index) =>
+              <Image
+                key={index}
+                // width={70}
+                // height={70}
+                src= {item}
+                alt="Evidence"
+                // onClick={handleImage}
+              />)}
+          </Flex>
+        }
       </>
     ),
   })
@@ -287,19 +285,13 @@ const EvidenceModal = ({evidence, globalTheme}) => {
   })} onClick={openModal}>Show</Button>)
 }
 
-const Table = ({globalTheme,data, columns, isLoading}) => {
+function Table({ globalTheme, data, columns, isLoading }) {
   const table = useMantineReactTable({
     columns,
-    data : !isEmpty(data) ? data : [],
+    data: !isEmpty(data) ? data : [],
     enableStickyHeader: true,
     enablePagination: false,
     enableTopToolbar: false,
-    mantineTableHeadCellProps: () => { 
-    return {
-      sx: () => ({
-        backgroundColor: ` ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
-      }),
-    }},
     mantineTableBodyCellProps: () => ({
       style: {
         padding: '7px 16px 7px 16px',
@@ -324,23 +316,24 @@ const Table = ({globalTheme,data, columns, isLoading}) => {
       className: 'payment-checklist-table__top',
     }),
     state: {
-      isLoading
-    }
+      isLoading,
+    },
   })
 
   return <MantineReactTable table={table} />
 }
 
-const PaymentChecklistTable = ({id}) => {
+function PaymentChecklistTable({ id }) {
   const [isLoading, setIsLoading] = useState(true)
   const globalTheme = useMantineTheme()
-  const { changeStatusPaymentRequest, fetchPaymentChecklist , paymentChecklist, approveAllPaymentRequest} = usePaymentSession(id)
+  const { sessionData } = useSessionData(id)
+  const { changeStatusPaymentRequest, fetchPaymentChecklist, paymentChecklist, approveAllPaymentRequest } = usePaymentSession(id)
+
   useEffect(() => {
     const handlefetchPaymentChecklist = async () => {
       const res = await fetchPaymentChecklist.refetch()
-      if(res.isSuccess) {
+      if (res.isSuccess)
         setIsLoading(false)
-      }
     }
     handlefetchPaymentChecklist()
   }, [])
@@ -348,21 +341,21 @@ const PaymentChecklistTable = ({id}) => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'user', 
+        accessorKey: 'user',
         header: 'Joiner',
         size: 200,
         Cell: ({ renderedCellValue }) =>
-        <ItemName name={renderedCellValue.name} picture={renderedCellValue.photo}/>
+          <ItemName name={renderedCellValue.name} picture={renderedCellValue.photo}/>,
       },
       {
-        accessorKey: 'note', 
+        accessorKey: 'note',
         header: 'Payment Note',
       },
       {
         accessorKey: 'evidence',
         header: 'Evidence',
         size: 100,
-        Cell: ({renderedCellValue}) => (<>{renderedCellValue ? <EvidenceModal globalTheme={globalTheme} evidence={renderedCellValue}/> : '- - -' }</>)
+        Cell: ({ renderedCellValue }) => (<>{renderedCellValue ? <EvidenceModal globalTheme={globalTheme} evidence={renderedCellValue}/> : '- - -' }</>)
         ,
       },
       {
@@ -371,8 +364,8 @@ const PaymentChecklistTable = ({id}) => {
         size: 100,
         Cell: (value) => {
           return (
-            <>{ Object.values(PaymentStatuses).indexOf(value.renderedCellValue) !== -1 ? <StatusBadge status={value.renderedCellValue} colorName={PaymentStatusColors[value.renderedCellValue]}/> : '- - -'}</>
-           )
+            <>{ Object.values(PaymentStatuses).includes(value.renderedCellValue) ? <StatusBadge status={value.renderedCellValue} colorName={PaymentStatusColors[value.renderedCellValue]}/> : '- - -'}</>
+          )
         },
       },
       {
@@ -381,28 +374,26 @@ const PaymentChecklistTable = ({id}) => {
         Cell: ({ row }) => {
           const isDisabled = row.getValue('status') !== PaymentStatuses.PENDING
           const userId = row.getValue('user').id
-          return (<Flex gap={10} justify="center" align='center'>
-            <ActionButton colorName={PaymentActionColors.APPROVE} value={PaymentActions.APPROVE} size="xs" disabled={isDisabled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.APPROVE, userId})}/>
-            <ActionButton colorName={PaymentActionColors.REJECT} value={PaymentActions.REJECT} size="xs" disabled={isDisabled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.REJECT,userId })}/>
+          return (<Flex gap={10} justify="center" align="center">
+            <ActionButton colorName={PaymentActionColors.APPROVE} value={PaymentActions.APPROVE} size="xs" disabled={isDisabled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.APPROVE, userId })}/>
+            <ActionButton colorName={PaymentActionColors.REJECT} value={PaymentActions.REJECT} size="xs" disabled={isDisabled} handleOnClick={() => changeStatusPaymentRequest({ action: PaymentActions.REJECT, userId })}/>
           </Flex>)
         },
       },
     ],
     [],
   )
- 
 
   return (
-  <div style={{padding:'10px 0'}}>
-    <Flex justify='space-between' align='center'>
-      <Flex align='center' gap='xs'>
-        <IconListCheck size='1.5rem' color={globalTheme.colors.duck[0]}/>
-        <Title sx={() => ({ fontWeight: 500, fontSize: '18px' })} color={globalTheme.colors.duck[0]} py={10}>Payment Checklist</Title>
+    <div style={{ padding: '10px 0' }}>
+      <Flex justify="space-between" align="center">
+        <Flex align="center" gap="xs">
+          <IconListCheck size="1.5rem" color={globalTheme.colors.duck[0]}/>
+          <Title sx={() => ({ fontWeight: 500, fontSize: '18px' })} color={globalTheme.colors.duck[0]} py={10}>Payment Checklist</Title>
+        </Flex>
+        {sessionData?.status !== SessionStatuses.FINISHED && <ActionButton value={PaymentActions.APPROVE_ALL} colorName={PaymentActionColors.APPROVE_ALL} handleOnClick={approveAllPaymentRequest} size="xs"/> }
       </Flex>
-    <ActionButton value={PaymentActions.APPROVE_ALL} colorName={PaymentActionColors.APPROVE_ALL} handleOnClick={approveAllPaymentRequest} size='xs'/>
-    </Flex>
-    <Table globalTheme={globalTheme} columns={columns} data={paymentChecklist} isLoading={isLoading}/>
-  </div>)
-  
+      <Table globalTheme={globalTheme} columns={columns} data={paymentChecklist} isLoading={isLoading}/>
+    </div>)
 }
 export default PaymentChecklistTable

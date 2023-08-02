@@ -8,7 +8,7 @@ import YourPayment from './Components/YourPayment'
 import PaymentChecklistTable from './Components/PaymentChecklistTable'
 import ActionButton from '@/components/ActionButton'
 import useSession from '@/hooks/useSession'
-import {  SessionActions, SessionStatuses,SessionActionColor } from '@/enums'
+import { SessionActionColor, SessionActions, SessionStatuses } from '@/enums'
 import { notificationShow } from '@/components/Notification'
 import { checkIfUserIsHost } from '@/utils/sessions'
 import useSessionData from '@/hooks/useSessionData'
@@ -19,7 +19,7 @@ export default function SessionSummary() {
   const { sessionId } = useParams()
   const { changeStatus } = useSession(sessionId)
   const { sessionData, isLoading } = useSessionData(sessionId!)
-  const {userProfile} = useAuth()
+  const { userProfile } = useAuth()
 
   const handleChangeStatus = () => {
     changeStatus(SessionStatuses.FINISHED, (data) => {
@@ -28,18 +28,19 @@ export default function SessionSummary() {
     },
     )
   }
-  
+
   return (
     <>
-    {!isLoading  && <div>
-      {checkIfUserIsHost(sessionData?.host, userProfile) && (sessionData?.status !== SessionStatuses.FINISHED && <Flex justify="flex-end" py={10}><ActionButton value={SessionActions.FINISH} colorName={SessionActionColor.FINISH} handleOnClick={handleChangeStatus}/></Flex>) }
-      <FeeInfo id={sessionId}/>
-      <PaymentSummaryTable id={sessionId}/>
-      {
-        checkIfUserIsHost(sessionData?.host, userProfile)
-       ? <PaymentChecklistTable id={sessionId}/> : <YourPayment id={sessionId}/>}
-    </div> }
+      {!isLoading && <div>
+        {(checkIfUserIsHost(sessionData?.host, userProfile) && !hidden) && (sessionData?.status !== SessionStatuses.FINISHED && <Flex justify="flex-end" py={10}><ActionButton value={SessionActions.FINISH} colorName={SessionActionColor.FINISH} handleOnClick={handleChangeStatus}/></Flex>) }
+        <FeeInfo id={sessionId}/>
+        <PaymentSummaryTable id={sessionId}/>
+        {
+          checkIfUserIsHost(sessionData?.host, userProfile)
+            ? <PaymentChecklistTable id={sessionId}/>
+            : <YourPayment id={sessionId}/>}
+      </div> }
     </>
-   
+
   )
 }

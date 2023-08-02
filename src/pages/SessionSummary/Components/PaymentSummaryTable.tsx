@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
-import { Avatar, Flex, Text, Title, useMantineTheme } from '@mantine/core'
-import { IconBowl, IconCoin, IconListCheck, IconWallet } from '@tabler/icons-react'
+import { Flex, Text, Title, useMantineTheme } from '@mantine/core'
+import { IconBowl, IconCoin, IconWallet } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 
 import Table from '@/components/TableExpandable/TableComponent'
@@ -8,59 +8,59 @@ import { calculatePaymentAmount, moneyFormat } from '@/utils/utility'
 import usePaymentSession from '@/hooks/usePaymentSession'
 import ItemName from '@/components/ItemName'
 
-const paymentSummary2 =  [
+const paymentSummary2 = [
   {
-      "user": {
-          "googleId": "118000667982679358226",
-          "email": "ngan.phan@nfq.com",
-          "name": "Ngan Phan Khanh",
-          "photo": "https://lh3.googleusercontent.com/a/AAcHTteJ-0ycB1Gz-fYDFq3OFKcet17Br5M4Mw0c2JGm3n4jUA=s96-c"
-      },
+    user: {
+      googleId: '118000667982679358226',
+      email: 'ngan.phan@nfq.com',
+      name: 'Ngan Phan Khanh',
+      photo: 'https://lh3.googleusercontent.com/a/AAcHTteJ-0ycB1Gz-fYDFq3OFKcet17Br5M4Mw0c2JGm3n4jUA=s96-c',
+    },
 
-      "orders": [
+    orders: [
+      {
+        id: 2,
+        foodName: 'Bún',
+        originPrice: 222,
+        quantity: 1,
+        note: 'ac',
+        options: [
           {
-              "id": 2,
-              "foodName": "Bún",
-              "originPrice": 222,
-              "quantity": 1,
-              "note": "ac",
-              "options": [
-                  {
-                      "category": "SIZE",
-                      "detail": [
-                          {
-                              "name": "Size L",
-                              "price": 70
-                          }
-                      ]
-                  },
-                  {
-                      "category": "TOPPING",
-                      "detail": [
-                          {
-                              "name": "Pudding",
-                              "price": 222
-                          },
-                          {
-                              "name": "50% đá",
-                              "price": 0
-                          }
-                      ]
-                  }
-              ],
-              "actualPrice": 222
+            category: 'SIZE',
+            detail: [
+              {
+                name: 'Size L',
+                price: 70,
+              },
+            ],
           },
           {
-              "id": 2,
-              "foodName": "Mì quảng",
-              "originPrice": 222,
-              "quantity": 1,
-              "note": "ac",
-              "options": [],
-              "actualPrice": 222
-          }
-      ]
-  }
+            category: 'TOPPING',
+            detail: [
+              {
+                name: 'Pudding',
+                price: 222,
+              },
+              {
+                name: '50% đá',
+                price: 0,
+              },
+            ],
+          },
+        ],
+        actualPrice: 222,
+      },
+      {
+        id: 2,
+        foodName: 'Mì quảng',
+        originPrice: 222,
+        quantity: 1,
+        note: 'ac',
+        options: [],
+        actualPrice: 222,
+      },
+    ],
+  },
 ]
 
 export default function SessionSummary({ id }) {
@@ -160,18 +160,19 @@ export default function SessionSummary({ id }) {
           quantity: item.quantity,
           name: item.foodName,
           options: item.options,
+          photo: item.foodImage,
         }
       })
     })
     : []
 
   return (
-    <div style={{padding:'10px 0'}}>
-      <Flex align='center' gap='xs'>
-        <IconWallet size='1.5rem' color={globalTheme.colors.duck[0]}/>
+    <div style={{ padding: '10px 0' }}>
+      <Flex align="center" gap="xs">
+        <IconWallet size="1.5rem" color={globalTheme.colors.duck[0]}/>
         <Title sx={() => ({ fontWeight: 500, fontSize: '18px' })} color={globalTheme.colors.duck[0]} py={10}>Payment Summary</Title>
       </Flex>
-    <Table columns={columns} data={data} elements={dataChild} isLoading={fetchPaymentSummary.isLoading} isTableGroupedByFood={false} />
+      <Table columns={columns} data={data} elements={dataChild} isLoading={fetchPaymentSummary.isLoading} isTableGroupedByFood={false} />
     </div>
   )
 }

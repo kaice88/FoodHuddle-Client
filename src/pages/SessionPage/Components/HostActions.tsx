@@ -3,7 +3,7 @@ import { Flex } from '@mantine/core'
 import ActionButton from '@/components/ActionButton'
 import { SessionActionColor, SessionActions, SessionStatuses } from '@/enums'
 
-const HostActions = ({ status, handleDeleteSession, handlechangeStatus }) => {
+function HostActions({ status, handleDeleteSession, handlechangeStatus }) {
   return (
     <Flex
       gap="xs"

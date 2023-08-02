@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_PAYMENT_CHECKLIST, REQUEST_USER_PAYMENT,REQUEST_ORDER_BILL} from '@/constants/apis'
+import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_ORDER_BILL, REQUEST_PAYMENT_CHECKLIST, REQUEST_USER_PAYMENT } from '@/constants/apis'
 import axios from '@/settings/axios'
-import ax from 'axios'
 
 function usePaymentSession(id) {
   const [paymentSummaryData, setPaymentSummaryData] = useState()
@@ -26,8 +25,7 @@ function usePaymentSession(id) {
     onError: handleError,
   })
 
-  const requestPayment =  (data, onSuccess) => {
-   
+  const requestPayment = (data, onSuccess) => {
     requestPaymentMutation.mutate(data,
       {
         onSuccess,
@@ -95,7 +93,7 @@ function usePaymentSession(id) {
     enabled: false,
     onError: handleError,
   })
-  
+
   // fetch payment checklist data
   const fetchPaymentChecklist = useQuery({
     queryKey: ['payment-checklist'],
@@ -114,6 +112,6 @@ function usePaymentSession(id) {
     enabled: false,
     onError: handleError,
   })
-  return { requestPayment, changeStatusPaymentRequest, fetchUserPayment, fetchPaymentSummary, paymentSummary: paymentSummaryData?.foodOrderList, sessionId: paymentSummaryData?.sessionId, fetchPaymentChecklist, paymentChecklist: paymentChecklistData, approveAllPaymentRequest, fetchOrderBill  }
+  return { requestPayment, changeStatusPaymentRequest, fetchUserPayment, fetchPaymentSummary, paymentSummary: paymentSummaryData?.foodOrderList, sessionId: paymentSummaryData?.sessionId, fetchPaymentChecklist, paymentChecklist: paymentChecklistData, approveAllPaymentRequest, fetchOrderBill }
 }
 export default usePaymentSession
