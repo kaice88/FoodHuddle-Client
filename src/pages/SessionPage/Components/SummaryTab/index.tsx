@@ -73,10 +73,9 @@ function SummaryTab({ sessionId, isHosted }) {
               disabled={!isOpenEditableTable}
               styles={theme => ({
                 root: {
-                  backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.6),
-                  color: theme.colors.darkLavender[0],
+                  backgroundColor: theme.colors.orange[0],
                   ...theme.fn.hover({
-                    backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.7),
+                    backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.5),
                   }),
                   padding: '10px',
                 },
@@ -89,10 +88,9 @@ function SummaryTab({ sessionId, isHosted }) {
               disabled={isOpenEditableTable}
               styles={theme => ({
                 root: {
-                  backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.6),
-                  color: theme.colors.darkLavender[0],
+                  backgroundColor: theme.colors.orange[0],
                   ...theme.fn.hover({
-                    backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.7),
+                    backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.5),
                   }),
                   padding: '10px',
                 },
@@ -153,8 +151,20 @@ function SummaryTab({ sessionId, isHosted }) {
                       {...form.getInputProps('receiptScreenshot')}
                     >
                       {props => (
-                        <Button variant="light" size="xs" color="indigo" {...props}>
-                          Upload image
+                        <Button
+                          variant="outline"
+                          styles={theme => ({
+                            root: {
+                              color: theme.colors.orange[0],
+                              border: `1px solid ${theme.colors.orange[0]}`,
+                              ...theme.fn.hover({
+                                backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.95),
+                              }),
+                              padding: '10px',
+                            },
+                          })}
+                          {...props}>
+                        Upload image
                         </Button>
                       )}
                     </FileButton>
@@ -171,10 +181,9 @@ function SummaryTab({ sessionId, isHosted }) {
                 size="15px"
                 styles={theme => ({
                   root: {
-                    backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.9),
-                    color: theme.colors.orange[0],
+                    backgroundColor: theme.colors.orange[0],
                     ...theme.fn.hover({
-                      backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.8),
+                      backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.5),
                     }),
                     padding: '10px',
                   },

@@ -7,13 +7,14 @@ import {
 } from 'mantine-react-table'
 import { ActionIcon, Avatar, Flex, MultiSelect, Text, Tooltip, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { IconAlertCircle, IconEdit, IconTrash,IconChefHat} from '@tabler/icons-react'
+import { IconAlertCircle, IconChefHat, IconEdit, IconTrash } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 import { moneyFormat } from '@/utils/utility'
 import useSummaryTab from '@/hooks/useSummaryTab'
 import MenuOptions from '@/components/MenuOptions'
 import { notificationShow } from '@/components/Notification'
 import ItemName from '@/components/ItemName'
+
 export interface DataEdit {
   id: number
   user: any
@@ -77,7 +78,7 @@ const EditTable = ({ sessionId }) => {
         enableEditing: false,
         Cell: ({ cell }) => {
           const user = cell.getValue()
-          return  <ItemName name={user.name} picture={user.photo} />
+          return <ItemName name={user.name} picture={user.photo} />
         },
       },
       {
@@ -85,13 +86,14 @@ const EditTable = ({ sessionId }) => {
         header: '',
         size: 30,
         enableEditing: false,
-        enableSorting:false,
+        enableSorting: false,
         Cell: ({ cell }) => {
           const foodImage = cell.getValue()
-          return foodImage ? <Avatar src={foodImage} alt={foodImage} radius="xl" size={35}/> : 
-          ( <Avatar color="violet" radius="sm">
-          <IconChefHat size="1.5rem" />
-        </Avatar>)
+          return foodImage
+            ? <Avatar src={foodImage} alt={foodImage} radius="xl" size={35}/>
+            : (<Avatar color="violet" radius="sm">
+              <IconChefHat size="1.5rem" />
+            </Avatar>)
         },
       },
       {
@@ -385,22 +387,17 @@ const EditTable = ({ sessionId }) => {
     enableStickyHeader: true,
     enablePagination: false,
     positionActionsColumn: 'last',
-    getRowId: row => row.id,
     mantineTableHeadCellProps: ({ table }) => ({
       sx: {
         padding: '10px 10px 10px 0px',
         width: 'fit-content',
-        backgroundColor: ` ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
         textAlign: 'left',
       },
     }),
     mantineTableContainerProps: ({ table }) => ({
-      sx: {
-        maxHeight: '600px',
-        border: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
-      },
       style: {
         overflow: 'auto',
+        maxHeight: '600px',
       },
       className: 'table-edit-summary-tab',
     }),
@@ -408,8 +405,6 @@ const EditTable = ({ sessionId }) => {
       style: {
         padding: '7px 5px 7px 5px',
         width: 'fit-content',
-        borderBottom: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
-
       },
     }),
     onEditingRowCancel: () => setValidationErrors({}),
@@ -430,15 +425,7 @@ const EditTable = ({ sessionId }) => {
         </Tooltip>
       </Flex>
     ),
-    mantineBottomToolbarProps: ({ table }) => ({
-      style: {
-        border: 'none',
-        boxShadow: 'none',
-        outline: 'none',
-        backgroundColor: '#f8f9fa',
-      },
-    }),
-
+    enableBottomToolbar: false,
     state: {
       isLoading: fetchQueryFoodOrderEdit.isLoading,
       showProgressBars: fetchQueryFoodOrderEdit.isFetching,

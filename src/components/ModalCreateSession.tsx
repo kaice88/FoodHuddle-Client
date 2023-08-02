@@ -64,8 +64,6 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
       dataForm.append('description', values.description)
       dataForm.append('host_payment_info', values.hostPaymentInfo)
       dataForm.append('status', values.status)
-      dataForm.append('host', values.host)
-      dataForm.append('date', values.date)
       fetchEditSessionInfo.mutate(dataForm)
     }
   }
@@ -132,8 +130,20 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
                 {...form.getInputProps('qrImages')}
               >
                 {props => (
-                  <Button variant="light" size="xs" color="indigo" {...props}>
-        Upload image
+                  <Button
+                    variant="outline"
+                    styles={theme => ({
+                      root: {
+                        color: theme.colors.orange[0],
+                        border: `1px solid ${theme.colors.orange[0]}`,
+                        ...theme.fn.hover({
+                          backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.95),
+                        }),
+                        padding: '10px',
+                      },
+                    })}
+                    {...props}>
+                    Upload image
                   </Button>
                 )}
               </FileButton>
@@ -150,10 +160,9 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
           size="15px"
           styles={theme => ({
             root: {
-              backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.9),
-              color: theme.colors.orange[0],
+              backgroundColor: theme.colors.orange[0],
               ...theme.fn.hover({
-                backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.8),
+                backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.5),
               }),
               padding: '10px',
             },

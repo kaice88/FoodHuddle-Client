@@ -1,5 +1,4 @@
-import React from 'react'
-import { CloseButton, Image } from '@mantine/core'
+import { ActionIcon, CloseButton, Image } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
 import { modals } from '@mantine/modals'
 
@@ -34,29 +33,30 @@ function ImagesUploaded({ handleDeleteImage, files, isView }) {
         >
           <Image
             src={imageUrl}
-            width={80}
-            height={80}
-            style={{ objectFit: 'cover', cursor: 'pointer' }}
+            width={90}
+            height={90}
+            style={{ objectFit: 'cover', cursor: 'pointer', margin: 'auto' }}
             onClick={() => handleImage(imageUrl)}
           />
           {!isView
-          && <CloseButton
-            radius="xl"
-            variant="hover"
-            title="Delete"
+          && <ActionIcon
             style={{
               position: 'absolute',
               top: '-2px',
               right: '-2px',
               zIndex: 1,
               padding: 0,
-              width: 20,
-              height: 20,
+              width: 10,
+              height: 10,
               backgroundColor: 'rgba(255, 255, 255)',
-              color: 'grey',
-            }}
-            onClick={() => handleDeleteImage(index)}
-          />}
+            }}>
+            <CloseButton
+              radius="xl"
+              variant="hover"
+              title="Delete"
+              onClick={() => handleDeleteImage(index)}
+            />
+          </ActionIcon>}
         </div>
       )
     })

@@ -1,4 +1,4 @@
-import { Box, Flex, Group, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Box, Flex, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
 import { isEmpty } from 'lodash'
 import { IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
@@ -22,24 +22,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
       ></div>
     </Flex>
   )
-  const getStatusClassName = (status: SessionStatuses): string => {
-    if (status === SessionStatuses.OPEN)
-      return 'open'
 
-    if (status === SessionStatuses.LOCKED)
-      return 'locked'
-
-    if (status === SessionStatuses.FINISHED)
-      return 'finished'
-
-    if (status === SessionStatuses.PENDING_PAYMENTS)
-      return 'pending'
-  }
-  const nhap = [
-    'https://images.foody.vn/res/g106/1056463/s120x120/486929a0-6fca-437f-b538-7843567b-c7219896-230510105432.jpeg',
-    'https://images.foody.vn/res/g106/1056463/s120x120/486929a0-6fca-437f-b538-7843567b-c7219896-230510105432.jpeg',
-    'https://images.foody.vn/res/g106/1056463/s120x120/486929a0-6fca-437f-b538-7843567b-c7219896-230510105432.jpeg',
-  ]
   const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
 
   return (
@@ -65,44 +48,45 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
               <SessionInfoModal isCreateFirst={false} sessionData={sessionData} isEdit={true} sessionId={sessionId}/>
             </Box>
           </Modal>
-          <Group position="center">
+          <ActionIcon>
             <IconEdit onClick={open}/>
-          </Group>
+          </ActionIcon>
         </div>}
       </Flex>
       <Flex className="sessionInfo__content" style={{ margin: '0px 0px 20px 0px' }} >
-        {isEmpty(sessionData) ? <Loader/> : <>
-          <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}>
-            <List.Item>
-              <Text><span style={{ fontWeight: 'bold' }}>Host :</span>{' '}{sessionData?.host.name}</Text>
-            </List.Item>
-            <List.Item>
-              <Flex gap={'sm'} direction={'row'}><span style={{ fontWeight: 'bold' }}>Link shop :</span><a href={sessionData.shopLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer"> Shop
-              </a><CopyClipBoard text={sessionData.shopLink} /></Flex>
+        {isEmpty(sessionData)
+          ? <Loader/>
+          : <>
+            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}>
+              <List.Item>
+                <Text><span style={{ fontWeight: 'bold' }}>Host :</span>{' '}{sessionData?.host.name}</Text>
+              </List.Item>
+              <List.Item>
+                <Flex gap={'sm'} direction={'row'}><span style={{ fontWeight: 'bold' }}>Link shop :</span><a href={sessionData.shopLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer"> Shop
+                </a><CopyClipBoard text={sessionData.shopLink} /></Flex>
 
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 'bold' }}>Date :</span>{' '}{sessionData?.date}</Text>
-            </List.Item>
-            <List.Item>
-              <Text><span style={{ fontWeight: 'bold' }}>Description :</span>{' '}{sessionData?.description}</Text>
-            </List.Item>
-          </List>
-          <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
-            <List.Item>
-              <Text><span style={{ fontWeight: 'bold' }}>Host payment info :</span>{' '}{sessionData?.hostPaymentInfo}</Text>
-            </List.Item>
-          </List>
-          <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
-            <List.Item>
-              <Text fw={'bold'}>QR Code: </Text>
-            </List.Item>
-            <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
-              {/* <ImagesUploaded files={sessionData.qrImages} isHosted={isHosted}/> */}
-              <ImagesUploaded files={nhap} isView={true}/>
-            </Flex>
-          </List>
-        </>
+              </List.Item>
+              <List.Item>
+                <Text><span style={{ fontWeight: 'bold' }}>Date :</span>{' '}{sessionData?.date}</Text>
+              </List.Item>
+              <List.Item>
+                <Text><span style={{ fontWeight: 'bold' }}>Description :</span>{' '}{sessionData?.description}</Text>
+              </List.Item>
+            </List>
+            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
+              <List.Item>
+                <Text><span style={{ fontWeight: 'bold' }}>Host payment info :</span>{' '}{sessionData?.hostPaymentInfo}</Text>
+              </List.Item>
+            </List>
+            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
+              <List.Item>
+                <Text fw={'bold'}>QR Code: </Text>
+              </List.Item>
+              <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
+                <ImagesUploaded files={sessionData.qrImages} isView={true}/>
+              </Flex>
+            </List>
+          </>
         }
       </Flex>
     </div>
