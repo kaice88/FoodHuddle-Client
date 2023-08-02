@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 import { Loader, Tabs } from '@mantine/core'
 
-import { isEmpty } from 'lodash'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
 import HostActions from './Components/HostActions'
+import SessionSummary from '@/pages/SessionSummary'
 import { notificationShow } from '@/components/Notification'
 import useSession from '@/hooks/useSession'
 import SessionInfo from '@/components/SessionInfo'
@@ -39,8 +39,6 @@ function SessionPage() {
     changeStatus(status, (data) => {
       notificationShow('success', 'SUCCESS', data.data.message)
       setCurrentStatus(data.data.statusSession)
-      if (status === SessionStatuses.PENDING_PAYMENTS)
-        navigate(`/session/${sessionId}`)
     })
   }
 
@@ -52,12 +50,12 @@ function SessionPage() {
 
   return (
     <>
-      {
-        !isEmpty(sessionData)
-      && <><span>{currentStatus}</span>
-        {checkIfUserIsHost(sessionData.host, userProfile) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} />}
-        <SessionInfo sessionData={sessionData} />
-        <Tabs defaultValue={'order'}>
+      <span>{currentStatus}</span>
+      {checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
+      <SessionInfo sessionData={sessionData} />
+      {(currentStatus === SessionStatuses.PENDING_PAYMENTS || currentStatus === SessionStatuses.FINISHED)
+        ? <SessionSummary/>
+        : <Tabs defaultValue={'order'}>
           <Tabs.List>
             <Tabs.Tab value="order" icon={<IconShoppingCart />}>
             Order
@@ -72,9 +70,7 @@ function SessionPage() {
           <Tabs.Panel value="summary">
             <SummaryTab sessionId={sessionId}/>
           </Tabs.Panel>
-        </Tabs></>
-      }
-
+        </Tabs>}
     </>
   )
 }
