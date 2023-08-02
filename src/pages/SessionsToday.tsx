@@ -81,10 +81,10 @@ export default function SessionTodayPage() {
           {isLoading
             ? (
               <Loader className="loader" />
-              )
+            )
             : (
               <SessionList sessionsList={sessions} />
-              )}
+            )}
         </Tabs.Panel>
       </Tabs>
     </>

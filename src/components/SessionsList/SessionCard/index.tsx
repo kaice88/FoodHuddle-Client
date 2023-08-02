@@ -16,7 +16,7 @@ function SessionCard({ session }: SessionCardProps) {
 
   const sessionURL = `${window.location.origin}/sessions/${id}`
   return (
-    <Card maw={rem('100%')} w={rem('340px')} shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section component="a" href={sessionURL}>
         <Image
           src={shopImage || mockShopImage}
