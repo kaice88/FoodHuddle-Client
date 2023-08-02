@@ -1,4 +1,4 @@
-import { Button, Flex, Loader, MultiSelect, Tabs } from '@mantine/core'
+import { Flex, Loader, MultiSelect, Tabs } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
@@ -7,6 +7,7 @@ import useSessionsToday from '@/hooks/useSessionsToday'
 import { SessionsTodayPageTabs } from '@/enums'
 import { TABS_CONFIG } from '@/constants/sessions'
 import SEARCH_PARAMS from '@/constants/searchParams'
+
 const SessionsHistory = () => {
   const page = 'HISTORY'
   const [queryParameters] = useSearchParams()
@@ -29,7 +30,7 @@ const SessionsHistory = () => {
   useEffect(() => {
     setStatus(decodeURIComponent(queryParameters.toString()))
     const outputArray = queryParameters.get('status')?.split(',')
-    const value = outputArray?.map((item) => item)
+    const value = outputArray?.map(item => item)
     form.setFieldValue('status', value)
     navigate(`?${decodeURIComponent(queryParameters.toString())}`)
   }, [])
@@ -39,12 +40,12 @@ const SessionsHistory = () => {
       status,
     } = data
 
-    if (status && status.length > 0) {
+    if (status && status.length > 0)
       queryParameters.set(SEARCH_PARAMS.STATUS, status.join())
-    }
-    else {
+
+    else
       queryParameters.delete(SEARCH_PARAMS.STATUS)
-    }
+
     setStatus(decodeURIComponent(queryParameters.toString()))
 
     navigate(`?${decodeURIComponent(queryParameters.toString())}`)
@@ -68,7 +69,7 @@ const SessionsHistory = () => {
               { value: 'OPEN', label: 'Open' },
               { value: 'LOCKED', label: 'Locked' },
               { value: 'FINISHED', label: 'Finished' },
-              { value: 'PENDING-PAYMENTS', label: 'Pending Payments' },
+              { value: 'PENDING PAYMENTS', label: 'Pending Payments' },
             ]}
             placeholder="All status"
             transitionProps={{ duration: 150, transition: 'pop-top-left', timingFunction: 'ease' }}
