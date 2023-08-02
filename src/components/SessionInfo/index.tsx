@@ -1,6 +1,6 @@
 import { Group, List, Loader, Text } from '@mantine/core'
 import { isEmpty } from 'lodash'
-import { SessionInfoData } from '@/types/sessions'
+import type { SessionInfoData } from '@/types/sessions'
 
 interface SessionInfoProps {
   sessionData: SessionInfoData

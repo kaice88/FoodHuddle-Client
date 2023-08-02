@@ -34,7 +34,7 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
     const menuItem = find(currentMenu, { foodName: foodOrderItem.foodName })
 
     return menuItem
-  }, [foodOrderItem])
+  }, [foodOrderItem, currentMenu])
 
   const updateFoodOrderItem = useFoodStore(
     state => state.updateFoodOrderItem,

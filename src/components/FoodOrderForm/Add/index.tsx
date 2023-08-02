@@ -60,7 +60,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
     const foodOrderItem: FoodOrderItem = {
       id: uuidv4(),
       foodName: menuItem.foodName,
-      foodImage:menuItem.photo,
+      foodImage: menuItem.photo,
       originPrice:
         menuItem.discountPrice > 0 ? menuItem.discountPrice : menuItem.price,
       note,

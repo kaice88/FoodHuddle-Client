@@ -7,7 +7,6 @@ import axiosInstance from '@/settings/axios'
 import { REQUEST_GET_FOOD_MENU } from '@/constants/apis'
 import useFoodStore from '@/store/foodStore'
 
-const { query } = useRequestProcessor()
 async function fetchMenuFoodData(sessionId: string) {
   const response = await axiosInstance.get<MenuResponseData>(
     REQUEST_GET_FOOD_MENU,
@@ -22,6 +21,7 @@ async function fetchMenuFoodData(sessionId: string) {
 }
 
 function menuFoodQuery(sessionId: string, currentShop: string) {
+  const { query } = useRequestProcessor()
   return query<Menu, Error>(['FoodMenu', sessionId, currentShop], () =>
     fetchMenuFoodData(sessionId),
   )

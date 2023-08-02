@@ -6,14 +6,14 @@ export interface FoodOrderListData {
 export interface FoodOrderItem {
   id: string
   foodName: string
-  foodImage:string
+  foodImage: string
   originPrice: number
   quantity: number
   note: string
   options: SelectedOptions[]
 }
 
-export type OptionDetail = { name: string price: number }
+export interface OptionDetail { name: string ; price: number }
 export interface Option {
   mandatory: boolean
   id: number
@@ -21,9 +21,9 @@ export interface Option {
   detail: OptionDetail[]
 }
 
-export type SelectedOptions = Pick<Option, "category" | "detail">
+export type SelectedOptions = Pick<Option, 'category' | 'detail'>
 
-export type MenuItem = {
+export interface MenuItem {
   id: number
   foodName: string
   description: string
@@ -35,7 +35,7 @@ export type MenuItem = {
 
 export type Menu = MenuItem[]
 
-export type MenuResponseData = {
+export interface MenuResponseData {
   status: string
   message: string
   data: Menu

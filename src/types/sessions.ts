@@ -10,16 +10,16 @@ export interface SessionToday {
 }
 
 interface QRImages {
-  [key: string]: string;
+  [key: string]: string
 }
 
 export interface SessionInfoData {
-  host: string;
-  title: string;
-  date: string;
-  description: string | null;
-  status: string;
-  shopLink: string;
-  hostPaymentInfo: string;
-  qrImages?: QRImages;
+  host: string
+  title: string
+  date: string
+  description: string | null
+  status: string
+  shopLink: string
+  hostPaymentInfo: string
+  qrImages?: QRImages
 }
