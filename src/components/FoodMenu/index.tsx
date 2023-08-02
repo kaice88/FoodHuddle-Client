@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { SimpleGrid, Title } from '@mantine/core'
+import { Container, SimpleGrid, Title, rem } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
 import { useMediaQuery } from '@mantine/hooks'
 import { v4 as uuidv4 } from 'uuid'
@@ -29,7 +29,7 @@ function FoodMenu() {
     menuGroups = divideElementsIntoGroups(menu, 8)
 
   return (
-    <>
+    <Container miw={rem('100%')}>
       <Title order={3}>
         <IconMeat /> What's popping?
       </Title>
@@ -66,7 +66,7 @@ function FoodMenu() {
         })}
 
       </Carousel>
-    </>
+    </Container>
   )
 }
 

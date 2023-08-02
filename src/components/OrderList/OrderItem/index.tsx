@@ -23,15 +23,15 @@ function OrderItem({ orderItem, deleteOrderItemHandler, editOrderHandler }: Orde
         {!isEmpty(options) && <Text c="dimmed" size="sm" className="foodOrderItem__options">{options.flatMap(option => option.detail.map(detail => detail.name)).join(', ')}</Text>}
         {!isEmpty(note) && <Flex align="center" justify="start"><IconNotes size={14}/> <Text>{note}</Text></Flex> }
         <Flex align="end" gap={2} justify="start">
-          <Text fw={600} size="xs" className="foodOrderItem__quantity__x">x</Text>
-          <Text fw={600} className="foodOrderItem__quantity">{quantity}</Text>
+          <Text color="brand" fw={600} size="xs" className="foodOrderItem__quantity__x">x</Text>
+          <Text color="brand" fw={600} className="foodOrderItem__quantity">{quantity}</Text>
         </Flex>
-        <Title className="foodOrderItem__total" order={4}>{moneyFormat(calculateFoodOrderItemTotal(orderItem), 'VND', 'vi-VN')}</Title>
+        <Title color="brand" className="foodOrderItem__total" order={4}>{moneyFormat(calculateFoodOrderItemTotal(orderItem), 'VND', 'vi-VN')}</Title>
         <Flex gap={8} align="center" justify="flex-end">
-          <ActionIcon size="xs" onClick={editOrderHandler}>
+          <ActionIcon color="brand.5" size="xs" onClick={editOrderHandler}>
             <IconEdit/>
           </ActionIcon>
-          <ActionIcon onClick={deleteOrderItemHandler} size="xs">
+          <ActionIcon color="brand.5" onClick={deleteOrderItemHandler} size="xs">
             <IconShoppingCartOff />
           </ActionIcon>
         </Flex>

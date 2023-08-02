@@ -13,7 +13,6 @@ export default function SessionTodayPage() {
   const {
     isLoading,
     data: sessions,
-    error,
     activeTab,
     setActiveTab,
   } = useSessionsToday(SessionsTodayPageTabs.ALL)
@@ -47,7 +46,6 @@ export default function SessionTodayPage() {
         <Group position="center">
           <Button
             onClick={open}
-            color="orange"
             size="20px"
             leftIcon={<IconSquarePlus size="0.9rem" />}
             styles={theme => ({

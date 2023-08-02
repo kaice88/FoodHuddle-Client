@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { IconMoodSad, IconShoppingBagCheck, IconShoppingCart, IconShoppingCartOff } from '@tabler/icons-react'
+import { v4 as uuidv4 } from 'uuid'
 import EditOrderForm from '../FoodOrderForm/Edit'
 import OrderItem from './OrderItem'
 import useFoodStore from '@/store/foodStore'
@@ -21,17 +22,21 @@ function OrderList() {
     content = <Flex align="center" justify="center" direction="column"> <IconMoodSad size={60}/> <Title order={3}>You haven't chosen any food? Let have yourself something good!</Title></Flex>
   }
   else {
-    content = <SimpleGrid cols={1} spacing="md" breakpoints={[{ minWidth: 968, cols: 2 }]}> {foodOrderList.map(orderItem =>
-      <OrderItem editOrderHandler={() => {
-        const { openModal } = useModal(
-          <Title order={4}>{'Order Customization'}</Title>,
-          <EditOrderForm foodOrderItem={orderItem} />,
-        )
-        openModal()
-      }}
-      deleteOrderItemHandler={() => { deleteFoodOrderItem(orderItem.id) }}
-      orderItem={orderItem}/>,
-    )}</SimpleGrid>
+    content = <SimpleGrid key = {uuidv4()} cols={1} spacing="md" breakpoints={[{ minWidth: 968, cols: foodOrderList.length === 1 ? 1 : 2 }]}>
+      {foodOrderList.map(orderItem =>
+        <OrderItem
+          editOrderHandler={() => {
+            const { openModal } = useModal(
+              <Title order={4}>{'Order Customization'}</Title>,
+              <EditOrderForm foodOrderItem={orderItem} />,
+            )
+            openModal()
+          }}
+          deleteOrderItemHandler={() => { deleteFoodOrderItem(orderItem.id) }}
+          orderItem={orderItem}
+          key={uuidv4()}
+        />,
+      )}</SimpleGrid>
   }
 
   useEffect(() => {
@@ -56,7 +61,7 @@ function OrderList() {
         {content}
       </Center>
       <Flex align="center" justify="center" gap="lg" >
-        <Button className="empty-button" variant="outline" onClick={() => {
+        <Button className="empty-button" variant="light" onClick={() => {
           submitOrderList({
             sessionId: Number.parseInt(sessionId!),
             foodOrderList: [],

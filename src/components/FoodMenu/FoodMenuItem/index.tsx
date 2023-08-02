@@ -67,8 +67,9 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
             aria-label="Add to list of order items"
             className="button-addOrder"
             onClick={orderHandler}
-            variant="light"
+            variant="filled"
             size={'sm'}
+            color="brand"
           >
             {' '}
             <IconPlus stroke={2.2} />

@@ -18,7 +18,7 @@
   padding: $content-gutter;
   border-radius: 16px;
   gap: 8px;
-  border: 4px solid #ddd;
+  border: 2px solid;
   &__imageWrapper {
     flex: 1 1 0;
     display: flex;
@@ -65,14 +65,7 @@
 }
 
 .button-addOrder{
-  background-color: $orange;
   @include transition();
-  color:#f7f7f7;
-}
-
-.button-addOrder:hover{
-  background-color:#f7f7f7;
-  color:$orange;
 }
 
 .mantine-SimpleGrid-root{
@@ -86,7 +79,7 @@
 
 .foodOrderItem {
   display: flex;
-  border: 4px solid #ddd;
+  border: 2px solid;
   flex: 0 0 450px;
   gap:16px;
   border-radius: 16px;
@@ -95,7 +88,7 @@
 
   &__image {
     display: flex;
-    max-width: 140px;
+    max-width: 100px;
     min-width: 100px;
     flex-grow: 1;
     justify-content: center;
@@ -113,22 +106,4 @@
     flex-direction: column;
     justify-content: space-between;
   }
-
-  &__quantity__x{
-    color:$orange;
-  }
-
-  &__total{
-    color:$orange
-  }
-
-}
-
-.submit-button{
-  background-color:$orange !important;
-}
-
-.empty-button{
-  color: gainsboro !important;
-  border: 1px solid #ddd;
 }
