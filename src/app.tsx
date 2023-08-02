@@ -15,14 +15,16 @@ export default function App() {
         withNormalizeCSS
         theme={{
           colors: {
-            orange: ['#FF6B00'],
+            brand: ['#FFF4EB', '#FFDDC4', '#FFC69D', '#FFAF76', '#FF994E', '#FF8227', '#FF6B00', '#D85B00', '#B14A00'],
             watermelon: ['#F6415E'],
             bashfulPink: ['#C5458C'],
-            darkLavender: ['#7E5498'],
+            darkLavender: ['#F5F1F7', '#E1D6E8', '#CDBBD9', '#BA9FCA', '#A684BB', '#9268AC', '#7D5397', '#66447B', '#4F3560'],
             duck: ['#415481'],
             pickerBluewood: ['#2F4858'],
             green: ['#23a218']
           },
+          primaryColor: 'brand',
+          primaryShade: 6,
         }}
       >
         <ModalsProvider>
