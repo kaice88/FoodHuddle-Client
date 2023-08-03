@@ -112,7 +112,7 @@ const EditTable = ({ sessionId }) => {
               const updatedOptions = foodOrderMenu.filter(eachFood =>
                 eachFood.foodName === value,
               )[0]
-              const originalPrice = updatedOptions.price === 0 ? updatedOptions.price : updatedOptions.discountPrice
+              const originalPrice = updatedOptions.discountPrice === 0 ? updatedOptions.price : updatedOptions.discountPrice
               const rowIndex = cell.row.id
               const currentValueRow = row.original
               const newList = tableEditData.map((item) => {
