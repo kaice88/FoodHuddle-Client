@@ -4,6 +4,8 @@ import type { MenuItem } from '@/types/food'
 import { moneyFormat } from '@/utils'
 import useModal from '@/hooks/useModal'
 import AddOrderForm from '@/components/FoodOrderForm/Add'
+import useSessionInfoStore from '@/store/sessionInfoStore'
+import { SessionStatuses } from '@/enums'
 
 interface FoodItemProps {
   foodMenuItem: MenuItem
@@ -38,6 +40,9 @@ export function PriceDisplay({
 }
 
 function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
+  const { sessionInfoData } = useSessionInfoStore()
+
+  const { status } = sessionInfoData
   const { openModal } = useModal(
     <Title order={4}>{'Order Customization'}</Title>,
     <AddOrderForm menuItem={foodMenuItem} />,
@@ -62,8 +67,7 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
             discountPrice={foodMenuItem.discountPrice}
             price={foodMenuItem.price}
           />
-
-          <ActionIcon
+          {status === SessionStatuses.OPEN && <ActionIcon
             aria-label="Add to list of order items"
             className="button-addOrder"
             onClick={orderHandler}
@@ -73,7 +77,7 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
           >
             {' '}
             <IconPlus stroke={2.2} />
-          </ActionIcon>
+          </ActionIcon>}
         </Flex>
       </div>
     </div>

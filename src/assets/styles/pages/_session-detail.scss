@@ -18,7 +18,9 @@
   padding: $content-gutter;
   border-radius: 16px;
   gap: 8px;
-  border: 2px solid;
+  -webkit-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+-moz-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
   &__imageWrapper {
     flex: 1 1 0;
     display: flex;
@@ -79,13 +81,14 @@
 
 .foodOrderItem {
   display: flex;
-  border: 2px solid;
   flex: 0 0 450px;
   gap:16px;
   border-radius: 16px;
   padding: 16px;
   height: 100%;
-
+  -webkit-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+  -moz-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+  box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
   &__image {
     display: flex;
     max-width: 100px;
@@ -106,4 +109,8 @@
     flex-direction: column;
     justify-content: space-between;
   }
+}
+
+.orderCustomization-form{
+  padding: 8px;
 }

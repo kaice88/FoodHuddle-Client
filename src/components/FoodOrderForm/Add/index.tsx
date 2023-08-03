@@ -79,7 +79,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
   })
   return (
     <Box maw={300} mx="auto">
-      <form onSubmit={submitHandler}>
+      <form className="orderCustomization-form" onSubmit={submitHandler}>
         <div className="foodMenuItem menuItemForm">
           <div className="foodMenuItem__imageWrapper">
             {' '}
@@ -120,6 +120,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
         </div>
 
         <Textarea
+          mt={16}
           autosize
           label={<Title transform="uppercase" order={6}>Note</Title>}
           placeholder="No ice please!!!"
