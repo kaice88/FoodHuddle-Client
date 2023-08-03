@@ -15,7 +15,7 @@ function FeeItem({ title, value, color }) {
     </Flex>
   )
 }
-
+const a = ['https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png']
 function BillItem({ srcImage }) {
   const handleImage = () => modals.open({
     title: 'Image preview',
@@ -61,32 +61,29 @@ export default function FeeInfo({ id }) {
   }, [])
 
   return (
-    <>
+    <div>
       {isLoading
         ? <Flex justify="center"><Loader /></Flex>
-        : <Paper className="fee-container" p="xs" shadow="xs" >
+        : <Paper className="fee-container" p="xs" shadow="lg" >
           <Grid grow gutter="xs">
             <Grid.Col sm={12} md={6}>
-              {/* <Paper className="fee-container" p="xs" shadow="xs" > */}
-              <Title sx={() => ({ fontWeight: 700, fontSize: '20px', textAlign: 'center' })} color={theme.colors.duck[0]} pb={10}>Fees</Title>
+              <Title sx={() => ({ fontWeight: 700, fontSize: '20px' })} color={theme.colors.duck[0]} pb={10}>Fees</Title>
               <FeeItem title="Shipping fee" value={orderBill?.shippingFee} color={theme.colors.duck[0]}/>
               <FeeItem title="Discount" value={orderBill?.discountAmount} color={theme.colors.duck[0]}/>
               <FeeItem title="Another fee" value={orderBill?.otherFee} color={theme.colors.duck[0]}/>
-              {/* </Paper> */}
             </Grid.Col>
             <Grid.Col sm={12} md={6}>
-              {/* <Paper className="fee-container" p="xs" shadow="xs" > */}
               <Title sx={() => ({ fontWeight: 700, fontSize: '20px', textAlign: 'center' })} color={theme.colors.duck[0]} pb={10}>Bill</Title>
               {orderBill?.receiptScreenshot.length === 0
                 ? <Text style={{ textAlign: 'center', fontStyle: 'italic' }} color={theme.colors.duck[0]}>No data found</Text>
-                : <Flex wrap="wrap" gap="lg" >
-                  {orderBill?.receiptScreenshot.map((item, index) => <BillItem key={index} srcImage ={item} />)}
+                : <Flex wrap="wrap" gap="lg" justify="center" >
+                  {a.map((item, index) => <BillItem key={index} srcImage ={item} />)}
                 </Flex> }
-              {/* </Paper> */}
             </Grid.Col>
           </Grid>
         </Paper>
       }
-    </>
+    </div>
   )
 }
+// orderBill?.receiptScreenshot

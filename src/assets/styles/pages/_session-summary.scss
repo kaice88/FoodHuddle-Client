@@ -16,8 +16,6 @@
 
     &__top {
         background-color: #f8f9fa;
-        
-
         div {
             padding: 0;
         }
@@ -25,7 +23,8 @@
 }
 
 .fee-container {
-    background-color: rgba($color: $dark-lavender, $alpha: 0.07);
+    background-color:rgba($color: $dark-lavender, $alpha: 0.07);
     height: 100%;
-    width: 100%;
+    max-width: 100%;
+    width:400px;
 }
