@@ -21,7 +21,7 @@ function getFileNameFromPath(path) {
 }
 
 export async function handleFormData(dataForm, values, field) {
-  for (const file of values) {
+  const promises = values?.map(async (file) => {
     if (typeof file === 'object') {
       dataForm.append(field, file)
     }
@@ -32,6 +32,8 @@ export async function handleFormData(dataForm, values, field) {
       const fileTransform = new File([blob], fileName, { type: blob.type })
       dataForm.append(field, fileTransform)
     }
-  }
+  })
+
+  await Promise.all(promises)
   return dataForm
 }

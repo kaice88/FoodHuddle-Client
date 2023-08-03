@@ -1,7 +1,7 @@
 import { Burger, Header, MediaQuery } from '@mantine/core'
 
-import Logo from "./Logo";
-import UserInfo from "./UserInfo";
+import Logo from './Logo'
+import UserInfo from './UserInfo'
 
 export default function HomeHeader({ opened, handleOpen }) {
   return (
@@ -12,5 +12,5 @@ export default function HomeHeader({ opened, handleOpen }) {
       <Logo isButton className="header__logo"/>
       <UserInfo className="header__user-info"></UserInfo>
     </Header>
-  );
+  )
 }
