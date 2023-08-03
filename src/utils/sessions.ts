@@ -2,7 +2,7 @@ import { SessionStatuses, SessionsTodayPageTabs } from '@/enums'
 import * as APIS from '@/constants/apis'
 import {} from '@/hooks/useAuth'
 
-export function getSessionStatus(status: SessionStatuses): string {
+export const getSessionStatus = (status: SessionStatuses): string => {
   switch (status) {
   case SessionStatuses.OPEN:
     return 'open'
@@ -17,19 +17,32 @@ export function getSessionStatus(status: SessionStatuses): string {
   }
 }
 
-export function getTodaySessionsApiEndpoint(tab: SessionsTodayPageTabs): string {
-  switch (tab) {
-  case SessionsTodayPageTabs.ALL:
-    return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
-  case SessionsTodayPageTabs.HOSTED :
-    return APIS.REQUEST_GET_HOSTED_SESSIONS_TODAY
-  case SessionsTodayPageTabs.JOINED:
-    return APIS.REQUEST_GET_JOINED_SESSIONS_TODAY
-  default:
-    return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
+export const getTodaySessionsApiEndpoint = (tab: SessionsTodayPageTabs, page, status): string => {
+  if (page === 'HISTORY') {
+    switch (tab) {
+    case SessionsTodayPageTabs.ALL:
+      return `${APIS.REQUEST_GET_ALL_SESSIONS_HISTORY}${status}`
+    case SessionsTodayPageTabs.HOSTED:
+      return `${APIS.REQUEST_GET_HOSTED_SESSIONS_HISTORY}${status}`
+    case SessionsTodayPageTabs.JOINED:
+      return `${APIS.REQUEST_GET_JOINED_SESSIONS_HISTORY}${status}`
+    default:
+      return APIS.REQUEST_GET_ALL_SESSIONS_HISTORY
+    }
+  }
+  else {
+    switch (tab) {
+    case SessionsTodayPageTabs.ALL:
+      return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
+    case SessionsTodayPageTabs.HOSTED :
+      return APIS.REQUEST_GET_HOSTED_SESSIONS_TODAY
+    case SessionsTodayPageTabs.JOINED:
+      return APIS.REQUEST_GET_JOINED_SESSIONS_TODAY
+    default:
+      return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
+    }
   }
 }
-
 export const checkIfUserIsHost = (host, user) => {
   return host.googleId === user.googleId
 }

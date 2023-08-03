@@ -9,8 +9,8 @@ import { ActionIcon, Avatar, Flex, MultiSelect, Text, Tooltip, useMantineTheme }
 import { modals } from '@mantine/modals'
 import { IconAlertCircle, IconChefHat, IconEdit, IconTrash } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
+import useSummaryTab from '../../../../hooks/useSummaryTab'
 import { moneyFormat } from '@/utils/utility'
-import useSummaryTab from '@/hooks/useSummaryTab'
 import MenuOptions from '@/components/MenuOptions'
 import { notificationShow } from '@/components/Notification'
 import ItemName from '@/components/ItemName'
@@ -45,6 +45,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 )
 
 const EditTable = ({ sessionId }) => {
+  const globalTheme = useMantineTheme()
   const [tableEditData, setTableEditData] = useState<DataEdit[]>([])
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({})
   const [foodOrderMenu, setFoodOrderMenu] = useState([])
@@ -53,8 +54,6 @@ const EditTable = ({ sessionId }) => {
   const fetchQueryFoodOrderEdit = queryFoodOrderEdit(sessionId, setTableEditData)
   const queryFoodOrderMenu = fetchQueryFoodOrderMenu(sessionId, setFoodOrderMenu, setOptionsSelect)
   const foodNamesSelect = handleFoodNamesSelect(foodOrderMenu)
-  const globalTheme = useMantineTheme()
-
   useEffect(() => {
     const handleFetchQueryFoodOrderEdit = async () => {
       await queryFoodOrderMenu.refetch()
@@ -156,9 +155,11 @@ const EditTable = ({ sessionId }) => {
         size: 100,
         enableEditing: false,
         Cell: ({ cell }) => {
-          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
-            {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
-          </Text>
+          return (
+            <Text color={globalTheme.colors.duck[0]} style={{ backgroundColor: `${globalTheme.colors.darkLavender[6]}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
+              {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
+            </Text>
+          )
         },
       },
       {
@@ -180,7 +181,9 @@ const EditTable = ({ sessionId }) => {
           }
         },
         Cell: ({ cell }) => {
-          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
+          return <Text
+            color={globalTheme.colors.duck[0]} style={{ backgroundColor: globalTheme.colors.darkLavender[6], borderRadius: '5px', width: 'fit-content', padding: '5px' }}
+          >
             {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
           </Text>
         },
@@ -407,6 +410,7 @@ const EditTable = ({ sessionId }) => {
         width: 'fit-content',
       },
     }),
+    getRowId: row => row.id,
     onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveRow,
     renderRowActions: ({ row, table }) => (

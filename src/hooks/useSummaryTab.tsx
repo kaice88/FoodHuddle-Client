@@ -311,7 +311,7 @@ function useSummaryTab() {
 
   const updateTableEdit = (tableEditData, name, value, rowIndex, currentValueRow) => {
     const newList = tableEditData.map((item) => {
-      if (item.id == rowIndex) {
+      if (item.id === rowIndex) {
         return {
           ...currentValueRow,
           [name]: value,

@@ -33,3 +33,9 @@ export function REQUEST_GET_FOOD_ORDER_LIST(sessionId: number) {
 export const REQUEST_UPDATE_SESSION_STATUS = sessionId => `/v1/session/${sessionId}/update-status`
 export const REQUEST_USER_PAYMENT = sessionId => `${SESSION_BASE_URL}/${sessionId}/user-payment`
 export const REQUEST_PAYMENT_CHECKLIST = sessionId => `${SESSION_BASE_URL}/${sessionId}/payment-checklist`
+
+export const REQUEST_GET_ALL_SESSIONS_HISTORY = '/v1/session/history'
+export const REQUEST_GET_HOSTED_SESSIONS_HISTORY = '/v1/session/history/hosted'
+export const REQUEST_GET_JOINED_SESSIONS_HISTORY = '/v1/session/history/joined'
+
+export const REQUEST_POST_ORDER_BILL = '/v1/session'

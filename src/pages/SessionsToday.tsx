@@ -60,7 +60,7 @@ export default function SessionTodayPage() {
                 ),
                 color: theme.colors.red[0],
                 ...theme.fn.hover({
-                  backgroundColor: theme.colors.darkLavender[0],
+                  backgroundColor: theme.colors.darkLavender[7],
                 }),
                 padding: '10px',
               },
