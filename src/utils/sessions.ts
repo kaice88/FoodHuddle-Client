@@ -2,7 +2,7 @@ import { SessionStatuses, SessionsTodayPageTabs } from '@/enums'
 import * as APIS from '@/constants/apis'
 import {} from '@/hooks/useAuth'
 
-export const getSessionStatus = (status: SessionStatuses): string => {
+export function getSessionStatus(status: SessionStatuses): string {
   switch (status) {
   case SessionStatuses.OPEN:
     return 'open'
@@ -17,7 +17,7 @@ export const getSessionStatus = (status: SessionStatuses): string => {
   }
 }
 
-export const getTodaySessionsApiEndpoint = (tab: SessionsTodayPageTabs): string => {
+export function getTodaySessionsApiEndpoint(tab: SessionsTodayPageTabs): string {
   switch (tab) {
   case SessionsTodayPageTabs.ALL:
     return APIS.REQUEST_GET_ALL_SESSIONS_TODAY

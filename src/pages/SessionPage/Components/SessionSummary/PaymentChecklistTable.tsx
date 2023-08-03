@@ -10,10 +10,8 @@ import { PaymentActionColors, PaymentActions, PaymentStatusColors, PaymentStatus
 import StatusBadge from '@/components/StatusBadge'
 import usePaymentSession from '@/hooks/usePaymentSession'
 import ItemName from '@/components/ItemName'
-import useSessionData from '@/hooks/useSessionData'
 
 function EvidenceModal({ evidence, globalTheme }) {
-  console.log(evidence.length)
   const openModal = () => modals.open({
     title: 'Image preview',
     centered: true,
@@ -84,10 +82,9 @@ function Table({ globalTheme, data, columns, isLoading }) {
   return <MantineReactTable table={table} />
 }
 
-function PaymentChecklistTable({ id }) {
+function PaymentChecklistTable({ id, sessionData }) {
   const [isLoading, setIsLoading] = useState(true)
   const globalTheme = useMantineTheme()
-  const { sessionData } = useSessionData(id)
   const { changeStatusPaymentRequest, fetchPaymentChecklist, paymentChecklist, approveAllPaymentRequest } = usePaymentSession(id)
 
   useEffect(() => {
@@ -117,7 +114,6 @@ function PaymentChecklistTable({ id }) {
         header: 'Evidence',
         size: 100,
         Cell: ({ renderedCellValue }) => {
-          console.log(renderedCellValue)
           return (<>{renderedCellValue ? <EvidenceModal globalTheme={globalTheme} evidence={renderedCellValue}/> : '- - -' }</>)
         }
         ,

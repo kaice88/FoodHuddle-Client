@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Checkbox, Title } from '@mantine/core'
+import { Box, Checkbox, Title } from '@mantine/core'
 
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
@@ -44,7 +44,7 @@ function OptionsGroup({
   }
 
   return (
-    <div>
+    <Box mt={8}>
       <Title order={6}>{option.category.toLocaleUpperCase('vi-VN')}</Title>
       {option.detail.map(optionItem => (
         <Checkbox
@@ -64,7 +64,7 @@ function OptionsGroup({
           }}
         />
       ))}
-    </div>
+    </Box>
   )
 }
 

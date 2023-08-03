@@ -1,9 +1,9 @@
-import React from "react";
-import { Popover, Button } from "@mantine/core";
+import React from 'react'
+import { Button, Popover } from '@mantine/core'
 
 interface ReusablePopoverProps {
-  title: string;
-  popoverContent: React.ReactNode;
+  title: string
+  popoverContent: React.ReactNode
 }
 
 function ReusablePopover({ title, popoverContent }: ReusablePopoverProps) {
@@ -20,7 +20,7 @@ function ReusablePopover({ title, popoverContent }: ReusablePopoverProps) {
       </Popover.Target>
       <Popover.Dropdown>{popoverContent}</Popover.Dropdown>
     </Popover>
-  );
+  )
 }
 
-export default ReusablePopover;
+export default ReusablePopover

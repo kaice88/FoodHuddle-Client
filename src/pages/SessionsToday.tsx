@@ -1,21 +1,25 @@
 import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconSquarePlus } from '@tabler/icons-react'
-
-import SessionInfo from '../components/ModalCreateSession'
-import { TABS_CONFIG } from '@/constants/sessions'
-import SessionList from '@/components/SessionsList'
-import useSessionsToday from '@/hooks/useSessionsToday'
-import { SessionsTodayPageTabs } from '@/enums'
+import { useEffect } from 'react'
+import SessionInfoModal from '../components/ModalCreateSession'
+import SessionList from '../components/SessionsList'
+import useSessionsToday from '../hooks/useSessionsToday'
+import { SessionsTodayPageTabs } from '../enums'
+import { TABS_CONFIG } from '../constants/sessions'
+import useSessionInfoStore from '@/store/sessionInfoStore'
 
 export default function SessionTodayPage() {
   const {
     isLoading,
     data: sessions,
-    error,
     activeTab,
     setActiveTab,
   } = useSessionsToday(SessionsTodayPageTabs.ALL)
+  const { setSessionInfoData } = useSessionInfoStore()
+  useEffect(() => {
+    setSessionInfoData({})
+  }, [])
 
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
@@ -40,13 +44,12 @@ export default function SessionTodayPage() {
           size={700}
         >
           <Box maw={600} mx="auto">
-            <SessionInfo isCreateFirst={true}/>
+            <SessionInfoModal isCreateFirst={true}/>
           </Box>
         </Modal>
         <Group position="center">
           <Button
             onClick={open}
-            color="orange"
             size="20px"
             leftIcon={<IconSquarePlus size="0.9rem" />}
             styles={theme => ({
@@ -80,10 +83,10 @@ export default function SessionTodayPage() {
           {isLoading
             ? (
               <Loader className="loader" />
-              )
+            )
             : (
               <SessionList sessionsList={sessions} />
-              )}
+            )}
         </Tabs.Panel>
       </Tabs>
     </>

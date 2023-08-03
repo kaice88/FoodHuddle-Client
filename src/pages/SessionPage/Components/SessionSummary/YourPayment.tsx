@@ -5,14 +5,16 @@ import isEmpty from 'lodash/isEmpty'
 
 import PaymentModal from './PaymentModal'
 import StatusBadge from '@/components/StatusBadge'
-import { PaymentStatusColors, PaymentStatuses } from '@/enums'
+import { PaymentStatusColors, PaymentStatuses, SessionStatuses } from '@/enums'
 import usePaymentSession from '@/hooks/usePaymentSession'
+import useSessionInfoStore from '@/store/sessionInfoStore'
 
 export default function YourPayment({ id }) {
   const [userPaymentData, setUserPaymentData] = useState()
   const theme = useMantineTheme()
   const [opened, { open, close }] = useDisclosure(false)
   const { fetchUserPayment } = usePaymentSession(id)
+  const { sessionInfoData } = useSessionInfoStore()
 
   const handlefetchUserPayment = async () => {
     const res = await fetchUserPayment.refetch()
@@ -54,9 +56,10 @@ export default function YourPayment({ id }) {
         <Modal opened={opened} onClose={close} title="Payment" centered>
           <PaymentModal id={id} userPayment ={userPaymentData} closeModal={closeModal}/>
         </Modal>
-        <Flex align="center">
+        {sessionInfoData.status === SessionStatuses.PENDING_PAYMENTS
+        && <Flex align="center">
           <Button size="xs" onClick={open}>Request</Button>
-        </Flex>
+        </Flex> }
       </Paper>
     </>
 

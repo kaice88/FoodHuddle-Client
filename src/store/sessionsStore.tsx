@@ -30,7 +30,7 @@ const getUrl = (tab: SessionsTodayPageTabs): string => {
   switch (tab) {
   case SessionsTodayPageTabs.ALL:
     return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
-    default:
+  default:
     return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
   }
 }

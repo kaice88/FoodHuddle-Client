@@ -5,7 +5,7 @@ import SessionTodayPage from './pages/SessionsToday'
 import Layout from './layouts/Layout'
 import ErrorPage from './pages/Error'
 import SessionPage from './pages/SessionPage'
-import * as ROUTES from '@/constants/routes'
+import * as ROUTES from './constants/routes'
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.SESSION_DETAIL,
-        element: <SessionPage></SessionPage>,
+        element: <SessionPage />,
         errorElement: <ErrorPage />,
       },
       {

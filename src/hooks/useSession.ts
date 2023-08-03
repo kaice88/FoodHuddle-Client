@@ -4,7 +4,10 @@ import { notificationShow } from '@/components/Notification'
 import { REQUEST_UPDATE_SESSION_STATUS, SESSION_BASE_URL } from '@/constants/apis'
 import axios from '@/settings/axios'
 
+// import useSessionInfo from './useSessionInfo'
+
 function useSession(id) {
+  // const {fetchSessionInfo} = useSessionInfo(id)
   const handleError = (error) => {
     if (error.code === 'ERR_NETWORK')
       notificationShow('error', 'ERROR', error.message)

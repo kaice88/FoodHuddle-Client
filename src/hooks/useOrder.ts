@@ -16,7 +16,7 @@ interface GetOrderListResponseData {
   data: { sessionId: number; foodOrderList: Omit<FoodOrderItem, 'id'>[] }
 }
 
-export const editFoodOrderList = async (
+export const submitOrderList = async (
   foodOrderListData: FoodOrderListData,
 ) => {
   const response = await axiosInstance.put<EditOrderListResponseData>(

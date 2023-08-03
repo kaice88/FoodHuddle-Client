@@ -1,4 +1,3 @@
-import React from 'react'
 import { Badge } from '@mantine/core'
 
 import type { StatusBadgeProps } from './types'

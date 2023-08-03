@@ -10,15 +10,17 @@
     padding: 0px !important;
   }
 }
+
 .foodMenuItem {
   display: flex; 
   height: 140px;
   flex: 0 0 280px;
   padding: $content-gutter;
   border-radius: 16px;
-  background-color: #f7f7f7;
   gap: 8px;
-
+  -webkit-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+-moz-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
   &__imageWrapper {
     flex: 1 1 0;
     display: flex;
@@ -65,14 +67,7 @@
 }
 
 .button-addOrder{
-  background-color: $orange;
   @include transition();
-  color:#f7f7f7;
-}
-
-.button-addOrder:hover{
-  background-color:#f7f7f7;
-  color:$orange;
 }
 
 .mantine-SimpleGrid-root{
@@ -81,4 +76,41 @@
 
 .mantine-Carousel-slide{
   @include flexbox-centering();
+}
+
+
+.foodOrderItem {
+  display: flex;
+  flex: 0 0 450px;
+  gap:16px;
+  border-radius: 16px;
+  padding: 16px;
+  height: 100%;
+  -webkit-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+  -moz-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+  box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+  &__image {
+    display: flex;
+    max-width: 100px;
+    min-width: 100px;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+  }
+
+  &__info{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.orderCustomization-form{
+  padding: 8px;
 }

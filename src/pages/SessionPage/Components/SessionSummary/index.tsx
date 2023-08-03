@@ -1,26 +1,25 @@
 import { useParams } from 'react-router-dom'
 
+import isEmpty from 'lodash/isEmpty'
 import FeeInfo from './FeeInfo'
 import PaymentSummaryTable from './PaymentSummaryTable'
 import YourPayment from './YourPayment'
 import PaymentChecklistTable from './PaymentChecklistTable'
 import { checkIfUserIsHost } from '@/utils/sessions'
-import useSessionData from '@/hooks/useSessionData'
 import useAuth from '@/hooks/useAuth'
 
-export default function SessionSummary() {
+export default function SessionSummary({ sessionData }) {
   const { sessionId } = useParams()
-  const { sessionData, isLoading } = useSessionData(sessionId!)
   const { userProfile } = useAuth()
 
   return (
     <>
-      {!isLoading && <div>
+      {!isEmpty(sessionData) && <div>
         <FeeInfo id={sessionId}/>
         <PaymentSummaryTable id={sessionId}/>
         {
           checkIfUserIsHost(sessionData?.host, userProfile)
-            ? <PaymentChecklistTable id={sessionId}/>
+            ? <PaymentChecklistTable id={sessionId} sessionData ={sessionData}/>
             : <YourPayment id={sessionId}/>}
       </div> }
     </>

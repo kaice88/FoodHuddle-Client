@@ -1,9 +1,8 @@
 import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_FOOD_ORDER_ROW, REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_ORDER_BILL } from '@/constants/apis'
+import { REQUEST_FOOD_ORDER_ROW, REQUEST_GET_FOOD_MENU, REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_ORDER_BILL } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
-import { calculateTotal } from '@/utils/utility'
 
 function useSummaryTab() {
   const { mutation, query } = useRequestProcessor()
@@ -80,7 +79,7 @@ function useSummaryTab() {
 
   const fetchQueryFoodOrderMenu = (sessionId, setFoodOrderMenu, setOptionsSelect) => query(
     ['get-all-menu'],
-    () => axiosInstance.get(REQUEST_GET_FOOD_ORDER_MENU, {
+    () => axiosInstance.get(REQUEST_GET_FOOD_MENU, {
       params: {
         sessionId: Number(sessionId),
       },
@@ -105,9 +104,6 @@ function useSummaryTab() {
   const handleTransformDataToTableData = (dataBE) => {
     const data = !isEmpty(dataBE)
       ? dataBE.map((item, index) => {
-        const totalMoneyEachFood = item.orders.reduce((total, item) => {
-          return calculateTotal(total, item.quantity * item.actualPrice)
-        }, 0)
         const quantityOrderEachFood = item.orders.reduce((acc, item) => {
           return acc + item.quantity
         }, 0)
@@ -118,7 +114,7 @@ function useSummaryTab() {
               name: item.foodName,
               image: item.foodImage,
             },
-            total: Number(totalMoneyEachFood),
+            total: Number(item.total),
             quantity: quantityOrderEachFood,
           }
         )

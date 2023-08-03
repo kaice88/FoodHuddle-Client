@@ -1,9 +1,7 @@
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table'
-import { useMantineTheme } from '@mantine/core'
 import ChildTable from './TableChildComponent'
 
 const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => {
-  const globalTheme = useMantineTheme()
   const table = useMantineReactTable({
     columns,
     data,
@@ -39,6 +37,7 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
       },
     }),
     enableBottomToolbar: false,
+    initialState: { expanded: true },
     state: { isLoading },
   })
 
