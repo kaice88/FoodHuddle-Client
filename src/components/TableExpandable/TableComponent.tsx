@@ -37,7 +37,6 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
       },
     }),
     enableBottomToolbar: false,
-    initialState: { expanded: true },
     state: { isLoading },
   })
 

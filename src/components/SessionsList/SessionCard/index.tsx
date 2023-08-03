@@ -1,10 +1,10 @@
 import { Box, Button, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
+import { SessionStatusColors, SessionStatuses } from '../../../enums'
 import StatusBadge from '../../StatusBadge'
 import type { SessionData } from '@/types/sessions'
 import CopyClipBoard from '@/components/CopyClipboard'
-import { SessionStatusColors, SessionStatuses } from '@/enums'
 
 interface SessionCardProps {
   session: SessionData

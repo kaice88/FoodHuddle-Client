@@ -57,7 +57,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
         {isEmpty(sessionData)
           ? <Loader/>
           : <>
-            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}>
+            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[6]}` }} />}>
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Host :</span>{' '}{sessionData?.host.name}</Text>
               </List.Item>
@@ -73,12 +73,12 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
                 <Text><span style={{ fontWeight: 'bold' }}>Description :</span>{' '}{sessionData?.description}</Text>
               </List.Item>
             </List>
-            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
+            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[6]}` }}/>} >
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Host payment info :</span>{' '}{sessionData?.hostPaymentInfo}</Text>
               </List.Item>
             </List>
-            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
+            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[6]}` }}/>} >
               <List.Item>
                 <Text fw={'bold'}>QR Code: </Text>
               </List.Item>
