@@ -54,32 +54,31 @@ function Table({ globalTheme, data, columns, isLoading }) {
     enableStickyHeader: true,
     enablePagination: false,
     enableTopToolbar: false,
+    enableColumnActions: false,
+    enableSorting: false,
+    mantineDetailPanelProps: () => (
+      {
+        style: {
+          textAlign: 'center',
+          padding: '5px',
+        },
+      }),
+
     mantineTableBodyCellProps: () => ({
       style: {
-        padding: '7px 16px 7px 16px',
-        width: 'fit-content',
-        borderBottom: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
+        padding: '10px',
         textAlign: 'center',
       },
     }),
     mantineTableContainerProps: () => ({
       sx: {
-        maxHeight: '300px',
-      },
-      style: {
-        overflow: 'auto',
+        maxHeight: '500px',
+        padding: '3px',
       },
       className: 'payment-checklist-table',
     }),
-    mantineBottomToolbarProps: () => ({
-      className: 'payment-checklist-table__bottom',
-    }),
-    mantineTopToolbarProps: () => ({
-      className: 'payment-checklist-table__top',
-    }),
-    state: {
-      isLoading,
-    },
+    enableBottomToolbar: false,
+    state: { isLoading },
   })
 
   return <MantineReactTable table={table} />

@@ -42,10 +42,8 @@ function SessionPage() {
     })
   }
 
-  if (isLoading) {
-    console.log(currentStatus)
+  if (isLoading)
     return <Loader className="loader"/>
-  }
 
   if (error)
     return <div>This session is not found</div>

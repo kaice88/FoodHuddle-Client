@@ -1,8 +1,7 @@
 .payment-checklist-table {
     thead tr th {
-        padding: 10px 0px;
+        padding: 10px 16px;
 
-        
         .mantine-TableHeadCell-Content {
             justify-content: center;
         }
@@ -28,4 +27,5 @@
 .fee-container {
     background-color: rgba($color: $dark-lavender, $alpha: 0.07);
     height: 100%;
+    width: 100%;
 }

@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react'
 import { Flex, Text, Title, useMantineTheme } from '@mantine/core'
-import { IconBowl, IconCoin, IconWallet } from '@tabler/icons-react'
+import { IconCoin, IconWallet } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 
 import Table from '@/components/TableExpandable/TableComponent'
-import { calculatePaymentAmount, moneyFormat } from '@/utils/utility'
 import usePaymentSession from '@/hooks/usePaymentSession'
 import ItemName from '@/components/ItemName'
+import { moneyFormat } from '@/utils'
 
 export default function SessionSummary({ id }) {
   const globalTheme = useMantineTheme()
@@ -22,7 +22,7 @@ export default function SessionSummary({ id }) {
     () => [
       {
         accessorKey: 'no',
-        header: '',
+        header: 'No',
         size: 50,
         Cell: ({ renderedCellValue }) => (
           <Text fw={700} color={globalTheme.fn.darken(globalTheme.colors.orange[0], 0.1)}>
@@ -33,36 +33,17 @@ export default function SessionSummary({ id }) {
       {
         accessorKey: 'user',
         size: 200,
-        header: '',
+        header: 'Joiner',
         Cell: ({ renderedCellValue }) => (
           <ItemName name={renderedCellValue.name} picture={renderedCellValue.photo} ></ItemName>
         ),
       },
       {
-        accessorKey: 'quantity',
-        header: '',
-        size: 100,
-        Cell: ({ cell }) => (
-          <Flex gap="sm" justify="flex-start" align="center">
-            <IconBowl
-              size="1rem"
-              color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.5)}
-            />
-            <Text
-              fw={700}
-              color={globalTheme.fn.darken(globalTheme.colors.orange[0], 0.1)}
-            >
-              {cell.getValue<number>()}
-            </Text>
-          </Flex>
-        ),
-      },
-      {
-        accessorKey: 'paymentAmount',
-        header: '',
+        accessorKey: 'totalPayment',
+        header: 'Total Payment',
         size: 200,
-        Cell: ({ cell }) => (
-          <Flex gap="md" justify="center" align="center">
+        Cell: ({ renderedCellValue }) => (
+          <Flex gap="md" justify="flex-start" align="center">
             <IconCoin
               size="1.3rem"
               color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.5)}
@@ -71,7 +52,26 @@ export default function SessionSummary({ id }) {
               fw={700}
               color={globalTheme.fn.darken(globalTheme.colors.orange[0], 0.1)}
             >
-              {cell.getValue<number>()}
+              {`${moneyFormat(renderedCellValue, 'VND', 'en-US', '')} đ`}
+            </Text>
+          </Flex>
+        ),
+      },
+      {
+        accessorKey: 'finalPayment',
+        header: 'Final Payment',
+        size: 200,
+        Cell: ({ renderedCellValue }) => (
+          <Flex gap="md" justify="flex-start" align="center">
+            <IconCoin
+              size="1.3rem"
+              color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.5)}
+            />
+            <Text
+              fw={700}
+              color={globalTheme.fn.darken(globalTheme.colors.orange[0], 0.1)}
+            >
+              {`${moneyFormat(renderedCellValue, 'VND', 'en-US', '')} đ`}
             </Text>
           </Flex>
         ),
@@ -82,15 +82,11 @@ export default function SessionSummary({ id }) {
 
   const data = !isEmpty(paymentSummary)
     ? paymentSummary.map((item, index) => {
-      const numberOfOrderItems = item.orders.reduce((total, item) => {
-        return total + item.quantity
-      }, 0)
-      const paymentAmount = calculatePaymentAmount(item.orders)
       return {
         no: index + 1,
         user: item.user,
-        quantity: numberOfOrderItems,
-        paymentAmount: `${moneyFormat(paymentAmount, 'VND', 'en-US', '')} đ`,
+        totalPayment: item.totalPayment,
+        finalPayment: item.finalPayment,
       }
     })
     : []
