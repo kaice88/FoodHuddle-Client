@@ -6,7 +6,7 @@ import { Loader, Tabs } from '@mantine/core'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
 import HostActions from './Components/HostActions'
-import SessionSummary from '@/pages/SessionSummary'
+import SessionSummary from './Components/SessionSummary'
 import { notificationShow } from '@/components/Notification'
 import useSession from '@/hooks/useSession'
 import SessionInfo from '@/components/SessionInfo'
@@ -24,9 +24,9 @@ function SessionPage() {
   const { userProfile } = useAuth()
 
   useEffect(() => {
-    if (sessionData)
+    if (!isLoading)
       setCurrentStatus(sessionData.status)
-  }, [sessionData])
+  }, [sessionData, isLoading])
 
   const handleDeleteSession = () => {
     deleteSession((data) => {
@@ -42,8 +42,10 @@ function SessionPage() {
     })
   }
 
-  if (isLoading)
+  if (isLoading) {
+    console.log(currentStatus)
     return <Loader className="loader"/>
+  }
 
   if (error)
     return <div>This session is not found</div>
@@ -51,7 +53,7 @@ function SessionPage() {
   return (
     <>
       <span>{currentStatus}</span>
-      {checkIfUserIsHost(sessionData?.host.googleId, userProfile?.googleId) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
+      {checkIfUserIsHost(sessionData?.host, userProfile) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
       <SessionInfo sessionData={sessionData} />
       {(currentStatus === SessionStatuses.PENDING_PAYMENTS || currentStatus === SessionStatuses.FINISHED)
         ? <SessionSummary/>

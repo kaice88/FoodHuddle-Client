@@ -8,61 +8,6 @@ import { calculatePaymentAmount, moneyFormat } from '@/utils/utility'
 import usePaymentSession from '@/hooks/usePaymentSession'
 import ItemName from '@/components/ItemName'
 
-const paymentSummary2 = [
-  {
-    user: {
-      googleId: '118000667982679358226',
-      email: 'ngan.phan@nfq.com',
-      name: 'Ngan Phan Khanh',
-      photo: 'https://lh3.googleusercontent.com/a/AAcHTteJ-0ycB1Gz-fYDFq3OFKcet17Br5M4Mw0c2JGm3n4jUA=s96-c',
-    },
-
-    orders: [
-      {
-        id: 2,
-        foodName: 'Bún',
-        originPrice: 222,
-        quantity: 1,
-        note: 'ac',
-        options: [
-          {
-            category: 'SIZE',
-            detail: [
-              {
-                name: 'Size L',
-                price: 70,
-              },
-            ],
-          },
-          {
-            category: 'TOPPING',
-            detail: [
-              {
-                name: 'Pudding',
-                price: 222,
-              },
-              {
-                name: '50% đá',
-                price: 0,
-              },
-            ],
-          },
-        ],
-        actualPrice: 222,
-      },
-      {
-        id: 2,
-        foodName: 'Mì quảng',
-        originPrice: 222,
-        quantity: 1,
-        note: 'ac',
-        options: [],
-        actualPrice: 222,
-      },
-    ],
-  },
-]
-
 export default function SessionSummary({ id }) {
   const globalTheme = useMantineTheme()
   const { fetchPaymentSummary, paymentSummary } = usePaymentSession(id)

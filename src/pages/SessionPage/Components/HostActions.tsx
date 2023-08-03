@@ -1,6 +1,6 @@
 import { Flex } from '@mantine/core'
 
-import HostActionButton from '../../../components/HostActionButton'
+import HostActionButton from './HostActionButton'
 import { SessionActions, SessionStatuses } from '@/enums'
 
 function HostActions({ status, handleDeleteSession, handlechangeStatus }) {

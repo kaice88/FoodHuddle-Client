@@ -6,9 +6,9 @@ export default function ActionButton({ colorName, value, handleOnClick, size, di
     title: 'CONFIRM',
     children: (
       <Text size="sm" color="gray">
-        <span>{`If you ${value} this session, you can't undo this.`}</span>
+        <span>{`If you ${value} this payment request, you can't undo this.`}</span>
         <br></br>
-        <span>{`Are you sure ${value} this session?`}</span>
+        <span>{`Are you sure ${value} this payment request?`}</span>
       </Text>
     ),
     labels: { confirm: 'Confirm', cancel: 'Cancel' },

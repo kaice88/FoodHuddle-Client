@@ -5,7 +5,7 @@ import StatusBadge from '../../StatusBadge'
 import { getSessionStatus } from '@/utils/sessions'
 import CopyClipBoard from '@/components/CopyClipboard'
 import type { SessionToday } from '@/types/sessions'
-import {SessionStatuseColors,SessionStatuses} from '@/enums'
+import {SessionStatusColors,SessionStatuses} from '@/enums'
 
 interface SessionCardProps {
   session: SessionToday
@@ -29,7 +29,7 @@ function SessionCard({ session }: SessionCardProps) {
             session.status,
           )}`}
         >
-          <StatusBadge status={session.status} colorName={SessionStatuseColors[getKeyByValue(SessionStatuses,session.status)]} />
+          <StatusBadge status={session.status} colorName={SessionStatusColors[getKeyByValue(SessionStatuses,session.status)]} />
         </div>
         <div className="session__link">
           <div className="session__joiners">
