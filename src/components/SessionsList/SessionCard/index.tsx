@@ -1,58 +1,61 @@
-import React from 'react'
-
+import { Box, Button, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
-import { Link } from 'react-router-dom'
-
-import type { SessionProps } from './types'
-import { SessionStatuses } from '@/enums'
+import { useNavigate } from 'react-router-dom'
+import StatusBadge from '../../StatusBadge'
+import type { SessionData } from '@/types/sessions'
 import CopyClipBoard from '@/components/CopyClipboard'
+import { SessionStatuseColors, SessionStatuses } from '@/enums'
 
-const getStatusClassName = (status: SessionStatuses): string => {
-  if (status === SessionStatuses.OPEN)
-    return 'open'
-
-  if (status === SessionStatuses.LOCKED)
-    return 'locked'
-
-  if (status === SessionStatuses.FINISHED)
-    return 'finished'
-
-  if (status === SessionStatuses.PENDING_PAYMENTS)
-    return 'pending'
+interface SessionCardProps {
+  session: SessionData
 }
 
-function Session({ session }: SessionProps) {
+function SessionCard({ session }: SessionCardProps) {
+  const navigate = useNavigate()
+  const mockShopImage = 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+  const { id, title, host, status, shopImage, numberOfJoiners } = session
+
+  const sessionURL = `${window.location.origin}/sessions/${id}`
+  const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
   return (
-    <div className="sessionWrapper">
-      <div className="session">
-        {' '}
-        <div className="session__info">
-          <Link className="session__title" to={`/sessions-today/${session.id}`}>
-            {session.title}
-          </Link>
-          <div className="session__host">{session.host}</div>
-        </div>
-        <div
-          className={`session__status session__status-${getStatusClassName(
-            session.status,
-          )}`}
-        >
-          {/* <StatusBadge status={session.status} /> */}
-        </div>
-        <div className="session__link">
-          <div className="session__joiners">
-            <IconUsers color="orange" size="1rem" />
-            {session.number_of_joiners}
-          </div>
-          <CopyClipBoard
-            text={`${window.location.origin.toString()}/sessions-today/${
-              session.id
-            }`}
-          />
-        </div>
-      </div>
-    </div>
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Card.Section component="a" href={sessionURL}>
+        <Image
+          fit="cover"
+          src={shopImage || mockShopImage}
+          height={160}
+          alt={title}
+        />
+      </Card.Section>
+      <Flex direction="column" justify="space-between">
+        <Group position="apart" mt="md" mb="xs">
+          <Box maw={rem('60%')}>  <Text truncate weight={500}>{title}</Text></Box>
+          <StatusBadge status={session.status} colorName={SessionStatuseColors[getKeyByValue(SessionStatuses, session.status)]} />
+        </Group>
+
+        <Group position="apart" mt="md" mb="xs">
+          <Text size="sm" color="dimmed">
+            {host}
+          </Text>
+          <Flex align="center" justify="center" gap={4}>
+            <CopyClipBoard text={sessionURL}/>
+            <Center>
+              <ThemeIcon color="brand" size={'xs'}>
+                <IconUsers/>
+              </ThemeIcon>
+            </Center>
+            {numberOfJoiners}
+          </Flex>
+        </Group>
+
+        <Button variant="light" fullWidth mt="md" radius="md" onClick={() => {
+          navigate(`/sessions/${id}`)
+        }}>
+       JOIN NOW!
+        </Button>
+      </Flex>
+    </Card>
   )
 }
 
-export default Session
+export default SessionCard

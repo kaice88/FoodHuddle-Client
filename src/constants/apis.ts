@@ -18,4 +18,15 @@ export function REQUEST_GET_SESSION_INFO(sessionId) {
 export function REQUEST_FOOD_ORDER_ROW(rowId) {
   return `/v1/food-order/${rowId}`
 }
-export const REQUEST_GET_FOOD_ORDER_MENU = '/v1/food-order/menu'
+
+export const FOOD_ORDER = '/v1/food-order'
+
+export const REQUEST_GET_HOSTED_SESSIONS_TODAY = '/v1/session/today/hosted'
+export const REQUEST_GET_JOINED_SESSIONS_TODAY = '/v1/session/today/joined'
+
+export const REQUEST_GET_FOOD_MENU = 'v1/food-order/menu'
+
+export const REQUEST_EDIT_FOOD_ORDER_LIST = '/v1/food-order'
+export function REQUEST_GET_FOOD_ORDER_LIST(sessionId: number) {
+  return `/v1/food-order?sessionId=${sessionId}`
+}

@@ -56,7 +56,7 @@ function useAuth() {
     isAuthenticated,
     userProfile,
     getTokenDuration,
-  };
+  }
 }
 
 export default useAuth;

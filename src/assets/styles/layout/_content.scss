@@ -3,5 +3,7 @@
 }
 
 .content {
-  positive: relative !important;
+    position: relative !important;
+    background-color: white !important;
+    min-height: calc(100% - $header-height - $footer-height + 3 * $content-gutter)
 }

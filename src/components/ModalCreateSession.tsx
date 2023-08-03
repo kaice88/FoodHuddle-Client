@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import isEmpty from 'lodash/isEmpty'
+import useSessionInfo from '../hooks/useSessionInfo'
 import ImagesUploaded from './ImagesUploaded'
-import useSessionInfo from '@/hooks/useSessionInfo'
 import { handleFormData } from '@/utils/utility'
 
 interface FormValue {

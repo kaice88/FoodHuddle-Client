@@ -1,22 +1,20 @@
 import { useState } from 'react'
 
-import { SessionsTodayPageTabs } from '@/enums'
+import type { SessionsTodayPageTabs } from '@/enums'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
-import type { SessionToday } from '@/types/sessions'
-import { REQUEST_GET_ALL_SESSIONS_TODAY } from '@/constants/apis'
+import type { SessionData } from '@/types/sessions'
+import { getTodaySessionsApiEndpoint } from '@/utils/sessions'
 
-const { query } = useRequestProcessor()
-
-interface ApiResponse {
+interface SessionsTodayResponse {
   statusCode: number
-  data: SessionToday[]
+  data: SessionData[]
 }
 
-const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
+async function fetchSessionsToday(tab: SessionsTodayPageTabs) {
   try {
-    const { data, status } = await axiosInstance.get<ApiResponse>(getUrl(tab))
-    if (status == 200)
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab))
+    if (status === 200)
       return data.data
   }
   catch (error) {
@@ -24,28 +22,15 @@ const fetchSessionsToday = async (tab: SessionsTodayPageTabs) => {
   }
 }
 
-const getUrl = (tab: SessionsTodayPageTabs): string => {
-  switch (tab) {
-  case SessionsTodayPageTabs.ALL:
-    return REQUEST_GET_ALL_SESSIONS_TODAY
-    default:
-    return REQUEST_GET_ALL_SESSIONS_TODAY
-  }
-}
-
-const useSessionTodayData = (tab: SessionsTodayPageTabs) => {
-  return query<SessionToday[], Error>(
+function useSessionTodayData(tab: SessionsTodayPageTabs) {
+  const { query } = useRequestProcessor()
+  return query<SessionData[], Error>(
     ['sessionsToday', tab],
     () => fetchSessionsToday(tab),
-    {
-      onSuccess: () => {
-        console.log('success')
-      },
-    },
   )
 }
 
-const useSessionsToday = (tab: SessionsTodayPageTabs) => {
+function useSessionsToday(tab: SessionsTodayPageTabs) {
   const [activeTab, setActiveTab] = useState(tab)
 
   const { data, isLoading, error } = useSessionTodayData(activeTab)

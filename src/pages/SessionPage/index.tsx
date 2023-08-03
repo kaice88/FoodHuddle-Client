@@ -6,10 +6,10 @@ import { isEmpty } from 'lodash'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
 import SessionInfo from '@/components/SessionInfo'
-import { isHost } from '@/utils/sessions'
 import useAuth from '@/hooks/useAuth'
 import useSessionInfo from '@/hooks/useSessionInfo'
 import useSessionInfoStore from '@/store/sessionInfoStore'
+import { checkIfUserIsHost } from '@/utils/sessions'
 
 function SessionPage() {
   const { sessionId } = useParams()
@@ -31,8 +31,7 @@ function SessionPage() {
   if (fetchQuerySessionInfo.error)
     return <div>This session is not found</div>
 
-  const isHosted = !isEmpty(sessionInfoData) && isHost(sessionInfoData.host.googleId, userProfile?.googleId)
-
+  const isHosted = !isEmpty(sessionInfoData) && checkIfUserIsHost(sessionInfoData?.host, userProfile)
   return (
     <>
       {!isEmpty(sessionInfoData) && <SessionInfo sessionData={sessionInfoData} sessionId={sessionId} isHosted={isHosted} />}

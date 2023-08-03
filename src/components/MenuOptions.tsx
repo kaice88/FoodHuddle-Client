@@ -2,16 +2,22 @@ import React from 'react'
 import { Button, Menu, Text, useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
 import { IconDice1Filled } from '@tabler/icons-react'
-import { moneyFormat } from '@/utils/utility'
+import { moneyFormat } from '@/utils'
 
-const MenuOptions = ({ options }) => {
+import type { SelectedOptions } from '@/types/food'
+
+interface MenuOptionsProps {
+    options: SelectedOptions[]
+}
+
+const MenuOptions = ({ options }: MenuOptionsProps) => {
   const globalTheme = useMantineTheme()
   const menuItemDrop = !isEmpty(options) && options.map((item, index) => {
     return (
       <React.Fragment key={`${item.category}-${index}`}>
         <Menu.Label style={{ fontSize: '10px' }} >{item.category}</Menu.Label>
         {
-           item.detail.map((item, index) => {
+          item.detail.map((item, index) => {
             return (
               <Menu.Item
                 key={`${item.name}-${index}`}
