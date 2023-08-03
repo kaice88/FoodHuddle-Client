@@ -73,7 +73,7 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
         notificationShow('success', 'Success: ', message)
 
         if (isCreateFirst)
-          navigate(`/sessions-today/${id}`)
+          navigate(`/sessions/${id}`)
       },
     },
   )
@@ -81,12 +81,12 @@ const SessionInfo: React.FC = ({ isCreateFirst }) => {
   const form = useForm<FormValue>({
     initialValues: isCreateFirst
       ? {
-          title: '',
-          shopLink: '',
-          description: '',
-          hostPaymentInfo: '',
-          qrImages: [],
-        }
+        title: '',
+        shopLink: '',
+        description: '',
+        hostPaymentInfo: '',
+        qrImages: [],
+      }
       : null, // ...Place your data session info...//
 
     validate: {

@@ -30,6 +30,6 @@ export const getTodaySessionsApiEndpoint = (tab: SessionsTodayPageTabs): string 
   }
 }
 
-export const checkIfUserIsHost = (hostId, userId) => {
-  return hostId === userId
+export const checkIfUserIsHost = (host, user) => {
+  return host.googleId === user.googleId
 }
