@@ -33,13 +33,13 @@ export default function YourPayment({ id }) {
   const RequestMessage = ({ status = PaymentStatuses.NONE }) => {
     let content = 'Request your payment now!'
     if (status === PaymentStatuses.APPROVED)
-      content = 'Payment request approved successfully!'
+      content = 'Your payment request has been approved successfully!'
 
     else if (status === PaymentStatuses.REJECTED)
-      content = 'Payment request rejected. Please remake the request!'
+      content = 'Your payment request has been rejected. Please remake the request!'
 
     else if (status === PaymentStatuses.PENDING)
-      content = 'Payment request sent, awaiting approve!'
+      content = 'Your payment request has been sent, awaiting approve!'
 
     return <Text color={ PaymentStatusColors[status] ? theme.colors[PaymentStatusColors[status]][0] : 'blue'}>{content}</Text>
   }

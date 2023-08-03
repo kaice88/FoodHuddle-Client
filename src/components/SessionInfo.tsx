@@ -2,14 +2,22 @@ import { ActionIcon, Box, Flex, List, Loader, Modal, Text, Title, useMantineThem
 import { isEmpty } from 'lodash'
 import { IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
+import { useNavigate } from 'react-router-dom'
 import SessionInfoModal from './ModalCreateSession'
 import StatusBadge from './StatusBadge'
 import ImagesUploaded from './ImagesUploaded'
 import CopyClipBoard from './CopyClipboard'
+import { notificationShow } from './Notification'
 import { SessionStatusColors, SessionStatuses } from '@/enums'
+import HostActions from '@/pages/SessionPage/Components/HostActions'
+import useSession from '@/hooks/useSession'
+import useSessionInfo from '@/hooks/useSessionInfo'
 
 function SessionInfo({ sessionData, sessionId, isHosted }) {
   const globalTheme = useMantineTheme()
+  const navigate = useNavigate()
+  const { deleteSession, changeStatus } = useSession(sessionId)
+  const { fetchSessionInfo } = useSessionInfo(sessionId)
 
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
@@ -22,11 +30,24 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
       ></div>
     </Flex>
   )
+  const handleDeleteSession = () => {
+    deleteSession((data) => {
+      notificationShow('success', 'SUCCESS', data.data.message)
+      navigate('/sessions-today')
+    })
+  }
 
+  const handlechangeStatus = (status) => {
+    changeStatus(status, (data) => {
+      notificationShow('success', 'SUCCESS', data.data.message)
+      fetchSessionInfo.refetch()
+    })
+  }
   const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
 
   return (
     <div className="sessionInfo" >
+
       <Flex gap="lg" justify="flex-start" align="center" direction="row" style={{ margin: '0px 0px 20px 0px' }} wrap={'wrap'}>
         <Flex justify="center" align="flex-start" direction="column" >
           <Title order={2}>
@@ -38,6 +59,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
         </Flex>
         <StatusBadge status={sessionData.status} colorName={SessionStatusColors[getKeyByValue(SessionStatuses, sessionData.status)]} />
       </Flex>
+      {isHosted && <HostActions status={sessionData.status} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
       <Flex style={{ margin: '0px 0px 20px 0px' }} >
         <Title order={3}>
           <IconFileDots /> Session Information
