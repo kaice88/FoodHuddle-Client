@@ -13,16 +13,18 @@ import { moneyFormat } from '@/utils'
 import { calculateFoodOrderListTotal } from '@/utils/food'
 import useSessionInfoStore from '@/store/sessionInfoStore'
 import { SessionStatuses } from '@/enums'
+import useAuth from '@/hooks/useAuth'
+import { checkIfUserIsHost } from '@/utils/sessions'
 
 function OrderList() {
   const { sessionId } = useParams()
   const { sessionInfoData } = useSessionInfoStore()
 
-  const { status } = sessionInfoData
+  const { status, host } = sessionInfoData
   const [setFoodOrderList, deleteFoodOrderItem, foodOrderList] = useFoodStore(state => [state.setFoodOrderList, state.deleteFoodOrderItem, state.foodOrderList])
+  const { userProfile } = useAuth()
 
   let content
-
   if (isEmpty(foodOrderList)) {
     content = <Flex align="center" justify="center" direction="column"> <IconMoodSad size={60}/> <Title order={3}>You haven't chosen any food? Let have yourself something good!</Title></Flex>
   }
@@ -57,7 +59,7 @@ function OrderList() {
     init()
   }, [])
 
-  if (status === SessionStatuses.LOCKED) {
+  if (status === SessionStatuses.LOCKED && !checkIfUserIsHost(host, userProfile)) {
     return <Center>
       <Flex direction="column" align="center" justify="center" gap="xl">
         <Loader variant="dots" size="lg"/>
