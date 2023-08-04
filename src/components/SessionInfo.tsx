@@ -1,8 +1,9 @@
 import { ActionIcon, Box, Flex, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import { IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import { useNavigate } from 'react-router-dom'
+
 import SessionInfoModal from './ModalCreateSession'
 import StatusBadge from './StatusBadge'
 import ImagesUploaded from './ImagesUploaded'

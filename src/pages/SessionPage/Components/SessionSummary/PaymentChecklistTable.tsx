@@ -1,56 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table'
-import { Button, Flex, Image, Text, Title, useMantineTheme } from '@mantine/core'
-import { modals } from '@mantine/modals'
+import { Button, Flex, Title, useMantineTheme } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import isEmpty from 'lodash/isEmpty'
 import { IconListCheck } from '@tabler/icons-react'
 
 import ActionButton from './ActionButton'
+import ImageCarouselModal from './ImageCarouselModal'
 import { PaymentActionColors, PaymentActions, PaymentStatusColors, PaymentStatuses, SessionStatuses } from '@/enums'
 import StatusBadge from '@/components/StatusBadge'
 import usePaymentSession from '@/hooks/usePaymentSession'
 import ItemName from '@/components/ItemName'
 
-const list = ['https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png', 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png', 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png']
-function EvidenceModal({ evidence, globalTheme }) {
-  const openModal = () => modals.open({
-    title: 'Image preview',
-    centered: true,
-    children: (
-      <>
-        {evidence.length === 0
-          ? <Text style={{ textAlign: 'center', fontStyle: 'italic' }} color={globalTheme.colors.duck[0]}>No data found</Text>
-          // : <Carousel maw={320} mx="auto" withIndicators height={200}>
-          //   {/* ...slides */}
-          //   {list.map((item, index) =>
-          //     <Carousel.Slide key={index}>
-          //       <Image
-          //         // key={index}
-          //         // width={70}
-          //         // height={70}
-          //         src= {item}
-          //         alt="Evidence"
-          //       />
-          //     </Carousel.Slide>,
-          //   )}
-          // </Carousel>
-          : <Flex wrap="wrap" gap="lg">
-            {evidence.map((item, index) =>
-              <Image
-                key={index}
-                // width={70}
-                // height={70}
-                src= {item}
-                alt="Evidence"
-                // onClick={handleImage}
-              />)}
-          </Flex>
-        }
-      </>
-    ),
-  })
+function EvidenceModal({ evidence }) {
+  const [opened, { open, close }] = useDisclosure(false)
+
   return (
     <>
+      <ImageCarouselModal opened={opened} close={close} images={evidence}/>
       <Button size="xs" styles={theme => ({
         root: {
           backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.9),
@@ -59,12 +26,12 @@ function EvidenceModal({ evidence, globalTheme }) {
             backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.7),
           }),
         },
-      })} onClick={openModal}>Show</Button>
+      })} onClick={open}>Show</Button>
     </>
   )
 }
 
-function Table({ globalTheme, data, columns, isLoading }) {
+function Table({ data, columns, isLoading }) {
   const table = useMantineReactTable({
     columns,
     data: !isEmpty(data) ? data : [],
@@ -113,6 +80,10 @@ function PaymentChecklistTable({ id, sessionData }) {
         setIsLoading(false)
     }
     handlefetchPaymentChecklist()
+    const pollingInterval = setInterval(() => {
+      fetchPaymentChecklist.refetch()
+    }, 10000)
+    return () => clearInterval(pollingInterval)
   }, [])
 
   const columns = useMemo(
@@ -133,7 +104,7 @@ function PaymentChecklistTable({ id, sessionData }) {
         header: 'Evidence',
         size: 100,
         Cell: ({ renderedCellValue }) => {
-          return (<>{renderedCellValue ? <EvidenceModal globalTheme={globalTheme} evidence={renderedCellValue}/> : '- - -' }</>)
+          return (<>{!isEmpty(renderedCellValue) ? <EvidenceModal evidence={renderedCellValue}/> : '- - -' }</>)
         }
         ,
       },
