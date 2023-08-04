@@ -1,15 +1,17 @@
-import { ActionIcon, Box, Flex, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
-import { isEmpty } from 'lodash'
+import { ActionIcon, Box, Button, Flex, Group, Image, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
+import isEmpty from 'lodash/isEmpty'
 import { IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
+import { useState } from 'react'
+import { Carousel, useAnimationOffsetEffect } from '@mantine/carousel'
 import SessionInfoModal from './ModalCreateSession'
 import StatusBadge from './StatusBadge'
-import ImagesUploaded from './ImagesUploaded'
 import CopyClipBoard from './CopyClipboard'
 import { SessionStatuseColors, SessionStatuses } from '@/enums'
 
 function SessionInfo({ sessionData, sessionId, isHosted }) {
   const globalTheme = useMantineTheme()
+  const sessionURL = `${window.location.origin}/sessions/${sessionId}`
 
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
@@ -22,6 +24,11 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
       ></div>
     </Flex>
   )
+  const TRANSITION_DURATION = 200
+  const [openedModalImage, setOpenedModalImage] = useState(false)
+  const [embla, setEmbla] = useState<Embla | null>(null)
+
+  useAnimationOffsetEffect(embla, TRANSITION_DURATION)
 
   const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
 
@@ -37,6 +44,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
           ></div>
         </Flex>
         <StatusBadge status={sessionData.status} colorName={SessionStatuseColors[getKeyByValue(SessionStatuses, sessionData.status)]} />
+        <CopyClipBoard text={sessionURL} />
       </Flex>
       <Flex style={{ margin: '0px 0px 20px 0px' }} >
         <Title order={3}>
@@ -53,18 +61,22 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
           </ActionIcon>
         </div>}
       </Flex>
-      <Flex className="sessionInfo__content" style={{ margin: '0px 0px 20px 0px' }} >
+      <Flex className="sessionInfo__content" >
         {isEmpty(sessionData)
           ? <Loader/>
           : <>
+            <Image
+              className="sessionInfo__content__image"
+              src="https://images.foody.vn/res/g103/1024327/prof/s640x400/foody-upload-api-foody-mobile-cafefddaqk-200519172221.jpg"
+              alt="preview Image"
+            />
             <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}>
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Host :</span>{' '}{sessionData?.host.name}</Text>
               </List.Item>
               <List.Item>
-                <Flex gap={'sm'} direction={'row'}><span style={{ fontWeight: 'bold' }}>Link shop :</span><a href={sessionData.shopLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer"> Shop
-                </a><CopyClipBoard text={sessionData.shopLink} /></Flex>
-
+                <Text><span style={{ fontWeight: 'bold' }}>Link shop :</span><a href={sessionData.shopLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer"> Tiệm Cơm Vui Vẻ - Cơm Văn Phòng & Cơm Ăn Kiêng - Shop
+                </a></Text>
               </List.Item>
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Date :</span>{' '}{sessionData?.date}</Text>
@@ -72,19 +84,43 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Description :</span>{' '}{sessionData?.description}</Text>
               </List.Item>
-            </List>
-            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Host payment info :</span>{' '}{sessionData?.hostPaymentInfo}</Text>
               </List.Item>
-            </List>
-            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>} >
               <List.Item>
-                <Text fw={'bold'}>QR Code: </Text>
+                <Flex gap={'sm'} direction={'row'} align={'center'}>
+                  <Text fw={'bold'}>QR Code: </Text>
+                  <Group position="center">
+                    <Button onClick={() => setOpenedModalImage(true)}>Show</Button>
+                  </Group>
+                  <Modal
+                    opened={openedModalImage}
+                    padding={0}
+                    transitionProps={{ duration: TRANSITION_DURATION }}
+                    withCloseButton={false}
+                    onClose={() => setOpenedModalImage(false)}
+                    centered
+                  >
+                    <Carousel loop getEmblaApi={setEmbla} slideGap="150px" slideSize="70%" >
+                      {
+                        sessionData.qrImages.map((image, index) => {
+                          return (
+                            <Carousel.Slide key={index}>
+                              <img
+                                src={image}
+                                alt="Cat"
+                                style={{ width: '100%', height: '100%', objectFit: 'contain', scale: '1.3' }}
+                              />
+                            </Carousel.Slide>
+                          )
+                        })
+                      }
+                    </Carousel>
+                  </Modal>
+                </Flex>
+
               </List.Item>
-              <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
-                <ImagesUploaded files={sessionData.qrImages} isView={true}/>
-              </Flex>
+
             </List>
           </>
         }

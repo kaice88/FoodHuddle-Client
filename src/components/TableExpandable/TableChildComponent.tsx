@@ -1,7 +1,7 @@
 import { Table, Text, useMantineTheme } from '@mantine/core'
 import MenuOptions from '../MenuOptions'
 import ItemName from '../ItemName'
-import { moneyFormat } from '@/utils/utility'
+import { moneyFormat } from '../../utils'
 
 function ChildTable({ className, dataChilTable }) {
   const globalTheme = useMantineTheme()

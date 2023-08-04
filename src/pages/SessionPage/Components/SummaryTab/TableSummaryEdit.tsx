@@ -32,7 +32,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ label, price, group, ...others }: ItemProps, ref) => (
+  ({ label, price, group, max, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others} >
       <Flex gap="sm" justify="space-between" align="center" direction="row">
         <Text>{label}</Text>
@@ -113,7 +113,7 @@ const EditTable = ({ sessionId }) => {
               const updatedOptions = foodOrderMenu.filter(eachFood =>
                 eachFood.foodName === value,
               )[0]
-              const originalPrice = updatedOptions.price === 0 ? updatedOptions.price : updatedOptions.discountPrice
+              const originalPrice = updatedOptions.discountPrice === 0 ? updatedOptions.price : updatedOptions.discountPrice
               const rowIndex = cell.row.id
               const currentValueRow = row.original
               const newList = tableEditData.map((item) => {
@@ -333,6 +333,7 @@ const EditTable = ({ sessionId }) => {
     row,
     values,
   }) => {
+    console.log(values)
     if (!validationErrors[`${values.id}_options`] && !validationErrors[`${values.id}_quantity`]) {
       const { actualPrice, quantity, ...others } = values
       const dataOneRow = {
@@ -407,6 +408,7 @@ const EditTable = ({ sessionId }) => {
         width: 'fit-content',
       },
     }),
+    getRowId: row => row.id,
     onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveRow,
     renderRowActions: ({ row, table }) => (
