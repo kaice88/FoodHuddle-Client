@@ -7,6 +7,7 @@ import useSessionsToday from '@/hooks/useSessionsToday'
 import { SessionsTodayPageTabs } from '@/enums'
 import { TABS_CONFIG } from '@/constants/sessions'
 import SEARCH_PARAMS from '@/constants/searchParams'
+import useSessionInfoStore from '@/store/sessionInfoStore'
 
 const SessionsHistory = () => {
   const page = 'HISTORY'
@@ -27,7 +28,9 @@ const SessionsHistory = () => {
       status: [],
     },
   })
+  const { setSessionInfoData } = useSessionInfoStore()
   useEffect(() => {
+    setSessionInfoData({})
     setStatus(decodeURIComponent(queryParameters.toString()))
     const outputArray = queryParameters.get('status')?.split(',')
     const value = outputArray?.map(item => item)

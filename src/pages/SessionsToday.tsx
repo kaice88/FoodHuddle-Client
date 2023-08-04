@@ -58,9 +58,8 @@ export default function SessionTodayPage() {
                   theme.colors.darkLavender[0],
                   0.4,
                 ),
-                color: theme.colors.red[0],
                 ...theme.fn.hover({
-                  backgroundColor: theme.colors.darkLavender[7],
+                  backgroundColor: theme.colors.darkLavender[0],
                 }),
                 padding: '10px',
               },
