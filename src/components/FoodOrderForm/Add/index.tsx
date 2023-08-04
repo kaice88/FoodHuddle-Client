@@ -1,28 +1,13 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Group,
-  NumberInput,
-  ScrollArea,
-  Spoiler,
-  Text,
-  Textarea,
-  Title,
-} from '@mantine/core'
-
+import { Box, Button, Flex, Group, NumberInput, Spoiler, Text, Textarea, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { v4 as uuidv4 } from 'uuid'
-
 import isEmpty from 'lodash/isEmpty'
-import get from 'lodash/get'
-import OptionsGroup from '../OptionsGroup'
+import { get } from 'lodash'
 
 import { PriceDisplay } from '../../FoodMenu/FoodMenuItem'
 import useModal from '@/hooks/useModal'
-import type { FoodOrderItem, MenuItem, OptionDetail } from '@/types/food'
-
+import type { FoodOrderItem, FoodOrderItemFormValues, MenuItem, OptionDetail } from '@/types/food'
 import useFoodStore from '@/store/foodStore'
+import { createNewOrderItem, renderErrors, renderOptions, updateOptions, validateOptions } from '@/utils/foorOrderForm'
 
 const { closeModal } = useModal()
 interface AddOrderFormProps {
@@ -32,51 +17,37 @@ interface AddOrderFormProps {
 function AddOrderForm({ menuItem }: AddOrderFormProps) {
   const addFoodOrderItem = useFoodStore(state => state.addFoodOrderItem)
 
-  const mandatoryOptions = menuItem.options
-    ? menuItem.options.filter(option => option.mandatory)
-    : []
+  const mandatoryOptions = menuItem.options?.filter(option => option.mandatory).map(option => option.category)
 
-  const validate = {}
-
-  mandatoryOptions.forEach((option) => {
-    validate[option.category] = value =>
-      isEmpty(value) ? `${option.category} is required!` : null
-  })
-
-  const form = useForm({
+  const form = useForm<FoodOrderItemFormValues>({
     initialValues: {
       quantity: 1,
       note: '',
+      options: [],
     },
-    validate,
+    validate: {
+      options: validateOptions(mandatoryOptions),
+    },
+  })
+
+  const submitHandler = form.onSubmit((values) => {
+    const newOrderItem: FoodOrderItem = createNewOrderItem(values, menuItem)
+
+    addFoodOrderItem(newOrderItem)
+    closeModal()
   })
 
   const optionsChangedHandler = (category: string, detail: OptionDetail[]) => {
-    form.setFieldValue(category, detail)
+    const { options } = form.values
+
+    const newOptions = updateOptions(options, category, detail)
+
+    form.setFieldValue('options', [...newOptions])
+    form.validate()
   }
 
-  const submitHandler = form.onSubmit((values) => {
-    const { note, quantity, ...restOptions } = values
-    const foodOrderItem: FoodOrderItem = {
-      id: uuidv4(),
-      foodName: menuItem.foodName,
-      foodImage: menuItem.photo,
-      originPrice:
-        menuItem.discountPrice > 0 ? menuItem.discountPrice : menuItem.price,
-      note,
-      quantity,
-      options: [
-        ...Object.entries(restOptions).map(
-          ([category, detail]: [string, OptionDetail]) => ({
-            category,
-            detail,
-          }),
-        ),
-      ],
-    }
-    addFoodOrderItem(foodOrderItem)
-    closeModal()
-  })
+  const optionErrors: string[] = get(form.errors, 'options')
+
   return (
     <Box maw={300} mx="auto">
       <form className="orderCustomization-form" onSubmit={submitHandler}>
@@ -118,7 +89,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
             </Flex>
           </div>
         </div>
-
+        {renderErrors(optionErrors)}
         <Textarea
           mt={16}
           autosize
@@ -127,26 +98,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
           {...form.getInputProps('note')}
         />
 
-        {!isEmpty(menuItem.options) && (
-          <ScrollArea mt={8} h={200}>
-            <Flex direction="column" gap={16}>
-              {menuItem.options.map(option => (
-                <Flex key={option.id} direction="column">
-                  <OptionsGroup
-                    optionsChangedHandler={optionsChangedHandler}
-                    key={option.id}
-                    option={option}
-                  />
-                  {!isEmpty(get(form.errors, `${option.category}`)) && (
-                    <Text color="red" size="sm">
-                      {get(form.errors, option.category)}
-                    </Text>
-                  )}
-                </Flex>
-              ))}
-            </Flex>
-          </ScrollArea>
-        )}
+        {renderOptions(menuItem, optionsChangedHandler, optionErrors)}
 
         <Group position="right" mt="md">
           <Button

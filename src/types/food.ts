@@ -1,8 +1,6 @@
 export interface FoodOrderListData {
   sessionId: number
   foodOrderList: FoodOrderItem[]
-  sessionId: number
-  foodOrderList: FoodOrderItem[]
 }
 
 export interface FoodOrderItem {
@@ -17,10 +15,6 @@ export interface FoodOrderItem {
 
 export interface OptionDetail { name: string ; price: number }
 export interface Option {
-  mandatory: boolean
-  id: number
-  category: string
-  detail: OptionDetail[]
   mandatory: boolean
   id: number
   category: string
@@ -46,3 +40,5 @@ export interface MenuResponseData {
   message: string
   data: Menu
 }
+
+export type FoodOrderItemFormValues = Pick<FoodOrderItem, 'quantity' & 'note' & 'options' >
