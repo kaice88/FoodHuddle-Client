@@ -31,21 +31,20 @@ function OptionsGroup({
   }, [selectedOptionItems])
 
   const handleCheckboxChange = (optionItem: OptionDetail, checked: boolean) => {
-    if (option.mandatory) {
-      setSelectedOptionItems(checked ? [optionItem] : [])
+    if (checked) {
+      if (selectedOptionItems.length < option.maxSelection)
+        setSelectedOptionItems([...selectedOptionItems, optionItem])
     }
     else {
-      setSelectedOptionItems(prevSelectedOptionItems =>
-        checked
-          ? [...(prevSelectedOptionItems || []), optionItem]
-          : (prevSelectedOptionItems || []).filter(
-            option => option.name !== optionItem.name,
-          ),
+      setSelectedOptionItems(
+        selectedOptionItems.filter(
+          currentOption => currentOption.name !== optionItem.name,
+        ),
       )
     }
   }
 
-  const formattedCategory = option.category.toLocaleUpperCase('vi-VN')
+  const formattedCategory = `${option.category.toLocaleUpperCase('vi-VN')} (Up to ${option.maxSelection} item(s))`
 
   return (
     <Box mt={8}>

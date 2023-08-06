@@ -9,6 +9,7 @@
 @import "layout/footer";
 
 @import "components/breadscumbs";
+@import "components/sessionCard";
 @import "components/modalCreateSession";
 @import "components/sessionInfo";
 @import "components/popover";
@@ -16,7 +17,6 @@
 
 
 @import "pages/login";
-@import "pages/sessions";
 @import "pages/summary-tab";
 @import "pages/session-detail";
 @import "pages/session-summary";
