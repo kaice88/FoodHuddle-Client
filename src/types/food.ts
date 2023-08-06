@@ -18,6 +18,8 @@ export interface Option {
   mandatory: boolean
   id: number
   category: string
+  minSelection: number
+  maxSelection: number
   detail: OptionDetail[]
 }
 
