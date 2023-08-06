@@ -6,8 +6,8 @@ function StatusBadge({ status, colorName }: StatusBadgeProps) {
   return (
     <Badge size="lg" variant="light" styles={theme => ({
       root: {
-        backgroundColor: theme.fn.lighten(theme.colors[colorName][6], 0.9),
-        color: theme.colors[colorName][6],
+        backgroundColor: theme.fn.lighten(theme.colors[colorName][0], 0.9),
+        color: theme.colors[colorName][0],
       },
     })}>
       {status}

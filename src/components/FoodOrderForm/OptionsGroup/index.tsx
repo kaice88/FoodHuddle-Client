@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Checkbox, Title } from '@mantine/core'
+import { Box, Checkbox, Highlight, Title } from '@mantine/core'
 
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
@@ -10,13 +10,15 @@ import { moneyFormat } from '@/utils'
 interface OptionsGroupProps {
   option: Option
   optionsChangedHandler: (category: string, detail: OptionDetail[]) => void
-  defaultValue: SelectedOptions
+  defaultValue?: SelectedOptions
+  optionErrors: string[]
 }
 
 function OptionsGroup({
   option,
   optionsChangedHandler,
   defaultValue,
+  optionErrors,
 }: OptionsGroupProps) {
   const [selectedOptionItems, setSelectedOptionItems] = useState<
     OptionDetail[]
@@ -43,9 +45,27 @@ function OptionsGroup({
     }
   }
 
+  const formattedCategory = option.category.toLocaleUpperCase('vi-VN')
+
   return (
-    <div>
-      <Title order={6}>{option.category.toLocaleUpperCase('vi-VN')}</Title>
+    <Box mt={8}>
+      <Title order={6}>
+        {!optionErrors
+          ? (
+            formattedCategory
+          )
+          : (
+            optionErrors.includes(option.category)
+              ? (
+                <Highlight highlightColor="red" highlight={formattedCategory}>
+                  {formattedCategory}
+                </Highlight>
+              )
+              : (
+                formattedCategory
+              )
+          )}
+      </Title>
       {option.detail.map(optionItem => (
         <Checkbox
           key={uuidv4()}
@@ -64,7 +84,7 @@ function OptionsGroup({
           }}
         />
       ))}
-    </div>
+    </Box>
   )
 }
 

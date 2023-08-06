@@ -8,10 +8,10 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
     renderDetailPanel: ({ row }) => {
       if (isTableGroupedByFood) {
         const element = elements.filter(item => row.original.foodName.name === item.foodName)
-        return <ChildTable className="child-table" dataChilTable={element[0].elements} key={row.id}/>
+        return <ChildTable className="child-table" dataChildTable={element[0].elements} key={row.id}/>
       }
       else {
-        return null // Return null or any other fallback content if not grouped by food
+        return <ChildTable className="child-table" dataChildTable={elements[row.id]} key={row.id} isTableGroupedByFood={isTableGroupedByFood}/>
       }
     },
     mantineDetailPanelProps: props => (
@@ -34,11 +34,10 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
       sx: {
         maxHeight: '500px',
         padding: '3px',
-
       },
+      className: 'table-view-expandable',
     }),
     enableBottomToolbar: false,
-    initialState: { expanded: true },
     state: { isLoading },
   })
 

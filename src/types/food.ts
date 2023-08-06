@@ -40,3 +40,5 @@ export interface MenuResponseData {
   message: string
   data: Menu
 }
+
+export type FoodOrderItemFormValues = Pick<FoodOrderItem, 'quantity' & 'note' & 'options' >

@@ -13,6 +13,7 @@ export default function LoginPage() {
   const handleLogin = () => {
     login()
   }
+
   useEffect(() => {
     if (isAuthenticated)
       navigate(SESSIONS_TODAY)

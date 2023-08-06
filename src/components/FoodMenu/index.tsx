@@ -41,6 +41,8 @@ function FoodMenu() {
         withControls = {!!sm}
         loop
         controlSize={10}
+        slideGap={rem('32px')}
+        slideSize={rem('97%')}
       >
         {menuGroups.map((menu) => {
           return (
@@ -55,6 +57,7 @@ function FoodMenu() {
                 cols={1}
                 spacing={'md'}
                 verticalSpacing={'md'}
+                p={16}
                 key={uuidv4()}
               >
                 {menu.map(item => (

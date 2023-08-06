@@ -4,6 +4,10 @@ import type { MenuItem } from '@/types/food'
 import { moneyFormat } from '@/utils'
 import useModal from '@/hooks/useModal'
 import AddOrderForm from '@/components/FoodOrderForm/Add'
+import { SessionStatuses } from '@/enums'
+import useSessionInfoStore from '@/store/sessionInfoStore'
+import useAuth from '@/hooks/useAuth'
+import { checkIfUserIsHost } from '@/utils/sessions'
 
 interface FoodItemProps {
   foodMenuItem: MenuItem
@@ -38,6 +42,10 @@ export function PriceDisplay({
 }
 
 function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
+  const { sessionInfoData } = useSessionInfoStore()
+  const { userProfile } = useAuth()
+
+  const { status, host } = sessionInfoData
   const { openModal } = useModal(
     <Title order={4}>{'Order Customization'}</Title>,
     <AddOrderForm menuItem={foodMenuItem} />,
@@ -49,7 +57,6 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
   return (
     <div className="foodMenuItem">
       <div className="foodMenuItem__imageWrapper">
-        {' '}
         <img src={foodMenuItem.photo} />
       </div>
       <div className="foodMenuItem__info">
@@ -62,8 +69,7 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
             discountPrice={foodMenuItem.discountPrice}
             price={foodMenuItem.price}
           />
-
-          <ActionIcon
+          {(status === SessionStatuses.OPEN || checkIfUserIsHost(host, userProfile)) && <ActionIcon
             aria-label="Add to list of order items"
             className="button-addOrder"
             onClick={orderHandler}
@@ -71,9 +77,8 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
             size={'sm'}
             color="brand"
           >
-            {' '}
             <IconPlus stroke={2.2} />
-          </ActionIcon>
+          </ActionIcon>}
         </Flex>
       </div>
     </div>

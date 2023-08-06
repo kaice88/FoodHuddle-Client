@@ -1,12 +1,13 @@
 import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-
 import { IconSquarePlus } from '@tabler/icons-react'
+import { useEffect } from 'react'
 import SessionInfoModal from '../components/ModalCreateSession'
-import SessionList from '@/components/SessionsList'
-import useSessionsToday from '@/hooks/useSessionsToday'
-import { SessionsTodayPageTabs } from '@/enums'
-import { TABS_CONFIG } from '@/constants/sessions'
+import SessionList from '../components/SessionsList'
+import useSessionsToday from '../hooks/useSessionsToday'
+import { SessionsTodayPageTabs } from '../enums'
+import { TABS_CONFIG } from '../constants/sessions'
+import useSessionInfoStore from '@/store/sessionInfoStore'
 
 export default function SessionTodayPage() {
   const {
@@ -15,6 +16,10 @@ export default function SessionTodayPage() {
     activeTab,
     setActiveTab,
   } = useSessionsToday(SessionsTodayPageTabs.ALL)
+  const { setSessionInfoData } = useSessionInfoStore()
+  useEffect(() => {
+    setSessionInfoData({})
+  }, [])
 
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
@@ -31,7 +36,13 @@ export default function SessionTodayPage() {
   return (
     <>
       <div>
-        <Modal opened={opened} onClose={close} title={titleModal} centered size={700}>
+        <Modal
+          opened={opened}
+          onClose={close}
+          title={titleModal}
+          centered
+          size={700}
+        >
           <Box maw={600} mx="auto">
             <SessionInfoModal isCreateFirst={true}/>
           </Box>
@@ -43,16 +54,18 @@ export default function SessionTodayPage() {
             leftIcon={<IconSquarePlus size="0.9rem" />}
             styles={theme => ({
               root: {
-                backgroundColor: theme.fn.lighten(theme.colors.darkLavender[6], 0.4),
-                color: theme.colors.red[0],
+                backgroundColor: theme.fn.lighten(
+                  theme.colors.darkLavender[0],
+                  0.4,
+                ),
                 ...theme.fn.hover({
-                  backgroundColor: theme.colors.darkLavender[7],
+                  backgroundColor: theme.colors.darkLavender[0],
                 }),
                 padding: '10px',
               },
             })}
           >
-          Create New Session
+            Create New Session
           </Button>
         </Group>
       </div>

@@ -5,7 +5,6 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar/Navbar'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import Bread from '../components/Bread'
 import useAuth from '@/hooks/useAuth'
 import { LOGIN } from '@/constants/routes'
 
@@ -52,7 +51,7 @@ export default function Layout() {
             },
           })}
         >
-          <Bread></Bread>
+          {/* <Bread></Bread> */}
           <div className="content">
             <Outlet></Outlet>
           </div>

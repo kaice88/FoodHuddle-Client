@@ -1,19 +1,20 @@
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { notificationShow } from '@/components/Notification'
 import { REQUEST_EDIT_SESSION_INFO, REQUEST_GET_HOST_PAYMENT_INFO, REQUEST_GET_SESSION_INFO, REQUEST_POST_SESSION_INFO } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import useSessionInfoStore from '@/store/sessionInfoStore'
 
-function useSessionInfo() {
+function useSessionInfo(id) {
   const { mutation, query } = useRequestProcessor()
   const { setSessionInfoData } = useSessionInfoStore()
 
   const navigate = useNavigate()
 
-  const fetchSessionInfo = sessionId => query(
+  const fetchSessionInfo = useQuery(
     ['get-sessionInfo'],
-    () => axiosInstance.get(REQUEST_GET_SESSION_INFO(sessionId!)),
+    () => axiosInstance.get(REQUEST_GET_SESSION_INFO(id!)),
     {
       enabled: false,
       onSuccess: (data) => {
@@ -57,6 +58,7 @@ function useSessionInfo() {
       onSuccess: (data) => {
         const { message } = data.data
         notificationShow('success', 'Success: ', message)
+        fetchSessionInfo.refetch()
         close()
         setSessionInfoData(data.data.data)
       },

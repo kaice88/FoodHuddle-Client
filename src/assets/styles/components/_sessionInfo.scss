@@ -1,39 +1,51 @@
 .sessionInfo{
-
+    margin-bottom: 20px;
     &__content{
-        border: 2px solid $dark-lavender;
-        border-radius: 20px;
-        width: 100%;
+        display: flex;
+        flex: 0 0 450px;
+        border-radius: 16px;
+        height: 100%;
+        -webkit-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+        -moz-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+        box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+        width: fit-content;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
+        align-items: center;
+        margin: auto;
         padding: 20px;
         gap: 20px;
+        &__image {
+            display: flex;
+            max-width: 400px;
+            min-width: 400px;
+            flex-grow: 1;
+            justify-content: center;
+            align-items: center;
+            img {
+              width: 100%;
+              object-fit: cover;
+              border-radius: 16px;
+            }
+        }
         ul:nth-child(1){
-            width: 35%;
-        }
-        ul:nth-child(2){
-            width: 30%;
-        }
-        ul:nth-child(3){
-            width: 35%;
+            width: 50%;
         }
         li{
             margin-bottom: 10px;
         }
-        @include breakpoint-down("small-desktop") {
-            padding: 20px 100px;
-        }
-        @include breakpoint-down("extra-smalldesktop") {
-            padding: 20px 100px;
-        }
         @include breakpoint-down("tablet") {
-            gap: 0px;
+            gap: 10px;
             flex-direction: column;
             align-items: flex-start;
-            ul:nth-child(1),  ul:nth-child(2), ul:nth-child(3){
-                width: 100%;
+            &__image{
+                align-self: center;
             }
-            padding: 20px;
+            ul{
+                width: 100%;
+                margin: 10px 0px;
+            }
+            padding: 10px;
         }
 
       

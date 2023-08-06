@@ -18,10 +18,6 @@ export function REQUEST_GET_SESSION_INFO(sessionId) {
 export function REQUEST_FOOD_ORDER_ROW(rowId) {
   return `/v1/food-order/${rowId}`
 }
-export const REQUEST_GET_FOOD_ORDER_MENU = '/v1/food-order/menu'
-export const REQUEST_GET_ALL_SESSIONS_HISTORY = '/v1/session/history'
-export const REQUEST_GET_HOSTED_SESSIONS_HISTORY = '/v1/session/history/hosted'
-export const REQUEST_GET_JOINED_SESSIONS_HISTORY = '/v1/session/history/joined'
 
 export const FOOD_ORDER = '/v1/food-order'
 
@@ -34,5 +30,12 @@ export const REQUEST_EDIT_FOOD_ORDER_LIST = '/v1/food-order'
 export function REQUEST_GET_FOOD_ORDER_LIST(sessionId: number) {
   return `/v1/food-order?sessionId=${sessionId}`
 }
+export const REQUEST_UPDATE_SESSION_STATUS = sessionId => `/v1/session/${sessionId}/update-status`
+export const REQUEST_USER_PAYMENT = sessionId => `${SESSION_BASE_URL}/${sessionId}/user-payment`
+export const REQUEST_PAYMENT_CHECKLIST = sessionId => `${SESSION_BASE_URL}/${sessionId}/payment-checklist`
+
+export const REQUEST_GET_ALL_SESSIONS_HISTORY = '/v1/session/history'
+export const REQUEST_GET_HOSTED_SESSIONS_HISTORY = '/v1/session/history/hosted'
+export const REQUEST_GET_JOINED_SESSIONS_HISTORY = '/v1/session/history/joined'
+
 export const REQUEST_POST_ORDER_BILL = '/v1/session'
-export const REQUEST_PUT_FOOD_ORDER_ROW = '/v1/food-order'

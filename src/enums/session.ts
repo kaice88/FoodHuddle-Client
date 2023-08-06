@@ -5,7 +5,7 @@ export enum SessionStatuses {
   FINISHED = 'FINISHED',
 }
 
-export enum SessionStatuseColors {
+export enum SessionStatusColors {
   OPEN = 'darkLavender',
   LOCKED = 'orange',
   PENDING_PAYMENTS = 'pickerBluewood',
@@ -16,4 +16,18 @@ export enum SessionsTodayPageTabs {
   ALL = 'All',
   JOINED = 'Joined',
   HOSTED = 'Hosted',
+}
+
+export enum SessionActions {
+  DELETE = 'DELETE',
+  LOCK_ORDER = 'LOCK ORDER',
+  SPLIT_PAYMENT = 'SPLIT PAYMENT',
+  FINISH = 'FINISH',
+}
+
+export enum SessionActionColor {
+  DELETE = 'orange',
+  LOCK_ORDER = 'bashfulPink',
+  SPLIT_PAYMENT = 'watermelon',
+  FINISH = 'orange',
 }

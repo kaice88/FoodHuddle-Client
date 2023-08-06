@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import isEmpty from 'lodash/isEmpty'
+import useSessionInfo from '../hooks/useSessionInfo'
 import ImagesUploaded from './ImagesUploaded'
-import useSessionInfo from '@/hooks/useSessionInfo'
 import { handleFormData } from '@/utils/utility'
 
 interface FormValue {
@@ -15,7 +15,7 @@ interface FormValue {
 }
 
 const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessionId, close }) => {
-  const { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo } = useSessionInfo()
+  const { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo } = useSessionInfo(sessionId)
 
   // ......Config form.................................................
   const form = useForm<FormValue>({
@@ -49,21 +49,16 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
   // .....Handle submit................................
   const handleSubmitNewSession = async (values) => {
     const dataForm = new FormData()
+    dataForm.append('title', values.title)
+    dataForm.append('shop_link', values.shopLink)
+    dataForm.append('description', values.description)
+    dataForm.append('host_payment_info', values.hostPaymentInfo)
     if (isCreateFirst) {
       await handleFormData(dataForm, values.qrImages, 'qr_images')
-      dataForm.append('title', values.title)
-      dataForm.append('shop_link', values.shopLink)
-      dataForm.append('description', values.description)
-      dataForm.append('host_payment_info', values.hostPaymentInfo)
       mutateSessionInfo.mutate(dataForm)
     }
     else {
       !isEmpty(values.qrImages) ? await handleFormData(dataForm, values.qrImages, 'qr_images') : dataForm.append('qr_images', [])
-      dataForm.append('title', values.title)
-      dataForm.append('shop_link', values.shopLink)
-      dataForm.append('description', values.description)
-      dataForm.append('host_payment_info', values.hostPaymentInfo)
-      dataForm.append('status', values.status)
       fetchEditSessionInfo.mutate(dataForm)
     }
   }
@@ -76,7 +71,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
   }
 
   return (
-    <form onSubmit={form.onSubmit(values => handleSubmitNewSession(values))} className="modal-session-info">
+    <form onSubmit={form.onSubmit(handleSubmitNewSession)} className="modal-session-info">
       <Flex style={{ width: '100%' }} className="modal-session-info__content">
         <Flex className="modal-session-info__content__left">
           <TextInput

@@ -1,11 +1,12 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
+
 import LoginPage from './pages/Login'
 import SessionTodayPage from './pages/SessionsToday'
 import Layout from './layouts/Layout'
 import ErrorPage from './pages/Error'
 import SessionPage from './pages/SessionPage'
 import SessionsHistory from './pages/SessionsHistory'
-import * as ROUTES from '@/constants/routes'
+import * as ROUTES from './constants/routes'
 
 export const router = createBrowserRouter([
   {

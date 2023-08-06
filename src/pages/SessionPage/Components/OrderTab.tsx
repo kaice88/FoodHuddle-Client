@@ -5,9 +5,8 @@ import OrderList from '@/components/OrderList'
 function OrderTab() {
   return (
     <div className="orderTab">
-      {' '}
       <FoodMenu />
-      <OrderList/>
+      <OrderList />
     </div>
   )
 }

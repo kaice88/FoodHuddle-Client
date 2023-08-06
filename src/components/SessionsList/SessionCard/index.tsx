@@ -1,6 +1,8 @@
 import { Box, Button, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
+import { SessionStatusColors, SessionStatuses } from '../../../enums'
+import StatusBadge from '../../StatusBadge'
 import type { SessionData } from '@/types/sessions'
 import CopyClipBoard from '@/components/CopyClipboard'
 
@@ -14,6 +16,7 @@ function SessionCard({ session }: SessionCardProps) {
   const { id, title, host, status, shopImage, numberOfJoiners } = session
 
   const sessionURL = `${window.location.origin}/sessions/${id}`
+  const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section component="a" href={sessionURL}>
@@ -27,7 +30,7 @@ function SessionCard({ session }: SessionCardProps) {
       <Flex direction="column" justify="space-between">
         <Group position="apart" mt="md" mb="xs">
           <Box maw={rem('60%')}>  <Text truncate weight={500}>{title}</Text></Box>
-          {/* {<StatusBadge status={status}/>} */}
+          <StatusBadge status={session.status} colorName={SessionStatusColors[getKeyByValue(SessionStatuses, session.status)]} />
         </Group>
 
         <Group position="apart" mt="md" mb="xs">

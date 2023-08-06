@@ -1,23 +1,30 @@
 import { Table, Text, useMantineTheme } from '@mantine/core'
+import isEmpty from 'lodash/isEmpty'
 import MenuOptions from '../MenuOptions'
 import ItemName from '../ItemName'
-import { moneyFormat } from '@/utils/utility'
+import { moneyFormat } from '../../utils'
 
-function ChildTable({ className, dataChilTable }) {
+function ChildTable({ className, dataChildTable, isTableGroupedByFood = true }) {
   const globalTheme = useMantineTheme()
 
-  const rows = dataChilTable.map((element, index) => {
+  const rows = !isEmpty(dataChildTable) && dataChildTable.map((element, index) => {
     return (
       <tr key={`${index}-${element.name.name}`}>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
-          <ItemName name={element.name.name} picture={element.name.photo}/>
+          {isTableGroupedByFood ? <ItemName name={element.name.name} picture={element.name.photo}/> : <ItemName name={element.name} picture={element.photo}/>}
         </Text></td>
-        <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >
+        <td>
+          {/* <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} > */}
           {moneyFormat(element.originPrice, 'VND', 'en-US', '')} đ
-        </Text></td>
-        <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[6], 0.85)}`, borderRadius: '5px', width: 'fit-content', margin: 'auto', padding: '5px' }}>
+          {/* {moneyFormat('500', 'VND', 'en-US', '')} đ */}
+          {/* </Text> */}
+        </td>
+        <td>
+          {/* <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[6], 0.85)}`, borderRadius: '5px', width: 'fit-content', margin: 'auto', padding: '5px' }}> */}
           {moneyFormat(element.actualPrice, 'VND', 'en-US', '')} đ
-        </Text></td>
+          {/* {moneyFormat('400', 'VND', 'en-US', '')} đ */}
+          {/* </Text> */}
+        </td>
         <td>
           <MenuOptions options={element.options}/>
         </td>

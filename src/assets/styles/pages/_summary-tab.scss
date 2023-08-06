@@ -27,7 +27,14 @@
     }
 
 }
+.table-view-expandable{
+    .mantine-Text-root{
+        padding: 0px
+    }
+}
 .table-edit-summary-tab{
+    min-height: 300px;
+    display: flex;
     thead tr th:first-child{
         padding-left: 5px;
     }
@@ -53,6 +60,9 @@
         .mantine-MultiSelect-wrapper{
             width: 95%;
         }
+    }
+    .mantine-Text-root{
+        padding: 0px
     }
 }
 

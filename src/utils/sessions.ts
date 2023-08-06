@@ -1,5 +1,6 @@
 import { SessionStatuses, SessionsTodayPageTabs } from '@/enums'
 import * as APIS from '@/constants/apis'
+import {} from '@/hooks/useAuth'
 
 export const getSessionStatus = (status: SessionStatuses): string => {
   switch (status) {
@@ -42,6 +43,6 @@ export const getTodaySessionsApiEndpoint = (tab: SessionsTodayPageTabs, page, st
     }
   }
 }
-export function isHost(hostId, userId) {
-  return hostId === userId
+export const checkIfUserIsHost = (host, user) => {
+  return host.googleId === user.googleId
 }

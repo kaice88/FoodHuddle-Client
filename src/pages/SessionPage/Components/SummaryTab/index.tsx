@@ -123,9 +123,9 @@ function SummaryTab({ sessionId, isHosted }) {
                 direction="column"
                 className="form-fees__fill__cost"
               >
+                <NumberInputCustom field="shippingFee" form={form} label="Shipping fee: "/>
                 <NumberInputCustom field="discountAmount" form={form} label="Discount: "/>
-                <NumberInputCustom field="shippingFee" form={form} label="Delivery cost: "/>
-                <NumberInputCustom field="otherFee" form={form} label="OtherFee: "/>
+                <NumberInputCustom field="otherFee" form={form} label="Other fees: "/>
               </Flex>
               <Flex
                 gap="md"
