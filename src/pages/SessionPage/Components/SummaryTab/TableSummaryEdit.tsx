@@ -32,7 +32,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ label, price, group, ...others }: ItemProps, ref) => (
+  ({ label, price, group, max, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others} >
       <Flex gap="sm" justify="space-between" align="center" direction="row">
         <Text>{label}</Text>
