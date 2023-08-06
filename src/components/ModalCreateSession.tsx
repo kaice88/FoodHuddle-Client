@@ -47,32 +47,6 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
   }, [])
 
   // .....Handle submit................................
-  // const handleSubmitNewSession = async (values) => {
-  //   const dataForm = new FormData()
-  //   dataForm.append('title', values.title)
-  //   dataForm.append('shop_link', values.shopLink)
-  //   dataForm.append('description', values.description)
-  //   dataForm.append('host_payment_info', values.hostPaymentInfo)
-  //   if (isCreateFirst) {
-  //     try {
-  //       await handleFormData(dataForm, values.qrImages, 'qr_images')
-  //       mutateSessionInfo.mutate(dataForm)
-  //     }
-  //     catch (error) {
-  //       notificationShow('error', 'Error: ', error.message)
-  //     }
-  //   }
-  //   else {
-  //     try {
-  //       !isEmpty(values.qrImages) ? await handleFormData(dataForm, values.qrImages, 'qr_images') : dataForm.append('qr_images', [])
-  //       fetchEditSessionInfo.mutate(dataForm)
-  //     }
-  //     catch (error) {
-  //       notificationShow('error', 'Error: ', error.message)
-  //     }
-  //   }
-  // }
-
   const handleSubmitNewSession = async (values) => {
     const dataForm = new FormData()
     dataForm.append('title', values.title)
@@ -97,7 +71,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
   }
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmitNewSession)} className="modal-session-info">
+    <form onSubmit={form.onSubmit(values => handleSubmitNewSession(values))} className="modal-session-info">
       <Flex style={{ width: '100%' }} className="modal-session-info__content">
         <Flex className="modal-session-info__content__left">
           <TextInput

@@ -31,7 +31,6 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
   useAnimationOffsetEffect(embla, TRANSITION_DURATION)
 
   const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
-
   return (
     <div className="sessionInfo" >
       <Flex gap="lg" justify="flex-start" align="center" direction="row" style={{ margin: '0px 0px 20px 0px' }} wrap={'wrap'}>
@@ -67,15 +66,15 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
           : <>
             <Image
               className="sessionInfo__content__image"
-              src="https://images.foody.vn/res/g103/1024327/prof/s640x400/foody-upload-api-foody-mobile-cafefddaqk-200519172221.jpg"
-              alt="preview Image"
+              src={sessionData.shopImage}
+              alt={sessionData.shopName}
             />
             <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}>
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Host :</span>{' '}{sessionData?.host.name}</Text>
               </List.Item>
               <List.Item>
-                <Text><span style={{ fontWeight: 'bold' }}>Link shop :</span><a href={sessionData.shopLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer"> Tiệm Cơm Vui Vẻ - Cơm Văn Phòng & Cơm Ăn Kiêng - Shop
+                <Text><span style={{ fontWeight: 'bold' }}>Link shop :</span><a href={sessionData.shopLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer"> {sessionData.shopName}
                 </a></Text>
               </List.Item>
               <List.Item>

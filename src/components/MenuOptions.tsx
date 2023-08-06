@@ -15,7 +15,6 @@ const MenuOptions = ({ options }: MenuOptionsProps) => {
   const menuItemDrop = !isEmpty(options) && options.map((item, index) => {
     return (
       <React.Fragment key={`${item.category}-${index}`}>
-        <Menu.Label style={{ fontSize: '10px' }} >{item.category}</Menu.Label>
         {
           item.detail.map((item, index) => {
             return (

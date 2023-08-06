@@ -333,7 +333,6 @@ const EditTable = ({ sessionId }) => {
     row,
     values,
   }) => {
-    console.log(values)
     if (!validationErrors[`${values.id}_options`] && !validationErrors[`${values.id}_quantity`]) {
       const { actualPrice, quantity, ...others } = values
       const dataOneRow = {
