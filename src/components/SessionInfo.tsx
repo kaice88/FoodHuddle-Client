@@ -9,10 +9,11 @@ import StatusBadge from './StatusBadge'
 import ImagesUploaded from './ImagesUploaded'
 import CopyClipBoard from './CopyClipboard'
 import { notificationShow } from './Notification'
-import { SessionStatusColors, SessionStatuses } from '@/enums'
+import { SessionStatuses } from '@/enums'
 import HostActions from '@/pages/SessionPage/Components/HostActions'
 import useSession from '@/hooks/useSession'
 import useSessionInfo from '@/hooks/useSessionInfo'
+import { getSessionStatusColor } from '@/utils/sessions'
 
 function SessionInfo({ sessionData, sessionId, isHosted }) {
   const globalTheme = useMantineTheme()
@@ -44,7 +45,6 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
       fetchSessionInfo.refetch()
     })
   }
-  const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
 
   return (
     <div className="sessionInfo" >
@@ -58,7 +58,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
             style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
           ></div>
         </Flex>
-        <StatusBadge status={sessionData.status} colorName={SessionStatusColors[getKeyByValue(SessionStatuses, sessionData.status)]} />
+        <StatusBadge status={sessionData.status} colorName={getSessionStatusColor(sessionData.status)} />
       </Flex>
       {isHosted && <HostActions status={sessionData.status} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
       <Flex style={{ margin: '0px 0px 20px 0px' }} >
