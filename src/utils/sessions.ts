@@ -43,9 +43,6 @@ export const getTodaySessionsApiEndpoint = (tab: SessionsTodayPageTabs, page, st
     }
   }
 }
-export const checkIfUserIsHost = (host, user) => {
-  return host.googleId === user.googleId
-}
 
 export function getSessionStatusColor(sessionStatus: SessionStatuses): string | undefined {
   switch (sessionStatus) {
@@ -60,4 +57,8 @@ export function getSessionStatusColor(sessionStatus: SessionStatuses): string | 
   default:
     return undefined
   }
+}
+
+export const checkIfUserIsHost = (host, user) => {
+  return host.googleId === user.googleId
 }

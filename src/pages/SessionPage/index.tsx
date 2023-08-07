@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 import { Flex, Loader, Tabs } from '@mantine/core'
 

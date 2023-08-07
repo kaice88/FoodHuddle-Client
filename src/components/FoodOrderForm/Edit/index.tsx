@@ -1,33 +1,22 @@
 import { useMemo } from 'react'
-
 import { useForm } from '@mantine/form'
-import {
-  Box,
-  Button,
-  Flex,
-  Group,
-  NumberInput,
-  Textarea,
-  Title,
-} from '@mantine/core'
-
-import find from 'lodash/find'
-import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
+import { Box, Button, Flex, Group, NumberInput, Textarea, Title } from '@mantine/core'
+import { find, get, isEmpty } from 'lodash'
 
 import { PriceDisplay } from '../../FoodMenu/FoodMenuItem'
 import useFoodStore from '@/store/foodStore'
 import useModal from '@/hooks/useModal'
 
 import type { FoodOrderItem, FoodOrderItemFormValues, OptionDetail } from '@/types/food'
-import { renderErrors, renderOptions, updateOptions, validateOptions } from '@/utils/foorOrderForm'
+import { renderErrors, renderOptions, updateOptions, validateOptions } from '@/utils/foodOrderForm'
 
-const { closeModal } = useModal()
 interface EditOrderFormProps {
   foodOrderItem: FoodOrderItem
+  sessionId: string
 }
 
-function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
+function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
+  const { closeModal } = useModal()
   const currentMenu = useFoodStore(state => state.currentMenu)
   const menuItem = useMemo(() => {
     const menuItem = find(currentMenu, { foodName: foodOrderItem.foodName })
@@ -61,7 +50,7 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
   }
 
   const submitHandler = form.onSubmit((values) => {
-    updateFoodOrderItem({ ...foodOrderItem, ...values })
+    updateFoodOrderItem({ ...foodOrderItem, ...values }, Number.parseInt(sessionId!))
     closeModal()
   })
 
@@ -107,6 +96,7 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
           label={<Title transform="uppercase" order={6}>Note</Title>}
           placeholder="No ice please!!!"
           {...form.getInputProps('note')}
+          mt={16}
         />
 
         {renderOptions(menuItem, optionsChangedHandler, optionErrors, foodOrderItem)}
@@ -114,7 +104,7 @@ function EditOrderForm({ foodOrderItem }: EditOrderFormProps) {
         <Group position="right" mt="md">
           <Button type="submit">
             Edit
-          </Button>s
+          </Button>
         </Group>
       </form>
     </Box>

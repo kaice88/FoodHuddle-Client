@@ -1,9 +1,12 @@
-import { Button, Center, Flex, Loader, SimpleGrid, Text, Title } from '@mantine/core'
-import { isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { IconMoodSad, IconShoppingBagCheck, IconShoppingCart, IconShoppingCartOff } from '@tabler/icons-react'
 import { v4 as uuidv4 } from 'uuid'
+import debounce from 'lodash/debounce'
+import { isEmpty } from 'lodash'
+
+import { Button, Center, Flex, Loader, SimpleGrid, Text, Title } from '@mantine/core'
+import { IconMoodSad, IconShoppingBagCheck, IconShoppingCartOff } from '@tabler/icons-react'
+
 import EditOrderForm from '../FoodOrderForm/Edit'
 import OrderItem from './OrderItem'
 import useFoodStore from '@/store/foodStore'
@@ -29,17 +32,17 @@ function OrderList() {
     content = <Flex align="center" justify="center" direction="column"> <IconMoodSad size={60}/> <Title order={3}>You haven't chosen any food? Let have yourself something good!</Title></Flex>
   }
   else {
-    content = <SimpleGrid key = {uuidv4()} cols={1} spacing="md" breakpoints={[{ minWidth: 968, cols: foodOrderList.length === 1 ? 1 : 2 }]}>
+    content = <SimpleGrid className="orderList" key = {uuidv4()} cols={1} spacing="md" breakpoints={[{ minWidth: 'md', cols: 2 }]} >
       {foodOrderList.map(orderItem =>
         <OrderItem
           editOrderHandler={() => {
             const { openModal } = useModal(
               <Title order={4}>{'Order Customization'}</Title>,
-              <EditOrderForm foodOrderItem={orderItem} />,
+              <EditOrderForm foodOrderItem={orderItem} sessionId={sessionId!} />,
             )
             openModal()
           }}
-          deleteOrderItemHandler={() => { deleteFoodOrderItem(orderItem.id) }}
+          deleteOrderItemHandler={() => { deleteFoodOrderItem(orderItem.id, Number.parseInt(sessionId!)) }}
           orderItem={orderItem}
           key={uuidv4()}
         />,
@@ -75,31 +78,23 @@ function OrderList() {
       <Center mih={150} pl={32} pr={32}>
         {content}
       </Center>
+      <Center mt={16}>
+        <Title color="brand" fw={700} order={2}>{`Total: ${moneyFormat(calculateFoodOrderListTotal(foodOrderList), 'VND', 'vi-VN')}`}</Title>
+      </Center>
       <Flex align="center" justify="center" gap="lg" >
-        <Button className="empty-button" variant="light" onClick={() => {
-          submitOrderList({
-            sessionId: Number.parseInt(sessionId!),
-            foodOrderList: [],
-          })
-          setFoodOrderList([])
-        }}>
+        <Button className="empty-button" variant="light" onClick={
+          debounce(() => {
+            submitOrderList({
+              sessionId: Number.parseInt(sessionId!),
+              foodOrderList: [],
+            })
+            setFoodOrderList([])
+          }, 1000)} >
           <Flex align="center" justify="end" gap={16}>
             <IconShoppingCartOff/>
             <Text size="lg">Empty Cart</Text>
           </Flex>
-        </Button>
-        <Button className="submit-button" onClick={() => {
-          submitOrderList({
-            sessionId: Number.parseInt(sessionId!),
-            foodOrderList,
-          })
-        }}>
-          <Flex align="center" justify="end" gap={16}>
-            <IconShoppingCart/>
-            <Text size="lg">{`${moneyFormat(calculateFoodOrderListTotal(foodOrderList), 'VND', 'vi-VN')}`}</Text>
-          </Flex>
-        </Button>
-      </Flex>
+        </Button></Flex>
     </Flex>
   )
 }

@@ -7,14 +7,15 @@ import { PriceDisplay } from '../../FoodMenu/FoodMenuItem'
 import useModal from '@/hooks/useModal'
 import type { FoodOrderItem, FoodOrderItemFormValues, MenuItem, OptionDetail } from '@/types/food'
 import useFoodStore from '@/store/foodStore'
-import { createNewOrderItem, renderErrors, renderOptions, updateOptions, validateOptions } from '@/utils/foorOrderForm'
+import { createNewOrderItem, renderErrors, renderOptions, updateOptions, validateOptions } from '@/utils/foodOrderForm'
 
-const { closeModal } = useModal()
 interface AddOrderFormProps {
   menuItem: MenuItem
+  sessionId: string
 }
 
-function AddOrderForm({ menuItem }: AddOrderFormProps) {
+function AddOrderForm({ menuItem, sessionId }: AddOrderFormProps) {
+  const { closeModal } = useModal()
   const addFoodOrderItem = useFoodStore(state => state.addFoodOrderItem)
 
   const mandatoryOptions = menuItem.options?.filter(option => option.mandatory).map(option => option.category)
@@ -33,7 +34,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
   const submitHandler = form.onSubmit((values) => {
     const newOrderItem: FoodOrderItem = createNewOrderItem(values, menuItem)
 
-    addFoodOrderItem(newOrderItem)
+    addFoodOrderItem(newOrderItem, Number.parseInt(sessionId!))
     closeModal()
   })
 

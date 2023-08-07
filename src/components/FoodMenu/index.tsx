@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom'
-import { Container, SimpleGrid, Title, rem } from '@mantine/core'
-import { Carousel } from '@mantine/carousel'
-import { useMediaQuery } from '@mantine/hooks'
 import { v4 as uuidv4 } from 'uuid'
+import { useParams } from 'react-router-dom'
+import { useMediaQuery } from '@mantine/hooks'
+import { Carousel } from '@mantine/carousel'
+import { Center, Container, Loader, SimpleGrid, Title, rem } from '@mantine/core'
 
 import {
   IconMeat,
@@ -18,7 +18,12 @@ function FoodMenu() {
   const xl = useMediaQuery('(min-width: 1500px)')
   const md = useMediaQuery('(min-width: 1270px)')
   const sm = useMediaQuery('(min-width: 699.3px)')
-
+  const xs = useMediaQuery('(min-width: 320.2px)')
+  if (isLoading) {
+    return <Center h={sm ? 320 : xs ? 490 : 760}>
+      <Loader/>
+    </Center>
+  }
   let menuGroups = divideElementsIntoGroups(menu, 3)
 
   if (sm)
@@ -36,11 +41,11 @@ function FoodMenu() {
       <Carousel
         mt={16}
         orientation={sm ? 'horizontal' : 'vertical'}
-        height={sm ? 320 : 490}
+        height={sm ? 320 : xs ? 490 : 760}
         className="menu"
         withControls = {!!sm}
         loop
-        controlSize={10}
+        controlSize={32}
         slideGap={rem('32px')}
         slideSize={rem('97%')}
       >
