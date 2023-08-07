@@ -7,7 +7,7 @@ import { Carousel, useAnimationOffsetEffect } from '@mantine/carousel'
 import SessionInfoModal from './ModalCreateSession'
 import StatusBadge from './StatusBadge'
 import CopyClipBoard from './CopyClipboard'
-import { SessionStatuseColors, SessionStatuses } from '@/enums'
+import { getSessionStatusColor } from '@/utils/sessions'
 
 function SessionInfo({ sessionData, sessionId, isHosted }) {
   const globalTheme = useMantineTheme()
@@ -30,7 +30,6 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
   const [embla, setEmbla] = useState<Embla | null>(null)
   useAnimationOffsetEffect(embla, TRANSITION_DURATION)
 
-  const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
   return (
     <div className="sessionInfo" >
       <Flex gap="lg" justify="flex-start" align="baseline" direction="row" style={{ margin: '0px 0px 20px 0px' }} wrap={'wrap'}>
@@ -42,7 +41,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
             style={{ backgroundColor: globalTheme.colors.brand[9], padding: '2px', width: '55px' }}
           ></div>
         </Flex>
-        <StatusBadge status={sessionData.status} colorName={SessionStatuseColors[getKeyByValue(SessionStatuses, sessionData.status)]} />
+        <StatusBadge status={sessionData.status} colorName={getSessionStatusColor(sessionData.status)} />
         <CopyClipBoard text={sessionURL} />
       </Flex>
       <Flex style={{ margin: '0px 0px 20px 0px' }} >
