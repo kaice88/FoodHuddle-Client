@@ -50,7 +50,13 @@ function useAuth() {
     return duration
   }
 
-  return { login: handleLogin, logout: handleLogout, isAuthenticated, userProfile, getTokenDuration }
+  return {
+    login: handleLogin,
+    logout: handleLogout,
+    isAuthenticated,
+    userProfile,
+    getTokenDuration,
+  }
 }
 
 export default useAuth

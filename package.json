@@ -21,6 +21,8 @@
     "@tabler/icons-react": "^2.23.0",
     "@tanstack/react-query": "^4.32.0",
     "axios": "^1.4.0",
+    "@types/lodash": "^4.14.196",
+    "@types/uuid": "^9.0.2",
     "classnames": "^2.3.2",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
@@ -31,6 +33,7 @@
     "react-router-dom": "^6.14.1",
     "sort-by": "^1.2.0",
     "use-react-router-breadcrumbs": "^4.0.1",
+    "uuid": "^9.0.0",
     "zustand": "^4.3.9"
   },
   "devDependencies": {
