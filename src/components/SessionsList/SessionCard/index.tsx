@@ -1,10 +1,9 @@
-import { Box, Button, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
+import { Box, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
-import { SessionStatusColors, SessionStatuses } from '../../../enums'
 import StatusBadge from '../../StatusBadge'
 import type { SessionData } from '@/types/sessions'
-import CopyClipBoard from '@/components/CopyClipboard'
+import { getSessionStatusColor } from '@/utils/sessions'
 
 interface SessionCardProps {
   session: SessionData
@@ -15,11 +14,15 @@ function SessionCard({ session }: SessionCardProps) {
   const mockShopImage = 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
   const { id, title, host, status, shopImage, numberOfJoiners } = session
 
-  const sessionURL = `${window.location.origin}/sessions/${id}`
-  const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Card.Section component="a" href={sessionURL}>
+    <Card className="sessionCard" onClick={() => {
+      navigate(`/sessions/${id}`, {
+        state: {
+          from: window.location.pathname,
+        },
+      })
+    }} shadow="sm" padding="lg" radius="md" withBorder mih={200}>
+      <Card.Section >
         <Image
           fit="cover"
           src={shopImage || mockShopImage}
@@ -27,33 +30,27 @@ function SessionCard({ session }: SessionCardProps) {
           alt={title}
         />
       </Card.Section>
-      <Flex direction="column" justify="space-between">
-        <Group position="apart" mt="md" mb="xs">
-          <Box maw={rem('60%')}>  <Text truncate weight={500}>{title}</Text></Box>
-          <StatusBadge status={session.status} colorName={SessionStatusColors[getKeyByValue(SessionStatuses, session.status)]} />
-        </Group>
-
-        <Group position="apart" mt="md" mb="xs">
-          <Text size="sm" color="dimmed">
-            {host}
-          </Text>
-          <Flex align="center" justify="center" gap={4}>
-            <CopyClipBoard text={sessionURL}/>
-            <Center>
-              <ThemeIcon color="brand" size={'xs'}>
-                <IconUsers/>
-              </ThemeIcon>
-            </Center>
-            {numberOfJoiners}
-          </Flex>
-        </Group>
-
-        <Button variant="light" fullWidth mt="md" radius="md" onClick={() => {
-          navigate(`/sessions/${id}`)
-        }}>
-       JOIN NOW!
-        </Button>
+      <Flex mt={16} align="center" justify="space-between">
+        <Box miw={rem('40%')}>
+          <Text color="brand" size="lg" truncate weight={500}>{title}</Text>
+        </Box>
+        <StatusBadge sx={{ flexShrink: 0 }} size="md" status={status} colorName={getSessionStatusColor(status)}/>
       </Flex>
+      <Group position="apart" mt="md" mb="xs">
+        <Text size="xs" color="dimmed">
+          {host}
+        </Text>
+        <Flex align="center" justify="center" gap={4}>
+          <Center>
+            <ThemeIcon variant="outlined" color="dark" size={'xs'}>
+              <IconUsers/>
+            </ThemeIcon>
+          </Center>
+          <Text color="brand" size="md" fw={600}>
+            {numberOfJoiners}
+          </Text>
+        </Flex>
+      </Group>
     </Card>
   )
 }
