@@ -1,5 +1,13 @@
 .sessionInfo{
     margin-bottom: 20px;
+
+    &__back-icon {
+
+        &:hover {
+            cursor: pointer;
+            color: $orange;
+        }
+    }
     &__content{
         display: flex;
         flex: 0 0 450px;
@@ -49,6 +57,5 @@
         }
 
       
-   
     }
 }

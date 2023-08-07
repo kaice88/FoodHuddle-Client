@@ -1,6 +1,6 @@
 import { ActionIcon, Box, Button, Flex, Group, Image, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
-import { IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
+import { IconArrowLeft, IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import { useState } from 'react'
 import { Carousel, useAnimationOffsetEffect } from '@mantine/carousel'
@@ -15,7 +15,7 @@ import HostActions from '@/pages/SessionPage/Components/HostActions'
 import useSession from '@/hooks/useSession'
 import useSessionInfo from '@/hooks/useSessionInfo'
 
-function SessionInfo({ sessionData, sessionId, isHosted }) {
+function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-today' }) {
   const globalTheme = useMantineTheme()
   const sessionURL = `${window.location.origin}/sessions/${sessionId}`
   const navigate = useNavigate()
@@ -54,8 +54,8 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
   const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
   return (
     <div className="sessionInfo" >
-
       <Flex gap="lg" justify="flex-start" align="center" direction="row" style={{ margin: '0px 0px 20px 0px' }} wrap={'wrap'}>
+        <IconArrowLeft className="sessionInfo__back-icon" size="1.8rem" onClick={() => { navigate(location) }}></IconArrowLeft>
         <Flex justify="center" align="flex-start" direction="column" >
           <Title order={2}>
             {sessionData.title}

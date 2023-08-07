@@ -82,7 +82,11 @@ function useSessionInfo(id) {
       onSuccess: (data) => {
         const { id, message } = data.data
         notificationShow('success', 'Success: ', message)
-        navigate(`/sessions/${id}`)
+        navigate(`/sessions/${id}`, {
+          state: {
+            from: window.location.pathname,
+          },
+        })
       },
     },
   )
