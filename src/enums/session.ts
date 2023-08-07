@@ -5,6 +5,13 @@ export enum SessionStatuses {
   FINISHED = 'FINISHED',
 }
 
+export enum SessionStatusColors {
+  OPEN = 'darkLavender',
+  LOCKED = 'orange',
+  PENDING_PAYMENTS = 'pickerBluewood',
+  FINISHED = 'green',
+}
+
 export enum SessionsTodayPageTabs {
   ALL = 'All',
   JOINED = 'Joined',
