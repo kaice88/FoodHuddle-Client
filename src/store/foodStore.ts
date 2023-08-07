@@ -9,7 +9,6 @@ interface State {
   currentShop: string
   foodOrderList: FoodOrderItem[]
   currentMenu: MenuItem[]
-  areChangesUnsaved: boolean
 }
 
 interface Actions {
@@ -19,7 +18,6 @@ interface Actions {
   setCurrentShop: (currentShop: string) => void
   setCurrentMenu: (currentMenu: Menu) => void
   setFoodOrderList: (foodOrderList: FoodOrderItem[]) => void
-  setAreChangesUnsaved: (areChangesUnsaved: boolean) => void
 }
 
 const useFoodStore = create(
@@ -28,9 +26,7 @@ const useFoodStore = create(
     foodOrderList: [],
     currentMenu: [],
     areChangesUnsaved: false,
-    setAreChangesUnsaved: (areChangesUnsaved: boolean) => set((state) => {
-      state.areChangesUnsaved = areChangesUnsaved
-    }),
+
     updateFoodOrderItem: async (updatedItem: FoodOrderItem, sessionId: number) => {
       set((state) => {
         const index = state.foodOrderList.findIndex(
@@ -39,7 +35,6 @@ const useFoodStore = create(
 
         if (index !== -1)
           state.foodOrderList[index] = updatedItem
-        state.areChangesUnsaved = true
       })
 
       await submitOrderList({ sessionId, foodOrderList: get().foodOrderList })
@@ -69,7 +64,6 @@ const useFoodStore = create(
           )
           existingFoodOrderItem!.quantity += item.quantity
         })
-        return
       }
       else {
         set((state) => {
