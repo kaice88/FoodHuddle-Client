@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
 import { Loader, Tabs } from '@mantine/core'
 
-import SessionSummary from '../SessionSummary'
+import SessionSummary from './Components/SessionSummary'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
 import HostActions from './Components/HostActions'

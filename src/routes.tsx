@@ -5,7 +5,7 @@ import Layout from './layouts/Layout'
 import ErrorPage from './pages/Error'
 
 import SessionPage from './pages/SessionPage'
-import SessionSummary from './pages/SessionSummary'
+import SessionSummary from './pages/SessionPage/Components/SessionSummary'
 import * as ROUTES from '@/constants/routes'
 
 export const router = createBrowserRouter([
