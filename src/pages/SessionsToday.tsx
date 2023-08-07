@@ -1,19 +1,28 @@
-import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text } from '@mantine/core'
+import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconSquarePlus } from '@tabler/icons-react'
+import { useEffect } from 'react'
 import SessionInfoModal from '../components/ModalCreateSession'
 import SessionList from '../components/SessionsList'
 import useSessionsToday from '../hooks/useSessionsToday'
 import { SessionsTodayPageTabs } from '../enums'
 import { TABS_CONFIG } from '../constants/sessions'
+import useSessionInfoStore from '@/store/sessionInfoStore'
 
 export default function SessionTodayPage() {
+  const globalTheme = useMantineTheme()
+
   const {
     isLoading,
     data: sessions,
     activeTab,
     setActiveTab,
   } = useSessionsToday(SessionsTodayPageTabs.ALL)
+
+  const { setSessionInfoData } = useSessionInfoStore()
+  useEffect(() => {
+    setSessionInfoData({})
+  }, [])
 
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
@@ -22,14 +31,14 @@ export default function SessionTodayPage() {
         Create new session
       </Text>
       <div
-        style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
+        style={{ backgroundColor: globalTheme.colors.brand[9], padding: '2px', width: '55px' }}
       ></div>
     </Flex>
   )
 
   return (
     <>
-      <div>
+      <div style={{ marginBottom: '16px' }}>
         <Modal
           opened={opened}
           onClose={close}
@@ -44,8 +53,8 @@ export default function SessionTodayPage() {
         <Group position="center">
           <Button
             onClick={open}
-            size="20px"
-            leftIcon={<IconSquarePlus size="0.9rem" />}
+            size="16px"
+            leftIcon={<IconSquarePlus size="16px" />}
             styles={theme => ({
               root: {
                 backgroundColor: theme.fn.lighten(

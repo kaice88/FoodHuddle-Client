@@ -8,7 +8,7 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
     renderDetailPanel: ({ row }) => {
       if (isTableGroupedByFood) {
         const element = elements.filter(item => row.original.foodName.name === item.foodName)
-        return <ChildTable className="child-table" dataChilTable={element[0].elements} key={row.id}/>
+        return <ChildTable className="child-table" dataChildTable={element[0].elements} key={row.id}/>
       }
       else {
         return null // Return null or any other fallback content if not grouped by food

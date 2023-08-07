@@ -20,26 +20,26 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
         Edit Session Info
       </Text>
       <div
-        style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
+        style={{ backgroundColor: globalTheme.colors.brand[9], padding: '2px', width: '55px' }}
       ></div>
     </Flex>
   )
+
   const TRANSITION_DURATION = 200
   const [openedModalImage, setOpenedModalImage] = useState(false)
   const [embla, setEmbla] = useState<Embla | null>(null)
-
   useAnimationOffsetEffect(embla, TRANSITION_DURATION)
 
   const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
   return (
     <div className="sessionInfo" >
-      <Flex gap="lg" justify="flex-start" align="center" direction="row" style={{ margin: '0px 0px 20px 0px' }} wrap={'wrap'}>
+      <Flex gap="lg" justify="flex-start" align="baseline" direction="row" style={{ margin: '0px 0px 20px 0px' }} wrap={'wrap'}>
         <Flex justify="center" align="flex-start" direction="column" >
           <Title order={2}>
             {sessionData.title}
           </Title>
           <div
-            style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
+            style={{ backgroundColor: globalTheme.colors.brand[9], padding: '2px', width: '55px' }}
           ></div>
         </Flex>
         <StatusBadge status={sessionData.status} colorName={SessionStatuseColors[getKeyByValue(SessionStatuses, sessionData.status)]} />
@@ -90,7 +90,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
                 <Flex gap={'sm'} direction={'row'} align={'center'}>
                   <Text fw={'bold'}>QR Code: </Text>
                   <Group position="center">
-                    <Button onClick={() => setOpenedModalImage(true)}>Show</Button>
+                    { !isEmpty(sessionData.qrImages) ? <Button onClick={() => setOpenedModalImage(true)}>Show</Button> : 'No' }
                   </Group>
                   <Modal
                     opened={openedModalImage}
