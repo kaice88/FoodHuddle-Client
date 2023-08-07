@@ -76,6 +76,7 @@ export function createNewOrderItem(values: FoodOrderItemFormValues, menuItem: Me
   const { note, quantity, options } = values
   return {
     id: uuidv4(),
+    foodId: menuItem.id,
     foodName: menuItem.foodName,
     foodImage: menuItem.photo,
     originPrice: menuItem.discountPrice > 0 ? menuItem.discountPrice : menuItem.price,

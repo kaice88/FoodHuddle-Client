@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-
 import { Box, Checkbox, Highlight, Title } from '@mantine/core'
-
 import { v4 as uuidv4 } from 'uuid'
 import isEmpty from 'lodash/isEmpty'
+
 import type { Option, OptionDetail, SelectedOptions } from '@/types/food'
 import { moneyFormat } from '@/utils'
 
@@ -34,6 +33,8 @@ function OptionsGroup({
     if (checked) {
       if (selectedOptionItems.length < option.maxSelection)
         setSelectedOptionItems([...selectedOptionItems, optionItem])
+      if (selectedOptionItems.length === option.maxSelection && option.mandatory && option.maxSelection === 1)
+        setSelectedOptionItems([optionItem])
     }
     else {
       setSelectedOptionItems(

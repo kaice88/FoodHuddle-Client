@@ -1,5 +1,7 @@
+import { useParams } from 'react-router-dom'
 import { ActionIcon, Flex, Text, Title } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
+
 import type { MenuItem } from '@/types/food'
 import { moneyFormat } from '@/utils'
 import useModal from '@/hooks/useModal'
@@ -43,12 +45,13 @@ export function PriceDisplay({
 
 function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
   const { sessionInfoData } = useSessionInfoStore()
+  const { sessionId } = useParams()
   const { userProfile } = useAuth()
 
   const { status, host } = sessionInfoData
   const { openModal } = useModal(
     <Title order={4}>{'Order Customization'}</Title>,
-    <AddOrderForm menuItem={foodMenuItem} />,
+    <AddOrderForm menuItem={foodMenuItem} sessionId={sessionId!} />,
   )
 
   const orderHandler = () => {

@@ -11,9 +11,10 @@ import { createNewOrderItem, renderErrors, renderOptions, updateOptions, validat
 
 interface AddOrderFormProps {
   menuItem: MenuItem
+  sessionId: string
 }
 
-function AddOrderForm({ menuItem }: AddOrderFormProps) {
+function AddOrderForm({ menuItem, sessionId }: AddOrderFormProps) {
   const { closeModal } = useModal()
   const addFoodOrderItem = useFoodStore(state => state.addFoodOrderItem)
 
@@ -33,7 +34,7 @@ function AddOrderForm({ menuItem }: AddOrderFormProps) {
   const submitHandler = form.onSubmit((values) => {
     const newOrderItem: FoodOrderItem = createNewOrderItem(values, menuItem)
 
-    addFoodOrderItem(newOrderItem)
+    addFoodOrderItem(newOrderItem, Number.parseInt(sessionId!))
     closeModal()
   })
 
