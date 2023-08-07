@@ -31,8 +31,8 @@ function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
 
   const form = useForm<FoodOrderItemFormValues>({
     initialValues: {
-      quantity: 1,
-      note: '',
+      quantity: foodOrderItem.quantity,
+      note: foodOrderItem.note,
       options: [],
     },
     validate: {
