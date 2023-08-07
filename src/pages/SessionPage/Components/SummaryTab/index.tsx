@@ -7,8 +7,11 @@ import ViewTable from '@/pages/SessionPage/Components/SummaryTab/TableSummaryVie
 import ImagesUploaded from '@/components/ImagesUploaded'
 import useSummaryTab from '@/hooks/useSummaryTab'
 import { handleFormData } from '@/utils/utility'
+import { SessionStatuses } from '@/enums'
+import useSessionInfoStore from '@/store/sessionInfoStore'
 
 function SummaryTab({ sessionId, isHosted }) {
+  const { sessionInfoData } = useSessionInfoStore()
   const { mutateBill, fetchQueryFormFees } = useSummaryTab()
   const fetchMutateBill = mutateBill(sessionId)
   const [isOpenEditableTable, setIsOpenEditableTable] = useState(false)
@@ -106,7 +109,9 @@ function SummaryTab({ sessionId, isHosted }) {
             : (
               <EditTable sessionId={sessionId}/>
             )}
-          <form
+          {
+            sessionInfoData.status === SessionStatuses.LOCKED
+          && <form
             onSubmit={form.onSubmit(values => handleSubmitBill(values))}
 
             className="form-fees"
@@ -193,6 +198,7 @@ function SummaryTab({ sessionId, isHosted }) {
               </Button>
             </Group>
           </form>
+          }
         </>)
         : <div style={{ margin: '30px 0px' }}><ViewTable sessionId={sessionId}/> </div>}</>
   )

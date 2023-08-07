@@ -40,11 +40,6 @@ const MenuOptions = ({ options }: MenuOptionsProps) => {
             <Button
               styles={theme => ({
                 root: {
-                  // backgroundColor: theme.fn.lighten(theme.colors.darkLavender[6], 0.8),
-                  // color: theme.colors.darkLavender[6],
-                  // ...theme.fn.hover({
-                  //   backgroundColor: theme.fn.lighten(theme.colors.darkLavender[6], 0.7),
-                  // }),
                   padding: '10px',
 
                 },

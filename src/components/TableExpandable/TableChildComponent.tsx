@@ -14,16 +14,10 @@ function ChildTable({ className, dataChildTable, isTableGroupedByFood = true }) 
           {isTableGroupedByFood ? <ItemName name={element.name.name} picture={element.name.photo}/> : <ItemName name={element.name} picture={element.photo}/>}
         </Text></td>
         <td>
-          {/* <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} > */}
           {moneyFormat(element.originPrice, 'VND', 'en-US', '')} đ
-          {/* {moneyFormat('500', 'VND', 'en-US', '')} đ */}
-          {/* </Text> */}
         </td>
         <td>
-          {/* <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[6], 0.85)}`, borderRadius: '5px', width: 'fit-content', margin: 'auto', padding: '5px' }}> */}
           {moneyFormat(element.actualPrice, 'VND', 'en-US', '')} đ
-          {/* {moneyFormat('400', 'VND', 'en-US', '')} đ */}
-          {/* </Text> */}
         </td>
         <td>
           <MenuOptions options={element.options}/>

@@ -36,7 +36,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
     },
   })
   const queryHostPaymentInfo = fetchQueryHostPaymentInfo(form)
-  const fetchEditSessionInfo = mutateEditSessionInfo(sessionId, close)
+  const fetchEditSessionInfo = mutateEditSessionInfo(close)
 
   useEffect(() => {
     const handlefetchSessionInfo = async () => {
