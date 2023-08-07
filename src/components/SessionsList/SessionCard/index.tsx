@@ -26,7 +26,7 @@ function SessionCard({ session }: SessionCardProps) {
       </Card.Section>
       <Flex mt={16} align="center" justify="space-between">
         <Box miw={rem('40%')}>
-          <Text color="brand" size="lg" truncate weight={500}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
+          <Text color="brand" size="lg" truncate weight={500}>{title}</Text>
         </Box>
         <StatusBadge sx={{ flexShrink: 0 }} size="md" status={status} colorName={getSessionStatusColor(status)}/>
       </Flex>
