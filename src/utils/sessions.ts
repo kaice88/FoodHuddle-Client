@@ -43,3 +43,7 @@ export function getSessionStatusColor(sessionStatus: SessionStatuses): string | 
     return undefined
   }
 }
+
+export const checkIfUserIsHost = (host, user) => {
+  return host.googleId === user.googleId
+}
