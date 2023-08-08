@@ -152,7 +152,6 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
       <Group position="right" mt="md">
         <Button
           type="submit"
-          size="15px"
           styles={theme => ({
             root: {
               backgroundColor: theme.colors.orange[0],
@@ -162,6 +161,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
               padding: '10px',
             },
           })}
+          loading={mutateSessionInfo.isLoading || fetchEditSessionInfo.isLoading}
         >
           Submit
         </Button>
