@@ -47,7 +47,7 @@
     }
     @include breakpoint-down("extra-smallphone"){
         flex-direction: column;
-        min-height: 230px;
+        min-height: 250px;
     }
   }
   
@@ -134,3 +134,8 @@
         padding-inline: 8px;
     }
   }
+
+
+.mantine-Text-root{
+  overflow-wrap: anywhere !important
+}
