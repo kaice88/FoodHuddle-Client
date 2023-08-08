@@ -2,9 +2,8 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
-import { Flex, Loader, Tabs } from '@mantine/core'
 
-import isEmpty from 'lodash/isEmpty'
+import { isEmpty } from 'lodash'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
 import SessionSummary from './Components/SessionSummary'
@@ -28,7 +27,9 @@ function SessionPage() {
     }
     handleGetSessionInfo()
   }, [])
+  const { userProfile } = useAuth()
 
+  const isHosted = !isEmpty(sessionInfoData) && checkIfUserIsHost(sessionInfoData?.host, userProfile)
   return (
     <>
       {
@@ -41,17 +42,17 @@ function SessionPage() {
                 : <Tabs keepMounted={false} defaultValue={'order'}>
                   <Tabs.List>
                     <Tabs.Tab value="order" icon={<IconShoppingCart />}>
-                    Order
+                Order
                     </Tabs.Tab>
                     <Tabs.Tab value="summary" icon={<IconSubtask />}>
-                    Summary
+                Summary
                     </Tabs.Tab>
                   </Tabs.List>
                   <Tabs.Panel value="order">
                     <OrderTab />
                   </Tabs.Panel>
                   <Tabs.Panel value="summary">
-                    {!isEmpty(sessionInfoData) && <SummaryTab sessionId={sessionId} isHosted={checkIfUserIsHost(sessionInfoData?.host, userProfile)}/>}
+                    {!isEmpty(sessionInfoData) && <SummaryTab sessionId={sessionId} isHosted={isHosted}/>}
                   </Tabs.Panel>
                 </Tabs>
             }
@@ -61,6 +62,7 @@ function SessionPage() {
           </Flex>
       }
     </>
+
   )
 }
 

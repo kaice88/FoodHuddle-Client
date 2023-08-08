@@ -1,6 +1,6 @@
-import { ActionIcon, Box, Button, Flex, Group, Image, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Box, Flex, Group, Image, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
-import { IconArrowLeft, IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
+import { IconArrowLeft, IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import { useState } from 'react'
 import { Carousel, useAnimationOffsetEffect } from '@mantine/carousel'
@@ -17,7 +17,6 @@ import { getSessionStatusColor } from '@/utils/sessions'
 
 function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-today' }) {
   const globalTheme = useMantineTheme()
-  const sessionURL = `${window.location.origin}/sessions/${sessionId}`
   const navigate = useNavigate()
   const { deleteSession, changeStatus } = useSession(sessionId)
   const { fetchSessionInfo } = useSessionInfo(sessionId)
@@ -29,14 +28,14 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
         Edit Session Info
       </Text>
       <div
-        style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
+        style={{ backgroundColor: globalTheme.colors.brand[9], padding: '2px', width: '55px' }}
       ></div>
     </Flex>
   )
+
   const TRANSITION_DURATION = 200
   const [openedModalImage, setOpenedModalImage] = useState(false)
   const [embla, setEmbla] = useState<Embla | null>(null)
-
   useAnimationOffsetEffect(embla, TRANSITION_DURATION)
   const handleDeleteSession = () => {
     deleteSession((data) => {
@@ -62,7 +61,7 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
             {sessionData.title}
           </Title>
           <div
-            style={{ backgroundColor: 'orange', padding: '2px', width: '55px' }}
+            style={{ backgroundColor: globalTheme.colors.brand[9], padding: '2px', width: '55px' }}
           ></div>
         </Flex>
         <StatusBadge status={sessionData.status} colorName={getSessionStatusColor(sessionData.status)} />
@@ -92,7 +91,7 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
               src={sessionData.shopImage}
               alt={sessionData.shopName}
             />
-            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}>
+            <List>
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Host :</span>{' '}{sessionData?.host.name}</Text>
               </List.Item>
@@ -113,7 +112,7 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
                 <Flex gap={'sm'} direction={'row'} align={'center'}>
                   <Text fw={'bold'}>QR Code: </Text>
                   <Group position="center">
-                    <Button onClick={() => setOpenedModalImage(true)}>Show</Button>
+                    { !isEmpty(sessionData.qrImages) ? <Text onClick={() => setOpenedModalImage(true)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Show</Text> : 'No' }
                   </Group>
                   <Modal
                     opened={openedModalImage}

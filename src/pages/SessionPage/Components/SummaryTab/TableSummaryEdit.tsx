@@ -155,11 +155,9 @@ const EditTable = ({ sessionId }) => {
         size: 100,
         enableEditing: false,
         Cell: ({ cell }) => {
-          return (
-            <Text color={globalTheme.colors.duck[0]} style={{ backgroundColor: `${globalTheme.colors.darkLavender[6]}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
-              {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
-            </Text>
-          )
+          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
+            {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
+          </Text>
         },
       },
       {
@@ -208,8 +206,6 @@ const EditTable = ({ sessionId }) => {
           return (
             <MultiSelect
               required={true}
-              style={{
-              }}
               className="table-edit-summary-tab__multiselect-cell"
               w={200}
               placeholder="Pick"
@@ -256,7 +252,7 @@ const EditTable = ({ sessionId }) => {
               data={data}
               searchable
               nothingFound="No option"
-              maxDropdownHeight={200}
+              maxDropdownHeight={100}
             />)
         },
         Cell: ({ cell }) => {

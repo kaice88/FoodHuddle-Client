@@ -22,7 +22,7 @@ export default function App() {
             darkLavender: ['#7E5498'],
             duck: ['#415481'],
             pickerBluewood: ['#2F4858'],
-            green: ['#23a218'],
+            green: ['#23A218'],
           },
           primaryColor: 'brand',
           primaryShade: 9,
