@@ -59,7 +59,7 @@ export default function SessionSummary({ id }) {
       },
       {
         accessorKey: 'finalPayment',
-        header: 'Final Payment',
+        header: <Text>Final Payment</Text>,
         size: 200,
         Cell: ({ renderedCellValue }) => (
           <Flex gap="md" justify="flex-start" align="center">

@@ -104,7 +104,7 @@ function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
         <Group position="right" mt="md">
           <Button type="submit">
             Edit
-          </Button>
+          </Button>s
         </Group>
       </form>
     </Box>

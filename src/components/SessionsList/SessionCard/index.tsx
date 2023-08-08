@@ -15,7 +15,13 @@ function SessionCard({ session }: SessionCardProps) {
   const { id, title, host, status, shopImage, numberOfJoiners } = session
 
   return (
-    <Card className="sessionCard" onClick={() => { navigate(`/sessions/${id}`) }} shadow="sm" padding="lg" radius="md" withBorder mih={200}>
+    <Card className="sessionCard" onClick={() => {
+      navigate(`/sessions/${id}`, {
+        state: {
+          from: window.location.pathname,
+        },
+      })
+    }} shadow="sm" padding="lg" radius="md" withBorder mih={200}>
       <Card.Section >
         <Image
           fit="cover"
@@ -30,7 +36,6 @@ function SessionCard({ session }: SessionCardProps) {
         </Box>
         <StatusBadge sx={{ flexShrink: 0 }} size="md" status={status} colorName={getSessionStatusColor(status)}/>
       </Flex>
-
       <Group position="apart" mt="md" mb="xs">
         <Text size="xs" color="dimmed">
           {host}
