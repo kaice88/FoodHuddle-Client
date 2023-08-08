@@ -3,6 +3,7 @@ import { Flex, Highlight, List, ScrollArea } from '@mantine/core'
 import find from 'lodash/find'
 import get from 'lodash/get'
 import { v4 as uuidv4 } from 'uuid'
+import { isOptionsEmpty } from './food'
 import type { FoodOrderItem, FoodOrderItemFormValues, MenuItem, OptionDetail, SelectedOptions } from '@/types/food'
 import OptionsGroup from '@/components/FoodOrderForm/OptionsGroup'
 
@@ -72,16 +73,34 @@ export function updateOptions(options: SelectedOptions[], category: string, deta
   return newOptions
 }
 
-export function createNewOrderItem(values: FoodOrderItemFormValues, menuItem: MenuItem): FoodOrderItem {
+function constructOrderItem(
+  values: FoodOrderItemFormValues,
+  sourceItem: { id: string; foodId: string; foodName: string; foodImage: string; originPrice: number },
+): FoodOrderItem {
   const { note, quantity, options } = values
   return {
+    id: sourceItem.id,
+    foodId: sourceItem.foodId,
+    foodName: sourceItem.foodName,
+    foodImage: sourceItem.foodImage,
+    originPrice: sourceItem.originPrice,
+    note,
+    quantity,
+    options: isOptionsEmpty(options) ? [] : options,
+  }
+}
+
+export function createNewOrderItem(values: FoodOrderItemFormValues, menuItem: MenuItem): FoodOrderItem {
+  const sourceItem = {
     id: uuidv4(),
     foodId: menuItem.id,
     foodName: menuItem.foodName,
     foodImage: menuItem.photo,
     originPrice: menuItem.discountPrice > 0 ? menuItem.discountPrice : menuItem.price,
-    note,
-    quantity,
-    options,
   }
+  return constructOrderItem(values, sourceItem)
+}
+
+export function updateCurrentOrderItem(values: FoodOrderItemFormValues, currentFoodOrderItem: FoodOrderItem): FoodOrderItem {
+  return constructOrderItem(values, currentFoodOrderItem)
 }
