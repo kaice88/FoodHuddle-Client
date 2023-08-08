@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { SessionStatuses } from './../enums/session'
 
-import type { SessionsTodayPageTabs } from '@/enums'
+import { SessionsTodayPageTabs } from '@/enums'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import type { SessionToday } from '@/types/sessions'
@@ -14,9 +15,12 @@ interface SessionsTodayResponse {
 const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page, status) => {
   const params = status ? `?${status}` : ''
   try {
-    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab, page, params))
-    if (status === 200)
-      return data.data
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab))
+    if (status === 200) {
+      if (tab === SessionsTodayPageTabs.ALL && page !== 'HISTORY')
+        return data.data.filter(session => session.status === SessionStatuses.OPEN)
+      else return data.data
+    }
   }
   catch (error) {
     return []
