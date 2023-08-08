@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
-import { Flex, Text, Title, useMantineTheme } from '@mantine/core'
-import { IconCoin, IconWallet } from '@tabler/icons-react'
+import { Flex, Text, Tooltip, useMantineTheme } from '@mantine/core'
+import { IconAlertCircle, IconCoin } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 
 import Table from '@/components/TableExpandable/TableComponent'
@@ -59,7 +59,23 @@ export default function SessionSummary({ id }) {
       },
       {
         accessorKey: 'finalPayment',
-        header: 'Final Payment',
+        header: <>
+          <Text>Final Payment</Text>
+          <Tooltip
+            withArrow
+            position="right-start"
+            label="This price includes the extra fee"
+            styles={theme => ({
+              tooltip: {
+                color: 'white',
+                fontWeight: '300',
+                backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.3),
+              },
+            })}
+          >
+            <IconAlertCircle size={15} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>
+          </Tooltip>
+        </>,
         size: 200,
         Cell: ({ renderedCellValue }) => (
           <Flex gap="md" justify="flex-start" align="center">
@@ -109,10 +125,6 @@ export default function SessionSummary({ id }) {
 
   return (
     <div style={{ padding: '10px 0' }}>
-      <Flex align="center" gap="xs">
-        <IconWallet size="1.5rem" color={globalTheme.colors.duck[0]}/>
-        <Title sx={() => ({ fontWeight: 500, fontSize: '18px' })} color={globalTheme.colors.duck[0]} py={10}>Payment Summary</Title>
-      </Flex>
       <Table columns={columns} data={data} elements={dataChild} isLoading={fetchPaymentSummary.isLoading} isTableGroupedByFood={false} />
     </div>
   )
