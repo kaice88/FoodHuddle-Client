@@ -8,7 +8,6 @@ import OrderTab from './Components/OrderTab'
 import SessionInfo from '@/components/SessionInfo'
 import useAuth from '@/hooks/useAuth'
 import useSessionInfo from '@/hooks/useSessionInfo'
-import { SessionStatuses } from '@/enums'
 import useSessionInfoStore from '@/store/sessionInfoStore'
 import { checkIfUserIsHost } from '@/utils/sessions'
 
@@ -34,23 +33,21 @@ function SessionPage() {
             {/* {checkIfUserIsHost(sessionInfoData?.host, userProfile) && <HostActions status={sessionInfoData.status} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>} */}
             <SessionInfo sessionData={sessionInfoData} sessionId={sessionId} isHosted={checkIfUserIsHost(sessionInfoData?.host, userProfile)} />
             {
-              (sessionInfoData.status === SessionStatuses.PENDING_PAYMENTS || sessionInfoData.status === SessionStatuses.FINISHED)
-                ? <SessionSummary sessionData={sessionInfoData}/>
-                : <Tabs keepMounted={false} defaultValue={'order'}>
-                  <Tabs.List>
-                    <Tabs.Tab value="order" icon={<IconShoppingCart />}>
+              <Tabs keepMounted={false} defaultValue={'order'}>
+                <Tabs.List>
+                  <Tabs.Tab value="order" icon={<IconShoppingCart />}>
                     Order
-                    </Tabs.Tab>
-                    <Tabs.Tab value="summary" icon={<IconSubtask />}>
+                  </Tabs.Tab>
+                  <Tabs.Tab value="summary" icon={<IconSubtask />}>
                     Summary
-                    </Tabs.Tab>
-                  </Tabs.List>
-                  <Tabs.Panel value="order">
-                    <OrderTab />
-                  </Tabs.Panel>
-                  <Tabs.Panel value="summary">
-                  </Tabs.Panel>
-                </Tabs>
+                  </Tabs.Tab>
+                </Tabs.List>
+                <Tabs.Panel value="order">
+                  <OrderTab />
+                </Tabs.Panel>
+                <Tabs.Panel value="summary">
+                </Tabs.Panel>
+              </Tabs>
             }
           </>
           : <Flex justify="center" align="center">

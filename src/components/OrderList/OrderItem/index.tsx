@@ -22,18 +22,10 @@ function OrderItem({ orderItem, deleteOrderItemHandler, editOrderHandler }: Orde
       <div className="foodOrderItem__info">
         <Text fw={600} size="md" className="foodOrderItem__name">{foodName}</Text>
         {!isEmpty(options)
-        && <Text sx={{ wordWrap: 'break-word' }} c="dimmed" size="sm" className="foodOrderItem__options">
-          {options.flatMap(option => option.detail.map((detail) => {
-            if (detail.name.length > 20)
-              return `${detail.name.substring(0, 15)}...`
-            return detail.name
-          })).join(', ')}
-
+        && <Text c="dimmed" size="sm" className="foodOrderItem__options">
+          {options.flatMap(option => option.detail.map(detail => detail.name)).join(', ')}
         </Text>}
-        {!isEmpty(note)
-        && <Text lineClamp={3} className="foodOrderItem__note" >{'Hết xèng òi'}
-        </Text>
-        }
+        {!isEmpty(note) && <Text className="foodOrderItem__note" >{note}</Text>}
         <Flex align="center" gap={2} justify="start">
           <Text fw={600} size="xs" className="foodOrderItem__quantity__x">x</Text>
           <Text color="brand" size="md" fw={600} className="foodOrderItem__quantity">{quantity}</Text>
