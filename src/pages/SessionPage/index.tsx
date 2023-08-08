@@ -18,7 +18,6 @@ function SessionPage() {
   const { sessionId } = useParams()
   const { sessionInfoData } = useSessionInfoStore()
   const { fetchSessionInfo } = useSessionInfo(sessionId)
-  const { userProfile } = useAuth()
   const { state } = useLocation()
 
   useEffect(() => {
@@ -27,6 +26,7 @@ function SessionPage() {
     }
     handleGetSessionInfo()
   }, [])
+  const { userProfile } = useAuth()
 
   const isHosted = !isEmpty(sessionInfoData) && checkIfUserIsHost(sessionInfoData?.host, userProfile)
   return (

@@ -28,7 +28,8 @@ export default function App() {
           primaryShade: 9,
         }}
       >
-        <ModalsProvider >
+        {' '}
+        <ModalsProvider>
           <Notifications position="top-right" zIndex={2077} />
           <RouterProvider router={router} />
         </ModalsProvider>
