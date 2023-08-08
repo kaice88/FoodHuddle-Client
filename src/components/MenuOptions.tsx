@@ -15,13 +15,12 @@ const MenuOptions = ({ options }: MenuOptionsProps) => {
   const menuItemDrop = !isEmpty(options) && options.map((item, index) => {
     return (
       <React.Fragment key={`${item.category}-${index}`}>
-        <Menu.Label style={{ fontSize: '10px' }} >{item.category}</Menu.Label>
         {
           item.detail.map((item, index) => {
             return (
               <Menu.Item
                 key={`${item.name}-${index}`}
-                icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}
+                icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[6]}` }} />}
                 rightSection={<Text size="xs" color="dimmed"> {moneyFormat(item.price, 'VND', 'en-US', '')} đ</Text>}
               >
                 {item.name}
@@ -41,11 +40,6 @@ const MenuOptions = ({ options }: MenuOptionsProps) => {
             <Button
               styles={theme => ({
                 root: {
-                  backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.8),
-                  color: theme.colors.darkLavender[0],
-                  ...theme.fn.hover({
-                    backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.7),
-                  }),
                   padding: '10px',
 
                 },

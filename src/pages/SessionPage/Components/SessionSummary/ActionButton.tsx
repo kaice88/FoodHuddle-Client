@@ -1,7 +1,7 @@
 import { Button, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
-export default function ActionButton({ colorName, value, handleOnClick, size, disabled }) {
+export default function ActionButton({ colorName, value, handleOnClick, size }) {
   const openModal = () => modals.openConfirmModal({
     title: 'CONFIRM',
     children: (
@@ -28,7 +28,6 @@ export default function ActionButton({ colorName, value, handleOnClick, size, di
       })}
       onClick={openModal}
       size={size}
-      disabled={disabled}
     >
       {value}
     </Button>

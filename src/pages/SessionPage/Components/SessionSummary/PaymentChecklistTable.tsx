@@ -20,29 +20,12 @@ function EvidenceModal({ evidence, globalTheme }) {
       <>
         {evidence.length === 0
           ? <Text style={{ textAlign: 'center', fontStyle: 'italic' }} color={globalTheme.colors.duck[0]}>No data found</Text>
-          // : <Carousel maw={320} mx="auto" withIndicators height={200}>
-          //   {/* ...slides */}
-          //   {list.map((item, index) =>
-          //     <Carousel.Slide key={index}>
-          //       <Image
-          //         // key={index}
-          //         // width={70}
-          //         // height={70}
-          //         src= {item}
-          //         alt="Evidence"
-          //       />
-          //     </Carousel.Slide>,
-          //   )}
-          // </Carousel>
           : <Flex wrap="wrap" gap="lg">
             {evidence.map((item, index) =>
               <Image
                 key={index}
-                // width={70}
-                // height={70}
                 src= {item}
                 alt="Evidence"
-                // onClick={handleImage}
               />)}
           </Flex>
         }

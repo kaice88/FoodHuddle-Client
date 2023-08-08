@@ -27,14 +27,20 @@
     }
 
 }
+.table-view-expandable{
+    .mantine-Text-root{
+        padding: 0px
+    }
+}
 .table-edit-summary-tab{
+    min-height: 300px;
+    display: flex;
     thead tr th:first-child{
         padding-left: 5px;
     }
     thead tr th {
         width: fit-content;
         padding: 16px 10px 16px 0px;
-        // font-weight: bold;
         border-bottom: 2px solid rgb(247, 247, 247)
     }
     tbody tr td:first-child{
@@ -53,6 +59,9 @@
         .mantine-MultiSelect-wrapper{
             width: 95%;
         }
+    }
+    .mantine-Text-root{
+        padding: 0px
     }
 }
 

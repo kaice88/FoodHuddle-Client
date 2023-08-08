@@ -35,9 +35,9 @@ const Table = ({ columns, data, elements, isLoading, isTableGroupedByFood }) => 
         maxHeight: '500px',
         padding: '3px',
       },
+      className: 'table-view-expandable',
     }),
     enableBottomToolbar: false,
-    initialState: { expanded: true },
     state: { isLoading },
   })
 

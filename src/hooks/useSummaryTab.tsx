@@ -60,6 +60,7 @@ function useSummaryTab() {
           group: option.mandatory ? `${option.category} [required]` : option.category,
           price: detailItem.price,
           key: `${option.category}-${detailItem.name}-${detailItem.price}-${idx}`,
+          max: option.maxSelection,
         })),
       )
       : []
@@ -250,16 +251,21 @@ function useSummaryTab() {
   const transformDataForMultiSelect = (currentFoodName, optionsSelect, currentValue, valueTransform) => {
     // ...Get options only for current foodName...
     const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
-
-    const requiredGroups = currentValue.map(item => item.category)
     const optionsNoSlected = data.filter(item => !valueTransform.includes(item.value))
     const optionSelected = data.filter(item => valueTransform.includes(item.value))
-    const dataCheckDisabled = optionsNoSlected.map((item) => {
-      const isItemDisabled = requiredGroups.some((requiredGroup) => {
-        const normalizedRequiredGroup = `${requiredGroup} [required]`
-        return item.group === normalizedRequiredGroup
+
+    const getTotalQuantityInGroup = (group) => {
+      let totalQuantity = 0
+      optionSelected.forEach((item) => {
+        if (item.group === group)
+          totalQuantity += 1
       })
-      if (isItemDisabled) {
+      return totalQuantity
+    }
+
+    const dataCheckDisabled = optionsNoSlected.map((item) => {
+      const quantity = getTotalQuantityInGroup(item.group)
+      if (quantity >= item.max) {
         return {
           ...item,
           disabled: true,
@@ -311,7 +317,7 @@ function useSummaryTab() {
 
   const updateTableEdit = (tableEditData, name, value, rowIndex, currentValueRow) => {
     const newList = tableEditData.map((item) => {
-      if (item.id == rowIndex) {
+      if (item.id === rowIndex) {
         return {
           ...currentValueRow,
           [name]: value,

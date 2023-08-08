@@ -33,6 +33,7 @@ export async function handleFormData(dataForm, values, field) {
       dataForm.append(field, fileTransform)
     }
   })
+
   await Promise.all(promises)
   return dataForm
 }

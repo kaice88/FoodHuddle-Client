@@ -1,4 +1,4 @@
-import { SessionStatuses, SessionsTodayPageTabs } from '@/enums'
+import { SessionStatusColors, SessionStatuses, SessionsTodayPageTabs } from '@/enums'
 import * as APIS from '@/constants/apis'
 import {} from '@/hooks/useAuth'
 
@@ -27,6 +27,21 @@ export function getTodaySessionsApiEndpoint(tab: SessionsTodayPageTabs): string 
     return APIS.REQUEST_GET_JOINED_SESSIONS_TODAY
   default:
     return APIS.REQUEST_GET_ALL_SESSIONS_TODAY
+  }
+}
+
+export function getSessionStatusColor(sessionStatus: SessionStatuses): string | undefined {
+  switch (sessionStatus) {
+  case SessionStatuses.OPEN:
+    return SessionStatusColors.OPEN
+  case SessionStatuses.LOCKED:
+    return SessionStatusColors.LOCKED
+  case SessionStatuses.PENDING_PAYMENTS:
+    return SessionStatusColors.PENDING_PAYMENTS
+  case SessionStatuses.FINISHED:
+    return SessionStatusColors.FINISHED
+  default:
+    return undefined
   }
 }
 

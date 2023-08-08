@@ -2,49 +2,39 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 import { SessionsTodayPageTabs } from '@/enums'
-import type { SessionsListResponse } from '@/types/sessions'
+import type { SessionInfo, SessionsListResponse } from '@/types/sessions'
 import axiosInstance from '@/settings/axios'
-import { useRequestProcessor } from '@/settings/react-query'
-
-import * as API_ENDPOINTS from '@/constants/apis'
-
-const { query } = useRequestProcessor()
 
 interface State {
   activeTab: SessionsTodayPageTabs
+  sessions: SessionInfo[]
+  isLoading: boolean
+  error?
 }
 
 interface Actions {
   setActiveTab: (tab: SessionsTodayPageTabs) => void
+  setSessions: (tab: SessionsTodayPageTabs) => void
 }
 
 const fetchSessions = async (url: string) => {
-  const { data, status } = await axiosInstance.get<SessionsListResponse>(url)
-  if (status == 200)
-    return data.data
-
-  return []
+  try {
+    const { data, status } = await axiosInstance.get<SessionsListResponse>(url)
+    if (status == 200)
+      return data.data
+  }
+  catch (error) {
+    return []
+  }
 }
 
 const getUrl = (tab: SessionsTodayPageTabs): string => {
   switch (tab) {
   case SessionsTodayPageTabs.ALL:
-    return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
+    return '/v1/session/get-all-sessions-today'
   default:
-    return API_ENDPOINTS.REQUEST_GET_ALL_SESSIONS_TODAY
+    return '/v1/session/get-all-sessions-today'
   }
-}
-
-export const useSessionData = (tab: SessionsTodayPageTabs) => {
-  return query<SessionsListResponse, Error>(
-    ['sessions', tab],
-    () => fetchSessions(getUrl(tab)),
-    {
-      onSuccess: () => {
-        console.log('SUCCESS FETCHING DATA WITH REACT QUERY')
-      },
-    },
-  )
 }
 
 export const useSessionStore = create(
@@ -54,5 +44,16 @@ export const useSessionStore = create(
       set((state) => {
         state.activeTab = tab
       }),
+    setSessions: async (tab: SessionsTodayPageTabs) => {
+      set((state) => {
+        state.isLoading = true
+      })
+      console.log(tab)
+      const sessions = await fetchSessions(getUrl(tab))
+      set((state) => {
+        state.sessions = sessions
+        state.isLoading = false
+      })
+    },
   })),
 )

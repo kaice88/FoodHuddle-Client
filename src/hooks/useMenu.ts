@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { isEmpty } from 'lodash'
+
 import { useRequestProcessor } from '@/settings/react-query'
 import type { Menu, MenuResponseData } from '@/types/food'
 

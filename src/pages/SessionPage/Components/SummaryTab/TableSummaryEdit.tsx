@@ -32,7 +32,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ label, price, group, ...others }: ItemProps, ref) => (
+  ({ label, price, group, max, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others} >
       <Flex gap="sm" justify="space-between" align="center" direction="row">
         <Text>{label}</Text>
@@ -45,6 +45,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 )
 
 const EditTable = ({ sessionId }) => {
+  const globalTheme = useMantineTheme()
   const [tableEditData, setTableEditData] = useState<DataEdit[]>([])
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({})
   const [foodOrderMenu, setFoodOrderMenu] = useState([])
@@ -53,8 +54,6 @@ const EditTable = ({ sessionId }) => {
   const fetchQueryFoodOrderEdit = queryFoodOrderEdit(sessionId, setTableEditData)
   const queryFoodOrderMenu = fetchQueryFoodOrderMenu(sessionId, setFoodOrderMenu, setOptionsSelect)
   const foodNamesSelect = handleFoodNamesSelect(foodOrderMenu)
-  const globalTheme = useMantineTheme()
-
   useEffect(() => {
     const handleFetchQueryFoodOrderEdit = async () => {
       await queryFoodOrderMenu.refetch()
@@ -113,7 +112,7 @@ const EditTable = ({ sessionId }) => {
               const updatedOptions = foodOrderMenu.filter(eachFood =>
                 eachFood.foodName === value,
               )[0]
-              const originalPrice = updatedOptions.price === 0 ? updatedOptions.price : updatedOptions.discountPrice
+              const originalPrice = updatedOptions.discountPrice === 0 ? updatedOptions.price : updatedOptions.discountPrice
               const rowIndex = cell.row.id
               const currentValueRow = row.original
               const newList = tableEditData.map((item) => {
@@ -156,7 +155,7 @@ const EditTable = ({ sessionId }) => {
         size: 100,
         enableEditing: false,
         Cell: ({ cell }) => {
-          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
+          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
             {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
           </Text>
         },
@@ -205,8 +204,6 @@ const EditTable = ({ sessionId }) => {
           return (
             <MultiSelect
               required={true}
-              style={{
-              }}
               className="table-edit-summary-tab__multiselect-cell"
               w={200}
               placeholder="Pick"
@@ -253,7 +250,7 @@ const EditTable = ({ sessionId }) => {
               data={data}
               searchable
               nothingFound="No option"
-              maxDropdownHeight={200}
+              maxDropdownHeight={100}
             />)
         },
         Cell: ({ cell }) => {
@@ -407,6 +404,7 @@ const EditTable = ({ sessionId }) => {
         width: 'fit-content',
       },
     }),
+    getRowId: row => row.id,
     onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveRow,
     renderRowActions: ({ row, table }) => (
