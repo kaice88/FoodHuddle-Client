@@ -38,7 +38,7 @@ export default function FeeInfo({ id }) {
   }, [])
 
   return (
-    <div>
+    <>
       {isLoading
         ? <Flex justify="center"><Loader /></Flex>
         : <Paper className="fee-container" p="xs" shadow="xs" >
@@ -67,6 +67,6 @@ export default function FeeInfo({ id }) {
           </SimpleGrid >
         </Paper>
       }
-    </div>
+    </>
   )
 }
