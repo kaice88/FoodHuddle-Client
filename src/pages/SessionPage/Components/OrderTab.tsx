@@ -1,12 +1,12 @@
 import React from 'react'
 import FoodMenu from '@/components/FoodMenu'
-import FoodOrderTable from '@/components/FoodOrderTable'
+import OrderList from '@/components/OrderList'
 
 function OrderTab() {
   return (
     <div className="orderTab">
       <FoodMenu />
-      <FoodOrderTable />
+      <OrderList />
     </div>
   )
 }

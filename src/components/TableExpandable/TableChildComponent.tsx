@@ -1,11 +1,13 @@
-import { Avatar, Flex, Table, Text, useMantineTheme } from '@mantine/core'
+import { Table, Text, useMantineTheme } from '@mantine/core'
+import isEmpty from 'lodash/isEmpty'
 import MenuOptions from '../MenuOptions'
-import { moneyFormat } from '@/utils/utility'
 import ItemName from '../ItemName'
-const ChildTable = ({ className, dataChilTable }) => {
+import { moneyFormat } from '../../utils'
+
+function ChildTable({ className, dataChildTable }) {
   const globalTheme = useMantineTheme()
 
-  const rows = dataChilTable.map((element, index) => {
+  const rows = !isEmpty(dataChildTable) && dataChildTable.map((element, index) => {
     return (
       <tr key={`${index}-${element.name.name}`}>
         <td><Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} >

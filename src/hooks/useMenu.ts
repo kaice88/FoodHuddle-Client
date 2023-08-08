@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { isEmpty } from 'lodash'
+
 import { useRequestProcessor } from '@/settings/react-query'
 import type { Menu, MenuResponseData } from '@/types/food'
 
@@ -7,8 +8,7 @@ import axiosInstance from '@/settings/axios'
 import { REQUEST_GET_FOOD_MENU } from '@/constants/apis'
 import useFoodStore from '@/store/foodStore'
 
-const { query } = useRequestProcessor()
-const fetchMenuFoodData = async (sessionId: string) => {
+async function fetchMenuFoodData(sessionId: string) {
   const response = await axiosInstance.get<MenuResponseData>(
     REQUEST_GET_FOOD_MENU,
     { params: { sessionId } },
@@ -21,7 +21,8 @@ const fetchMenuFoodData = async (sessionId: string) => {
   return []
 }
 
-const menuFoodQuery = (sessionId: string, currentShop: string) => {
+function menuFoodQuery(sessionId: string, currentShop: string) {
+  const { query } = useRequestProcessor()
   return query<Menu, Error>(['FoodMenu', sessionId, currentShop], () =>
     fetchMenuFoodData(sessionId),
   )

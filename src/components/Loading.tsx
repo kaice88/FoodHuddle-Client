@@ -9,5 +9,5 @@ export function loadingShow() {
       overlayBlur={2}
       visible
     />
-  );
+  )
 }

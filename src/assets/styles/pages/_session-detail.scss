@@ -1,84 +1,136 @@
 .orderTab {
-  padding: $content-gutter;
-  @include breakpoint-down("smallphone"){
-    padding: 8px;
+    padding: $content-gutter;
+    @include breakpoint-down("smallphone"){
+      padding: 8px;
+    }
   }
-}
-
-.mantine-Carousel-root {
-  @include breakpoint-down("smallphone"){
-    padding: 0px !important;
+  
+  .mantine-Carousel-root {
+    @include breakpoint-down("smallphone"){
+      padding: 0px !important;
+    }
   }
-}
-.foodMenuItem {
-  display: flex; 
-  height: 140px;
-  flex: 0 0 280px;
-  padding: $content-gutter;
-  border-radius: 16px;
-  background-color: #f7f7f7;
-  gap: 8px;
-
-  &__imageWrapper {
-    flex: 1 1 0;
+  
+  .foodMenuItem {
+    display: flex; 
+    height: 140px;
+    flex: 0 0 280px;
+    padding: $content-gutter;
+    border-radius: 16px;
+    gap: 8px;
+    -webkit-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+  -moz-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+  box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+    &__imageWrapper {
+      flex: 1 1 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &__imageWrapper img {
+      max-width: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      height: 100%;
+    }
+    &__info {
+      flex: 2 1 0;
+      display: flex;
+      gap: 16px;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: stretch;
+  
+      overflow: hidden; /* Hide the overflowing content */
+      text-overflow: ellipsis; /* Add ellipsis (...) at the end of the text */
+      white-space: pre-line;
+    }
+    @include breakpoint-down("extra-smallphone"){
+        flex-direction: column;
+        min-height: 230px;
+    }
+  }
+  
+  .menu {
+    width: 100%;
+    padding: $content-gutter;
+  }
+  
+  .mantine-Checkbox-body {
+    justify-content: space-between;
+    padding: 0 $content-gutter;
+  }
+  
+  .menuItemForm {
+    width: 100%;
+    border-radius: 16px;
+    max-height: 250px;
+    height: auto;
     display: flex;
-    justify-content: center;
     align-items: center;
   }
-  &__imageWrapper img {
-    max-width: 100%;
-    object-fit: cover;
-    border-radius: 16px;
-    height: 100%;
+  
+  .button-addOrder{
+    @include transition();
   }
-  &__info {
-    flex: 2 1 0;
+  
+  .mantine-SimpleGrid-root{
+    width:100% !important;
+  }
+  
+  .mantine-Carousel-slide{
+    @include flexbox-centering();
+  }
+  
+  
+  .foodOrderItem {
     display: flex;
-    gap: 16px;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+    flex: 0 0 450px;
+    gap:16px;
+    border-radius: 16px;
+    padding: 16px;
+    height: 100%;
+    -webkit-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+    -moz-box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
+    box-shadow: 3px 3px 12px 1px rgba(199,199,199,1);
 
-    overflow: hidden; /* Hide the overflowing content */
-    text-overflow: ellipsis; /* Add ellipsis (...) at the end of the text */
-    white-space: pre-line;
+    @include breakpoint-down("extra-smallphone"){
+        flex-direction: column
+    }
+    &__image {
+      display: flex;
+      min-width: 100px;
+      max-width: 120px;
+      flex-grow: 1;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+      }
+      
+    @include breakpoint-down("extra-smallphone"){
+        max-width: 100%;
+        @include flexbox-centering();
+    }
+    }
+  
+    &__info{
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: space-between;
+    }
   }
-}
-
-.menu {
-  width: 100%;
-  padding: $content-gutter;
-}
-
-.mantine-Checkbox-body {
-  justify-content: space-between;
-  padding: 0 $content-gutter;
-}
-
-.menuItemForm {
-  width: 100%;
-  border-radius: 16px;
-  max-height: 250px;
-  height: auto;
-  display: flex;
-  align-items: center;
-}
-
-.button-addOrder{
-  background-color: $orange;
-  @include transition();
-  color:#f7f7f7;
-}
-
-.button-addOrder:hover{
-  background-color:#f7f7f7;
-  color:$orange;
-}
-
-.mantine-SimpleGrid-root{
-  width:100% !important;
-}
-
-.mantine-Carousel-slide{
-  @include flexbox-centering();
-}
+  
+  .orderCustomization-form{
+    padding: 8px;
+  }
+  
+  .orderList{
+    padding-inline: 32px;
+    @include breakpoint-down("smallphone"){
+        padding-inline: 8px;
+    }
+  }

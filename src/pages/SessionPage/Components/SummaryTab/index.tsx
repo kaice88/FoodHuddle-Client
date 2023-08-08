@@ -6,13 +6,16 @@ import EditTable from './TableSummaryEdit'
 import ViewTable from '@/pages/SessionPage/Components/SummaryTab/TableSummaryView'
 import ImagesUploaded from '@/components/ImagesUploaded'
 import useSummaryTab from '@/hooks/useSummaryTab'
-import axios from 'axios'
-const SummaryTab = ({ sessionId }) => {
-  const { mutateBill } = useSummaryTab()
+import { handleFormData } from '@/utils/utility'
+import { SessionStatuses } from '@/enums'
+import useSessionInfoStore from '@/store/sessionInfoStore'
+
+function SummaryTab({ sessionId, isHosted }) {
+  const { sessionInfoData } = useSessionInfoStore()
+  const { mutateBill, fetchQueryFormFees } = useSummaryTab()
   const fetchMutateBill = mutateBill(sessionId)
   const [isOpenEditableTable, setIsOpenEditableTable] = useState(false)
   const [formFees, setFormFees] = useState({})
-  const { fetchQueryFormFees } = useSummaryTab()
   const fetchFormFees = fetchQueryFormFees(sessionId, setFormFees)
   const handleTranformToEditTable = () => {
     setIsOpenEditableTable(true)
@@ -40,29 +43,15 @@ const SummaryTab = ({ sessionId }) => {
     formFees !== null && form.setValues(formFees)
   }, [formFees])
 
-  function getFileNameFromPath(path) {
-    return path.split('/').pop();
-  }
-  
   const handleSubmitBill = async (values) => {
-    const formData = new FormData();
-    for (const file of values.receiptScreenshot) {
-      if (typeof file === 'object') {
-        formData.append('receiptScreenshot', file);
-      } else {
-        const res = await axios.get(file, { responseType: 'blob' });
-        const blob = res.data;
-        const fileName = getFileNameFromPath(file);
-        const fileTransform = new File([blob], fileName, { type: blob.type });
-        formData.append('receiptScreenshot', fileTransform);
-      }
-    }
-    formData.append('discountAmount', values.discountAmount ? Number(values.discountAmount) : 0);
-    formData.append('shippingFee', values.shippingFee ? Number(values.shippingFee) : 0);
-    formData.append('otherFee', values.otherFee ? Number(values.otherFee) : 0);
-  
-    fetchMutateBill.mutate(formData);
-  };
+    const formData = new FormData()
+    await handleFormData(formData, values.receiptScreenshot, 'receiptScreenshot')
+    formData.append('discountAmount', values.discountAmount ? Number(values.discountAmount) : 0)
+    formData.append('shippingFee', values.shippingFee ? Number(values.shippingFee) : 0)
+    formData.append('otherFee', values.otherFee ? Number(values.otherFee) : 0)
+
+    fetchMutateBill.mutate(formData)
+  }
 
   const files = form.getInputProps('receiptScreenshot').value
   const handleDeleteImage = (index) => {
@@ -70,11 +59,10 @@ const SummaryTab = ({ sessionId }) => {
     updatedFiles.splice(index, 1)
     form.setFieldValue('receiptScreenshot', updatedFiles)
   }
-  const isHostRole = true
 
   return (
     <>{
-      isHostRole
+      isHosted
         ? (<>
           <Flex
             gap="md"
@@ -88,10 +76,9 @@ const SummaryTab = ({ sessionId }) => {
               disabled={!isOpenEditableTable}
               styles={theme => ({
                 root: {
-                  backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.6),
-                  color: theme.colors.darkLavender[0],
+                  backgroundColor: theme.colors.orange[0],
                   ...theme.fn.hover({
-                    backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.7),
+                    backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.5),
                   }),
                   padding: '10px',
                 },
@@ -104,10 +91,9 @@ const SummaryTab = ({ sessionId }) => {
               disabled={isOpenEditableTable}
               styles={theme => ({
                 root: {
-                  backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.6),
-                  color: theme.colors.darkLavender[0],
+                  backgroundColor: theme.colors.orange[0],
                   ...theme.fn.hover({
-                    backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.7),
+                    backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.5),
                   }),
                   padding: '10px',
                 },
@@ -123,7 +109,9 @@ const SummaryTab = ({ sessionId }) => {
             : (
               <EditTable sessionId={sessionId}/>
             )}
-          <form
+          {
+            sessionInfoData.status === SessionStatuses.LOCKED
+          && <form
             onSubmit={form.onSubmit(values => handleSubmitBill(values))}
 
             className="form-fees"
@@ -140,9 +128,9 @@ const SummaryTab = ({ sessionId }) => {
                 direction="column"
                 className="form-fees__fill__cost"
               >
+                <NumberInputCustom field="shippingFee" form={form} label="Shipping fee: "/>
                 <NumberInputCustom field="discountAmount" form={form} label="Discount: "/>
-                <NumberInputCustom field="shippingFee" form={form} label="Delivery cost: "/>
-                <NumberInputCustom field="otherFee" form={form} label="OtherFee: "/>
+                <NumberInputCustom field="otherFee" form={form} label="Other fees: "/>
               </Flex>
               <Flex
                 gap="md"
@@ -168,8 +156,20 @@ const SummaryTab = ({ sessionId }) => {
                       {...form.getInputProps('receiptScreenshot')}
                     >
                       {props => (
-                        <Button variant="light" size="xs" color="indigo" {...props}>
-                          Upload image
+                        <Button
+                          variant="outline"
+                          styles={theme => ({
+                            root: {
+                              color: theme.colors.orange[0],
+                              border: `1px solid ${theme.colors.orange[0]}`,
+                              ...theme.fn.hover({
+                                backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.95),
+                              }),
+                              padding: '10px',
+                            },
+                          })}
+                          {...props}>
+                        Upload image
                         </Button>
                       )}
                     </FileButton>
@@ -186,10 +186,9 @@ const SummaryTab = ({ sessionId }) => {
                 size="15px"
                 styles={theme => ({
                   root: {
-                    backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.9),
-                    color: theme.colors.orange[0],
+                    backgroundColor: theme.colors.orange[0],
                     ...theme.fn.hover({
-                      backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.8),
+                      backgroundColor: theme.fn.lighten(theme.colors.orange[0], 0.5),
                     }),
                     padding: '10px',
                   },
@@ -199,8 +198,9 @@ const SummaryTab = ({ sessionId }) => {
               </Button>
             </Group>
           </form>
+          }
         </>)
-        : <div style={{ margin: '30px 0px' }}><ViewTable /> </div>}</>
+        : <div style={{ margin: '30px 0px' }}><ViewTable sessionId={sessionId}/> </div>}</>
   )
 }
 

@@ -7,13 +7,14 @@ import {
 } from 'mantine-react-table'
 import { ActionIcon, Avatar, Flex, MultiSelect, Text, Tooltip, useMantineTheme } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { IconAlertCircle, IconEdit, IconTrash,IconChefHat} from '@tabler/icons-react'
+import { IconAlertCircle, IconChefHat, IconEdit, IconTrash } from '@tabler/icons-react'
 import isEmpty from 'lodash/isEmpty'
 import { moneyFormat } from '@/utils/utility'
 import useSummaryTab from '@/hooks/useSummaryTab'
 import MenuOptions from '@/components/MenuOptions'
 import { notificationShow } from '@/components/Notification'
 import ItemName from '@/components/ItemName'
+
 export interface DataEdit {
   id: number
   user: any
@@ -31,7 +32,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ label, price, group, ...others }: ItemProps, ref) => (
+  ({ label, price, group, max, ...others }: ItemProps, ref) => (
     <div ref={ref} {...others} >
       <Flex gap="sm" justify="space-between" align="center" direction="row">
         <Text>{label}</Text>
@@ -44,6 +45,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 )
 
 const EditTable = ({ sessionId }) => {
+  const globalTheme = useMantineTheme()
   const [tableEditData, setTableEditData] = useState<DataEdit[]>([])
   const [validationErrors, setValidationErrors] = useState<Record<string, string | undefined>>({})
   const [foodOrderMenu, setFoodOrderMenu] = useState([])
@@ -52,8 +54,6 @@ const EditTable = ({ sessionId }) => {
   const fetchQueryFoodOrderEdit = queryFoodOrderEdit(sessionId, setTableEditData)
   const queryFoodOrderMenu = fetchQueryFoodOrderMenu(sessionId, setFoodOrderMenu, setOptionsSelect)
   const foodNamesSelect = handleFoodNamesSelect(foodOrderMenu)
-  const globalTheme = useMantineTheme()
-
   useEffect(() => {
     const handleFetchQueryFoodOrderEdit = async () => {
       await queryFoodOrderMenu.refetch()
@@ -77,7 +77,7 @@ const EditTable = ({ sessionId }) => {
         enableEditing: false,
         Cell: ({ cell }) => {
           const user = cell.getValue()
-          return  <ItemName name={user.name} picture={user.photo} />
+          return <ItemName name={user.name} picture={user.photo} />
         },
       },
       {
@@ -85,13 +85,14 @@ const EditTable = ({ sessionId }) => {
         header: '',
         size: 30,
         enableEditing: false,
-        enableSorting:false,
+        enableSorting: false,
         Cell: ({ cell }) => {
           const foodImage = cell.getValue()
-          return foodImage ? <Avatar src={foodImage} alt={foodImage} radius="xl" size={35}/> : 
-          ( <Avatar color="violet" radius="sm">
-          <IconChefHat size="1.5rem" />
-        </Avatar>)
+          return foodImage
+            ? <Avatar src={foodImage} alt={foodImage} radius="xl" size={35}/>
+            : (<Avatar color="violet" radius="sm">
+              <IconChefHat size="1.5rem" />
+            </Avatar>)
         },
       },
       {
@@ -111,7 +112,7 @@ const EditTable = ({ sessionId }) => {
               const updatedOptions = foodOrderMenu.filter(eachFood =>
                 eachFood.foodName === value,
               )[0]
-              const originalPrice = updatedOptions.price === 0 ? updatedOptions.price : updatedOptions.discountPrice
+              const originalPrice = updatedOptions.discountPrice === 0 ? updatedOptions.price : updatedOptions.discountPrice
               const rowIndex = cell.row.id
               const currentValueRow = row.original
               const newList = tableEditData.map((item) => {
@@ -154,7 +155,7 @@ const EditTable = ({ sessionId }) => {
         size: 100,
         enableEditing: false,
         Cell: ({ cell }) => {
-          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ backgroundColor: `${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.85)}`, borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
+          return <Text color={globalTheme.fn.darken(globalTheme.colors.duck[0], 0.3)} style={{ borderRadius: '5px', width: 'fit-content', padding: '5px' }}>
             {moneyFormat(cell.getValue(), 'VND', 'en-US', '')} đ
           </Text>
         },
@@ -203,8 +204,6 @@ const EditTable = ({ sessionId }) => {
           return (
             <MultiSelect
               required={true}
-              style={{
-              }}
               className="table-edit-summary-tab__multiselect-cell"
               w={200}
               placeholder="Pick"
@@ -251,7 +250,7 @@ const EditTable = ({ sessionId }) => {
               data={data}
               searchable
               nothingFound="No option"
-              maxDropdownHeight={200}
+              maxDropdownHeight={100}
             />)
         },
         Cell: ({ cell }) => {
@@ -385,22 +384,17 @@ const EditTable = ({ sessionId }) => {
     enableStickyHeader: true,
     enablePagination: false,
     positionActionsColumn: 'last',
-    getRowId: row => row.id,
     mantineTableHeadCellProps: ({ table }) => ({
       sx: {
         padding: '10px 10px 10px 0px',
         width: 'fit-content',
-        backgroundColor: ` ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
         textAlign: 'left',
       },
     }),
     mantineTableContainerProps: ({ table }) => ({
-      sx: {
-        maxHeight: '600px',
-        border: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
-      },
       style: {
         overflow: 'auto',
+        maxHeight: '600px',
       },
       className: 'table-edit-summary-tab',
     }),
@@ -408,10 +402,9 @@ const EditTable = ({ sessionId }) => {
       style: {
         padding: '7px 5px 7px 5px',
         width: 'fit-content',
-        borderBottom: `2px solid ${globalTheme.fn.lighten(globalTheme.colors.darkLavender[0], 0.8)}`,
-
       },
     }),
+    getRowId: row => row.id,
     onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveRow,
     renderRowActions: ({ row, table }) => (
@@ -430,15 +423,7 @@ const EditTable = ({ sessionId }) => {
         </Tooltip>
       </Flex>
     ),
-    mantineBottomToolbarProps: ({ table }) => ({
-      style: {
-        border: 'none',
-        boxShadow: 'none',
-        outline: 'none',
-        backgroundColor: '#f8f9fa',
-      },
-    }),
-
+    enableBottomToolbar: false,
     state: {
       isLoading: fetchQueryFoodOrderEdit.isLoading,
       showProgressBars: fetchQueryFoodOrderEdit.isFetching,

@@ -1,9 +1,15 @@
+import { useParams } from 'react-router-dom'
 import { ActionIcon, Flex, Text, Title } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
+
 import type { MenuItem } from '@/types/food'
 import { moneyFormat } from '@/utils'
 import useModal from '@/hooks/useModal'
 import AddOrderForm from '@/components/FoodOrderForm/Add'
+import { SessionStatuses } from '@/enums'
+import useSessionInfoStore from '@/store/sessionInfoStore'
+import useAuth from '@/hooks/useAuth'
+import { checkIfUserIsHost } from '@/utils/sessions'
 
 interface FoodItemProps {
   foodMenuItem: MenuItem
@@ -38,9 +44,14 @@ export function PriceDisplay({
 }
 
 function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
+  const { sessionInfoData } = useSessionInfoStore()
+  const { sessionId } = useParams()
+  const { userProfile } = useAuth()
+
+  const { status, host } = sessionInfoData
   const { openModal } = useModal(
     <Title order={4}>{'Order Customization'}</Title>,
-    <AddOrderForm menuItem={foodMenuItem} />,
+    <AddOrderForm menuItem={foodMenuItem} sessionId={sessionId!} />,
   )
 
   const orderHandler = () => {
@@ -49,7 +60,6 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
   return (
     <div className="foodMenuItem">
       <div className="foodMenuItem__imageWrapper">
-        {' '}
         <img src={foodMenuItem.photo} />
       </div>
       <div className="foodMenuItem__info">
@@ -57,22 +67,21 @@ function FoodMenuItem({ foodMenuItem }: FoodItemProps) {
           {foodMenuItem.foodName}
         </Title>
 
-        <Flex justify={'space-between'} align={"flex-end"}>
+        <Flex justify={'space-between'} align={'flex-end'}>
           <PriceDisplay
             discountPrice={foodMenuItem.discountPrice}
             price={foodMenuItem.price}
           />
-
-          <ActionIcon
+          {(status === SessionStatuses.OPEN || checkIfUserIsHost(host, userProfile)) && <ActionIcon
             aria-label="Add to list of order items"
             className="button-addOrder"
             onClick={orderHandler}
-            variant="light"
-            size={"sm"}
+            variant="filled"
+            size={'sm'}
+            color="brand"
           >
-            {' '}
             <IconPlus stroke={2.2} />
-          </ActionIcon>
+          </ActionIcon>}
         </Flex>
       </div>
     </div>

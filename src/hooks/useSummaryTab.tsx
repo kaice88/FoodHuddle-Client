@@ -1,9 +1,8 @@
 import isEmpty from 'lodash/isEmpty'
 import { notificationShow } from '@/components/Notification'
-import { REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_GET_FOOD_ORDER_MENU, REQUEST_ORDER_BILL, REQUEST_FOOD_ORDER_ROW } from '@/constants/apis'
+import { REQUEST_FOOD_ORDER_ROW, REQUEST_GET_FOOD_MENU, REQUEST_GET_FOOD_ORDER_IN_SUMMARY_TAB, REQUEST_ORDER_BILL } from '@/constants/apis'
 import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
-import { calculateTotal } from '@/utils/utility'
 
 function useSummaryTab() {
   const { mutation, query } = useRequestProcessor()
@@ -61,6 +60,7 @@ function useSummaryTab() {
           group: option.mandatory ? `${option.category} [required]` : option.category,
           price: detailItem.price,
           key: `${option.category}-${detailItem.name}-${detailItem.price}-${idx}`,
+          max: option.maxSelection,
         })),
       )
       : []
@@ -80,7 +80,7 @@ function useSummaryTab() {
 
   const fetchQueryFoodOrderMenu = (sessionId, setFoodOrderMenu, setOptionsSelect) => query(
     ['get-all-menu'],
-    () => axiosInstance.get(REQUEST_GET_FOOD_ORDER_MENU, {
+    () => axiosInstance.get(REQUEST_GET_FOOD_MENU, {
       params: {
         sessionId: Number(sessionId),
       },
@@ -105,9 +105,6 @@ function useSummaryTab() {
   const handleTransformDataToTableData = (dataBE) => {
     const data = !isEmpty(dataBE)
       ? dataBE.map((item, index) => {
-        const totalMoneyEachFood = item.orders.reduce((total, item) => {
-          return calculateTotal(total, item.quantity * item.actualPrice)
-        }, 0)
         const quantityOrderEachFood = item.orders.reduce((acc, item) => {
           return acc + item.quantity
         }, 0)
@@ -115,10 +112,10 @@ function useSummaryTab() {
           {
             id: Number(index) + 1,
             foodName: {
-              name: item.foodName ,
+              name: item.foodName,
               image: item.foodImage,
             },
-            total: Number(totalMoneyEachFood),
+            total: Number(item.total),
             quantity: quantityOrderEachFood,
           }
         )
@@ -254,16 +251,21 @@ function useSummaryTab() {
   const transformDataForMultiSelect = (currentFoodName, optionsSelect, currentValue, valueTransform) => {
     // ...Get options only for current foodName...
     const data = optionsSelect.filter(item => item.foodName === currentFoodName)[0].dataSelects
-
-    const requiredGroups = currentValue.map(item => item.category)
     const optionsNoSlected = data.filter(item => !valueTransform.includes(item.value))
     const optionSelected = data.filter(item => valueTransform.includes(item.value))
-    const dataCheckDisabled = optionsNoSlected.map((item) => {
-      const isItemDisabled = requiredGroups.some((requiredGroup) => {
-        const normalizedRequiredGroup = `${requiredGroup} [required]`
-        return item.group === normalizedRequiredGroup
+
+    const getTotalQuantityInGroup = (group) => {
+      let totalQuantity = 0
+      optionSelected.forEach((item) => {
+        if (item.group === group)
+          totalQuantity += 1
       })
-      if (isItemDisabled) {
+      return totalQuantity
+    }
+
+    const dataCheckDisabled = optionsNoSlected.map((item) => {
+      const quantity = getTotalQuantityInGroup(item.group)
+      if (quantity >= item.max) {
         return {
           ...item,
           disabled: true,
@@ -315,7 +317,7 @@ function useSummaryTab() {
 
   const updateTableEdit = (tableEditData, name, value, rowIndex, currentValueRow) => {
     const newList = tableEditData.map((item) => {
-      if (item.id == rowIndex) {
+      if (item.id === rowIndex) {
         return {
           ...currentValueRow,
           [name]: value,

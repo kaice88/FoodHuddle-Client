@@ -1,48 +1,57 @@
+import { Box, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
-import { Link } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom'
 import StatusBadge from '../../StatusBadge'
-import { getSessionStatus } from '@/utils/sessions'
-import CopyClipBoard from '@/components/CopyClipboard'
-import type { SessionToday } from '@/types/sessions'
-import { SessionStatuseColors, SessionStatuses } from '@/enums'
+import type { SessionData } from '@/types/sessions'
+import { getSessionStatusColor } from '@/utils/sessions'
 
 interface SessionCardProps {
-  session: SessionToday
+  session: SessionData
 }
 
 function SessionCard({ session }: SessionCardProps) {
-  const getKeyByValue = (enumObj, enumValue) => Object.entries(enumObj).find(([, value]) => value === enumValue)?.[0]
+  const navigate = useNavigate()
+  const mockShopImage = 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+  const { id, title, host, status, shopImage, numberOfJoiners } = session
 
   return (
-    <div className="sessionWrapper">
-      <div className="session">
-        <div className="session__info">
-          <Link className="session__title" to={`/sessions/${session.id}`}>
-            {session.title}
-          </Link>
-          <div className="session__host">{session.host}</div>
-        </div>
-        <div
-          className={`session__status session__status-${getSessionStatus(
-            session.status,
-          )}`}
-        >
-          <StatusBadge status={session.status} colorName={SessionStatuseColors[getKeyByValue(SessionStatuses, session.status)]} />
-        </div>
-        <div className="session__link">
-          <div className="session__joiners">
-            <IconUsers color="orange" size="1rem" />
-            {session.number_of_joiners}
-          </div>
-          <CopyClipBoard
-            text={`${window.location.origin.toString()}/sessions/${
-              session.id
-            }`}
-          />
-        </div>
-      </div>
-    </div>
+    <Card className="sessionCard" onClick={() => {
+      navigate(`/sessions/${id}`, {
+        state: {
+          from: window.location.pathname,
+        },
+      })
+    }} shadow="sm" padding="lg" radius="md" withBorder mih={200}>
+      <Card.Section >
+        <Image
+          fit="cover"
+          src={shopImage || mockShopImage}
+          height={160}
+          alt={title}
+        />
+      </Card.Section>
+      <Flex mt={16} align="center" justify="space-between">
+        <Box miw={rem('40%')}>
+          <Text color="brand" size="lg" truncate weight={500}>{title}</Text>
+        </Box>
+        <StatusBadge sx={{ flexShrink: 0 }} size="md" status={status} colorName={getSessionStatusColor(status)}/>
+      </Flex>
+      <Group position="apart" mt="md" mb="xs">
+        <Text size="xs" color="dimmed">
+          {host}
+        </Text>
+        <Flex align="center" justify="center" gap={4}>
+          <Center>
+            <ThemeIcon variant="outlined" color="dark" size={'xs'}>
+              <IconUsers/>
+            </ThemeIcon>
+          </Center>
+          <Text color="brand" size="md" fw={600}>
+            {numberOfJoiners}
+          </Text>
+        </Flex>
+      </Group>
+    </Card>
   )
 }
 

@@ -5,8 +5,7 @@ import Layout from './layouts/Layout'
 import ErrorPage from './pages/Error'
 
 import SessionPage from './pages/SessionPage'
-import SessionSummary from './pages/SessionPage/Components/SessionSummary'
-import * as ROUTES from '@/constants/routes'
+import * as ROUTES from './constants/routes'
 
 export const router = createBrowserRouter([
   {
@@ -28,12 +27,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.SESSION_DETAIL,
-        element: <SessionPage></SessionPage>,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: ROUTES.SESSION_SUMMARY,
-        element: <SessionSummary></SessionSummary>,
+        element: <SessionPage />,
         errorElement: <ErrorPage />,
       },
       {

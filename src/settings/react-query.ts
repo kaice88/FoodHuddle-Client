@@ -12,7 +12,7 @@ export function useRequestProcessor() {
   function mutation<MutationResponseData, E, MutationData>(
     key: any,
     mutationFunction: any,
-    options = {}
+    options = {},
   ) {
     return useMutation<MutationResponseData, E, MutationData>({
       mutationKey: key,

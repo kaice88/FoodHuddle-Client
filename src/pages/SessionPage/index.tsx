@@ -1,76 +1,66 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Flex, Loader, Tabs } from '@mantine/core'
+import { useParams } from 'react-router-dom'
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
-import { Loader, Tabs } from '@mantine/core'
 
-import SessionSummary from './Components/SessionSummary'
+import { isEmpty } from 'lodash'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
-import HostActions from './Components/HostActions'
-import { SessionStatuses } from '@/enums'
-import { notificationShow } from '@/components/Notification'
-import useSession from '@/hooks/useSession'
+import SessionSummary from './Components/SessionSummary'
 import SessionInfo from '@/components/SessionInfo'
-import useSessionData from '@/hooks/useSessionData'
-import { checkIfUserIsHost } from '@/utils/sessions'
 import useAuth from '@/hooks/useAuth'
+import useSessionInfo from '@/hooks/useSessionInfo'
+import useSessionInfoStore from '@/store/sessionInfoStore'
+import { checkIfUserIsHost } from '@/utils/sessions'
+import { SessionStatuses } from '@/enums'
 
 function SessionPage() {
   const { sessionId } = useParams()
-  const navigate = useNavigate()
-  const { sessionData, isLoading, error } = useSessionData(sessionId!)
-  const { deleteSession, changeStatus } = useSession(sessionId)
-  const [currentStatus, setCurrentStatus] = useState(sessionData?.status)
-  const { userProfile } = useAuth()
+  const { sessionInfoData } = useSessionInfoStore()
+  const { fetchSessionInfo } = useSessionInfo(sessionId)
 
   useEffect(() => {
-    setCurrentStatus(sessionData?.status)
-  }, [sessionData])
+    const handleGetSessionInfo = async () => {
+      await fetchSessionInfo.refetch()
+    }
+    handleGetSessionInfo()
+  }, [])
+  const { userProfile } = useAuth()
 
-  const handleDeleteSession = () => {
-    deleteSession((data) => {
-      notificationShow('success', 'SUCCESS', data.data.message)
-      navigate('/sessions-today')
-    })
-  }
-
-  const handlechangeStatus = (status) => {
-    changeStatus(status, (data) => {
-      notificationShow('success', 'SUCCESS', data.data.message)
-      setCurrentStatus(data.data.statusSession)
-    })
-  }
-
-  if (isLoading)
-    return <Loader className="loader"/>
-
-  if (error)
-    return <div>This session is not found</div>
-
+  const isHosted = !isEmpty(sessionInfoData) && checkIfUserIsHost(sessionInfoData?.host, userProfile)
   return (
     <>
-      <span>{currentStatus}</span>
-      {checkIfUserIsHost(sessionData?.host, userProfile) && <HostActions status={currentStatus} handleDeleteSession={handleDeleteSession} handlechangeStatus={handlechangeStatus} ></HostActions>}
-      <SessionInfo sessionData={sessionData} />
-      {(currentStatus === SessionStatuses.PENDING_PAYMENTS || currentStatus === SessionStatuses.FINISHED)
-        ? <SessionSummary/>
-        : <Tabs defaultValue={'order'}>
-          <Tabs.List>
-            <Tabs.Tab value="order" icon={<IconShoppingCart />}>
-            Order
-            </Tabs.Tab>
-            <Tabs.Tab value="summary" icon={<IconSubtask />}>
-            Summary
-            </Tabs.Tab>
-          </Tabs.List>
-          <Tabs.Panel value="order">
-            <OrderTab />
-          </Tabs.Panel>
-          <Tabs.Panel value="summary">
-            <SummaryTab sessionId={sessionId}/>
-          </Tabs.Panel>
-        </Tabs>}
+      {
+        !isEmpty(sessionInfoData)
+          ? <>
+            <SessionInfo sessionData={sessionInfoData} sessionId={sessionId} isHosted={isHosted} />
+            {
+              (sessionInfoData.status === SessionStatuses.PENDING_PAYMENTS || sessionInfoData.status === SessionStatuses.FINISHED)
+                ? <SessionSummary sessionData={sessionInfoData}/>
+                : <Tabs keepMounted={false} defaultValue={'order'}>
+                  <Tabs.List>
+                    <Tabs.Tab value="order" icon={<IconShoppingCart />}>
+                Order
+                    </Tabs.Tab>
+                    <Tabs.Tab value="summary" icon={<IconSubtask />}>
+                Summary
+                    </Tabs.Tab>
+                  </Tabs.List>
+                  <Tabs.Panel value="order">
+                    <OrderTab />
+                  </Tabs.Panel>
+                  <Tabs.Panel value="summary">
+                    {!isEmpty(sessionInfoData) && <SummaryTab sessionId={sessionId} isHosted={isHosted}/>}
+                  </Tabs.Panel>
+                </Tabs>
+            }
+          </>
+          : <Flex justify="center" align="center">
+            <Loader/>
+          </Flex>
+      }
     </>
+
   )
 }
 

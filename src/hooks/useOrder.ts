@@ -3,10 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import type { FoodOrderItem, FoodOrderListData } from '@/types/food'
 
 import axiosInstance from '@/settings/axios'
-import {
-  REQUEST_EDIT_FOOD_ORDER_LIST,
-  REQUEST_GET_FOOD_ORDER_LIST,
-} from '@/constants/apis'
+import { REQUEST_EDIT_FOOD_ORDER_LIST, REQUEST_GET_FOOD_ORDER_LIST } from '@/constants/apis'
 import { notificationShow } from '@/components/Notification'
 
 interface EditOrderListResponseData { status: string; message: string }
@@ -16,17 +13,22 @@ interface GetOrderListResponseData {
   data: { sessionId: number; foodOrderList: Omit<FoodOrderItem, 'id'>[] }
 }
 
-export const editFoodOrderList = async (
+export const submitOrderList = async (
   foodOrderListData: FoodOrderListData,
 ) => {
-  const response = await axiosInstance.put<EditOrderListResponseData>(
-    REQUEST_EDIT_FOOD_ORDER_LIST,
-    foodOrderListData,
-  )
+  try {
+    const response = await axiosInstance.put<EditOrderListResponseData>(
+      REQUEST_EDIT_FOOD_ORDER_LIST,
+      foodOrderListData,
+    )
 
-  if (response.status == 200) {
-    notificationShow('success', 'Food Order', 'Submit order successfully')
-    return response.data
+    if (response.status === 200) {
+      notificationShow('success', 'Food Order', 'Update order successfully')
+      return response.data
+    }
+  }
+  catch (error) {
+    notificationShow('error', 'Food Order', 'There is a problem updating order. Please try again!')
   }
 }
 
