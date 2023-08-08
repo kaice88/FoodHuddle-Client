@@ -20,7 +20,6 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
   const navigate = useNavigate()
   const { deleteSession, changeStatus } = useSession(sessionId)
   const { fetchSessionInfo } = useSessionInfo(sessionId)
-
   const [opened, { open, close }] = useDisclosure(false)
   const titleModal = (
     <Flex justify="center" align="flex-start" direction="column">

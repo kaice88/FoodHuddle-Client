@@ -11,7 +11,7 @@ export default function DashboardNavbar({ opened }) {
       hidden={!opened}
       p="sm"
       hiddenBreakpoint="sm"
-      width={{ sm: 200, lg: 250 }}
+      width={{ sm: 200, lg: 300 }}
       className="navbar"
     >
       <Navbar.Section grow mt="md">
