@@ -1,6 +1,6 @@
-import { ActionIcon, Box, Button, Flex, Group, Image, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Box, Flex, Group, Image, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
-import { IconDice1Filled, IconEdit, IconFileDots } from '@tabler/icons-react'
+import { IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import { useState } from 'react'
 import { Carousel, useAnimationOffsetEffect } from '@mantine/carousel'
@@ -17,7 +17,6 @@ import { getSessionStatusColor } from '@/utils/sessions'
 
 function SessionInfo({ sessionData, sessionId, isHosted }) {
   const globalTheme = useMantineTheme()
-  const sessionURL = `${window.location.origin}/sessions/${sessionId}`
   const navigate = useNavigate()
   const { deleteSession, changeStatus } = useSession(sessionId)
   const { fetchSessionInfo } = useSessionInfo(sessionId)
@@ -90,7 +89,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
               src={sessionData.shopImage}
               alt={sessionData.shopName}
             />
-            <List icon={<IconDice1Filled size={10} style={{ color: `${globalTheme.colors.darkLavender[0]}` }} />}>
+            <List>
               <List.Item>
                 <Text><span style={{ fontWeight: 'bold' }}>Host :</span>{' '}{sessionData?.host.name}</Text>
               </List.Item>
@@ -111,7 +110,7 @@ function SessionInfo({ sessionData, sessionId, isHosted }) {
                 <Flex gap={'sm'} direction={'row'} align={'center'}>
                   <Text fw={'bold'}>QR Code: </Text>
                   <Group position="center">
-                    { !isEmpty(sessionData.qrImages) ? <Button onClick={() => setOpenedModalImage(true)}>Show</Button> : 'No' }
+                    { !isEmpty(sessionData.qrImages) ? <Text onClick={() => setOpenedModalImage(true)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Show</Text> : 'No' }
                   </Group>
                   <Modal
                     opened={openedModalImage}
