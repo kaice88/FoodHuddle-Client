@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text, useMantineTheme } from '@mantine/core'
+import { Box, Button, Flex, Group, Modal, Tabs, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconSquarePlus } from '@tabler/icons-react'
 import { useEffect } from 'react'
@@ -82,13 +82,7 @@ export default function SessionTodayPage() {
         </Tabs.List>
 
         <Tabs.Panel value={activeTab} pt="xl">
-          {isLoading
-            ? (
-              <Loader className="loader" />
-            )
-            : (
-              <SessionList sessionsList={sessions} />
-            )}
+          <SessionList sessionsList={sessions} />
         </Tabs.Panel>
       </Tabs>
     </>
