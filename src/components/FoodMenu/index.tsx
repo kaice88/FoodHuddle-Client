@@ -41,7 +41,7 @@ function FoodMenu() {
       <Carousel
         mt={16}
         orientation={sm ? 'horizontal' : 'vertical'}
-        height={sm ? 320 : xs ? 490 : 760}
+        height={sm ? 320 : xs ? 490 : 800}
         className="menu"
         withControls = {!!sm}
         loop

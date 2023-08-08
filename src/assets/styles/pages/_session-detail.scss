@@ -47,7 +47,7 @@
     }
     @include breakpoint-down("extra-smallphone"){
         flex-direction: column;
-        min-height: 230px;
+        min-height: 250px;
     }
   }
   
