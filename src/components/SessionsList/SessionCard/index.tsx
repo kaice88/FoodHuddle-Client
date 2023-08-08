@@ -1,6 +1,7 @@
 import { Box, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
+
 import StatusBadge from '../../StatusBadge'
 import type { SessionData } from '@/types/sessions'
 import { getSessionStatusColor } from '@/utils/sessions'
