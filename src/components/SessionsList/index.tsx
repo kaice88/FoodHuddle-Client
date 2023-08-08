@@ -1,5 +1,5 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
+import isUndefined from 'lodash/isUndefined'
 import { v4 as uuidv4 } from 'uuid'
 import { Center, Loader, SimpleGrid } from '@mantine/core'
 
@@ -11,7 +11,7 @@ interface SessionTodayListProps {
 }
 
 function SessionList({ sessionsList }: SessionTodayListProps) {
-  if (isEmpty(sessionsList))
+  if (isUndefined(sessionsList))
     return <Center mih={300}> <Loader/> </Center>
 
   return (
