@@ -2,7 +2,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
 import { IconShoppingCart, IconSubtask } from '@tabler/icons-react'
-
+import { Flex, Loader, Tabs } from '@mantine/core'
 import { isEmpty } from 'lodash'
 import OrderTab from './Components/OrderTab'
 import SummaryTab from './Components/SummaryTab'
@@ -27,7 +27,6 @@ function SessionPage() {
     }
     handleGetSessionInfo()
   }, [])
-  const { userProfile } = useAuth()
 
   const isHosted = !isEmpty(sessionInfoData) && checkIfUserIsHost(sessionInfoData?.host, userProfile)
   return (
