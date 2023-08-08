@@ -1,11 +1,12 @@
-import { Box, Button, Flex, Group, Loader, Modal, Tabs, Text, useMantineTheme } from '@mantine/core'
+import { Box, Button, Flex, Group, Modal, Tabs, Text, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconSquarePlus } from '@tabler/icons-react'
 import { useEffect } from 'react'
-import SessionInfoModal from '../components/ModalCreateSession'
-import SessionList from '../components/SessionsList'
+
 import useSessionsToday from '../hooks/useSessionsToday'
 import { SessionsTodayPageTabs } from '../enums'
+import SessionInfoModal from '../components/ModalCreateSession'
+import SessionList from '../components/SessionsList'
 import { TABS_CONFIG } from '../constants/sessions'
 import useSessionInfoStore from '@/store/sessionInfoStore'
 
@@ -13,7 +14,6 @@ export default function SessionTodayPage() {
   const globalTheme = useMantineTheme()
 
   const {
-    isLoading,
     data: sessions,
     activeTab,
     setActiveTab,
@@ -82,13 +82,7 @@ export default function SessionTodayPage() {
         </Tabs.List>
 
         <Tabs.Panel value={activeTab} pt="xl">
-          {isLoading
-            ? (
-              <Loader className="loader" />
-            )
-            : (
-              <SessionList sessionsList={sessions} />
-            )}
+          <SessionList sessionsList={sessions} />
         </Tabs.Panel>
       </Tabs>
     </>

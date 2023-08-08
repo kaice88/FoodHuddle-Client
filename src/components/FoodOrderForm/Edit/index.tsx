@@ -8,7 +8,7 @@ import useFoodStore from '@/store/foodStore'
 import useModal from '@/hooks/useModal'
 
 import type { FoodOrderItem, FoodOrderItemFormValues, OptionDetail } from '@/types/food'
-import { renderErrors, renderOptions, updateOptions, validateOptions } from '@/utils/foodOrderForm'
+import { renderErrors, renderOptions, updateCurrentOrderItem, updateOptions, validateOptions } from '@/utils/foodOrderForm'
 
 interface EditOrderFormProps {
   foodOrderItem: FoodOrderItem
@@ -50,7 +50,9 @@ function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
   }
 
   const submitHandler = form.onSubmit((values) => {
-    updateFoodOrderItem({ ...foodOrderItem, ...values }, Number.parseInt(sessionId!))
+    const updatedFoodOrderItem = updateCurrentOrderItem(values, foodOrderItem)
+
+    updateFoodOrderItem(updatedFoodOrderItem, Number.parseInt(sessionId!))
     closeModal()
   })
 

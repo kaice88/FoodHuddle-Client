@@ -34,7 +34,7 @@ function SessionPage() {
       {
         !isEmpty(sessionInfoData)
           ? <>
-            <SessionInfo sessionData={sessionInfoData} sessionId={sessionId} isHosted={checkIfUserIsHost(sessionInfoData?.host, userProfile)} location={state.from} />
+            <SessionInfo sessionData={sessionInfoData} sessionId={sessionId} isHosted={checkIfUserIsHost(sessionInfoData?.host, userProfile)} location={state?.from} />
             {
               (sessionInfoData.status === SessionStatuses.PENDING_PAYMENTS || sessionInfoData.status === SessionStatuses.FINISHED)
                 ? <SessionSummary sessionData={sessionInfoData}/>
