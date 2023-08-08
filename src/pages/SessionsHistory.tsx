@@ -71,8 +71,8 @@ const SessionsHistory = () => {
             data={[
               { value: 'OPEN', label: 'Open' },
               { value: 'LOCKED', label: 'Locked' },
-              { value: 'FINISHED', label: 'Finished' },
               { value: 'PENDING PAYMENTS', label: 'Pending Payments' },
+              { value: 'FINISHED', label: 'Finished' },
             ]}
             placeholder="All status"
             transitionProps={{ duration: 150, transition: 'pop-top-left', timingFunction: 'ease' }}
