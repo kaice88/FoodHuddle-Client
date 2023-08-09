@@ -44,7 +44,6 @@ function FoodMenu() {
         height={sm ? 320 : xs ? 490 : 800}
         className="menu"
         withControls = {!!sm}
-        loop
         controlSize={32}
         slideGap={rem('32px')}
         slideSize={rem('97%')}
