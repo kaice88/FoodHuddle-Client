@@ -129,7 +129,7 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
                               <img
                                 src={image}
                                 alt="Cat"
-                                style={{ width: '100%', height: '100%', objectFit: 'contain', scale: '1.3' }}
+                                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                               />
                             </Carousel.Slide>
                           )
