@@ -27,17 +27,19 @@ const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page, status) => {
   }
 }
 
-const useSessionTodayData = (tab: SessionsTodayPageTabs, page, status) => {
+const useSessionTodayData = (tab: SessionsTodayPageTabs, page = 'TODAY', status) => {
   const { query } = useRequestProcessor()
   return query<SessionToday[], Error>(
-    ['sessionsToday', tab, status],
+    ['sessionsToday', tab, status, page],
     () => fetchSessionsToday(tab, page, status),
+    { refetchOnMount: 'always', cacheTime: 0 },
   )
 }
 
-const useSessionsToday = (tab: SessionsTodayPageTabs, page) => {
+const useSessionsToday = (tab: SessionsTodayPageTabs, page = 'TODAY') => {
   const [activeTab, setActiveTab] = useState(tab)
   const [status, setStatus] = useState('')
+
   const { data, isLoading, error } = useSessionTodayData(activeTab, page, status)
 
   return { activeTab, setActiveTab, data, isLoading, error, setStatus }

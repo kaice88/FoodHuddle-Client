@@ -8,10 +8,11 @@ import type { SessionData } from '@/types/sessions'
 
 interface SessionTodayListProps {
   sessionsList: SessionData[]
+  isLoading: boolean
 }
 
-function SessionList({ sessionsList }: SessionTodayListProps) {
-  if (isUndefined(sessionsList))
+function SessionList({ sessionsList, isLoading }: SessionTodayListProps) {
+  if (isUndefined(sessionsList) || isLoading)
     return <Center mih={300}> <Loader/> </Center>
 
   return (

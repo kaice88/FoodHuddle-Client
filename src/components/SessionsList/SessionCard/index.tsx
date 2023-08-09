@@ -1,4 +1,4 @@
-import { Box, Card, Center, Flex, Group, Image, Text, ThemeIcon, rem } from '@mantine/core'
+import { Card, Center, Flex, Group, Image, Text, ThemeIcon } from '@mantine/core'
 import { IconUsers } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -32,9 +32,7 @@ function SessionCard({ session }: SessionCardProps) {
         />
       </Card.Section>
       <Flex mt={16} align="center" justify="space-between">
-        <Box miw={rem('40%')}>
-          <Text color="brand" size="lg" truncate weight={500}>{title}</Text>
-        </Box>
+        <Text color="brand" size="lg" sx={{ overflowWrap: 'anywhere' }} weight={500}>{title}</Text>
         <StatusBadge sx={{ flexShrink: 0 }} size="md" status={status} colorName={getSessionStatusColor(status)}/>
       </Flex>
       <Group position="apart" mt="md" mb="xs">

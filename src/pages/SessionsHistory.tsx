@@ -1,4 +1,4 @@
-import { Flex, Loader, MultiSelect, Tabs } from '@mantine/core'
+import { Flex, MultiSelect, Tabs } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
@@ -93,13 +93,7 @@ const SessionsHistory = () => {
         </Tabs.List>
 
         <Tabs.Panel value={activeTab} pt="xl">
-          {isLoading
-            ? (
-              <Loader className="loader" />
-            )
-            : (
-              <SessionList sessionsList={sessions} />
-            )}
+          <SessionList isLoading={isLoading} sessionsList={sessions} />
         </Tabs.Panel>
       </Tabs>
     </>
