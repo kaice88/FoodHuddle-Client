@@ -53,7 +53,10 @@ export default function YourPayment({ id }) {
         <Flex gap="lg" wrap="wrap" py={10}>
           {!isEmpty(userPaymentData) ? <RequestMessage status={userPaymentData.status}/> : <RequestMessage />}
         </Flex>
-        <Modal opened={opened} onClose={close} title="Payment" centered>
+        <Modal opened={opened}
+          onClose={close}
+          title={<Text fw={700} fz="lg">Payment</Text>}
+          centered>
           <PaymentModal id={id} userPayment ={userPaymentData} closeModal={closeModal}/>
         </Modal>
         {sessionInfoData.status === SessionStatuses.PENDING_PAYMENTS

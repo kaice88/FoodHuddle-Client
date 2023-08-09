@@ -59,11 +59,11 @@ export default function SessionSummary({ id }) {
       },
       {
         accessorKey: 'finalPayment',
+      
         header: <>
           <Text>Final Payment</Text>
           <Tooltip
-            withArrow
-            position="right-start"
+            position="top-start"
             label="This price includes the extra fee"
             styles={theme => ({
               tooltip: {

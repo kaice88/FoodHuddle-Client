@@ -61,7 +61,7 @@ export default function FeeInfo({ id }) {
               </Text>
               {isEmpty(orderBill?.receiptScreenshot)
                 ? <Text style={{ textAlign: 'center', fontStyle: 'italic' }} color={theme.colors.duck[0]}>No data found</Text>
-                : <Text td="underline" onClick={open}>Show</Text>
+                : <Text td="underline" style={{ cursor: 'pointer' }} onClick={open}>Show</Text>
               }
             </Flex>
           </SimpleGrid >

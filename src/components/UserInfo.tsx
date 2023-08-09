@@ -17,7 +17,7 @@ export default function UserInfo({ className }) {
       </div>
       <Menu>
         <Menu.Target>
-          <Avatar src={userProfile.photo} radius="xl" alt="avatar"></Avatar>
+          <Avatar src={userProfile.photo} radius="xl" alt="avatar" style={{ cursor: 'pointer' }}></Avatar>
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Item icon={<IconLogout size="1rem" />} onClick={handleLogout}>
