@@ -10,6 +10,9 @@ import usePaymentSession from '@/hooks/usePaymentSession'
 import { notificationShow } from '@/components/Notification'
 
 export default function PaymentModal({ id, closeModal, userPayment }) {
+  const [isLoading, setIsLoading] = useState(false)
+  const [lengthNote, handlerLengthNote] = useState(userPayment.note ? userPayment.note.length : 0)
+
   const [files, setFiles] = useState([])
   const { control, handleSubmit, setValue } = useForm({
     defaultValues: {
@@ -34,6 +37,7 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
   }
 
   const onSubmit = async (data) => {
+    setIsLoading(true)
     const formData = new FormData()
     const evidence = data.evidence
     await Promise.all (evidence?.map(async (item) => {
@@ -51,9 +55,18 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
     formData.append('note', data.note)
 
     requestPayment(formData, (res) => {
+      setIsLoading(false)
       notificationShow('success', 'SUCCESS', res.data.message)
       closeModal()
     })
+  }
+  const handleNoteChange = (e, fileName) => {
+    e.preventDefault()
+    const value = e.target.value
+    if (value.length <= 300) {
+      setValue(fileName, value)
+      handlerLengthNote(value.length)
+    }
   }
 
   return (
@@ -83,10 +96,12 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
             <Textarea {...field}
               placeholder="Your note"
               label="Note"
+              onChange={e => handleNoteChange(e, 'note')}
             />}
         />
+        <Flex justify={'flex-end'} style={{ marginTop: '10px' }}>{lengthNote}/300</Flex>
         <Flex justify="flex-end">
-          <Button mt="md" type="submit">OK</Button>
+          <Button mt="md" type="submit" loading={isLoading}>OK</Button>
         </Flex>
       </form>
     </>)

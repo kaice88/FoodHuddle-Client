@@ -40,7 +40,7 @@ function useSessionInfo(sessionId) {
     },
   )
 
-  const mutateEditSessionInfo = close => mutation(
+  const mutateEditSessionInfo = (close, setIsLoading) => mutation(
     ['sessionInfo'],
     async data =>
       await axiosInstance.put(REQUEST_EDIT_SESSION_INFO(sessionId), data,
@@ -53,10 +53,12 @@ function useSessionInfo(sessionId) {
     {
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
+        setIsLoading(false)
       },
       onSuccess: (data) => {
         const { message } = data.data
         notificationShow('success', 'Success: ', message)
+        setIsLoading(false)
         fetchSessionInfo.refetch()
         close()
         setSessionInfoData(data.data.data)

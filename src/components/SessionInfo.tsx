@@ -1,6 +1,6 @@
-import { ActionIcon, Box, Flex, Group, Image, List, Loader, Modal, Text, Title, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Box, Flex, Group, Image, List, Loader, Modal, Text, Title, Tooltip, useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
-import { IconArrowLeft, IconEdit, IconFileDots } from '@tabler/icons-react'
+import { IconAlertCircle, IconArrowLeft, IconEdit, IconFileDots } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
 import { useState } from 'react'
 import { Carousel, useAnimationOffsetEffect } from '@mantine/carousel'
@@ -109,7 +109,19 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
               </List.Item>
               <List.Item>
                 <Flex gap={'sm'} direction={'row'} align={'center'}>
-                  <Text fw={'bold'}>QR Code: </Text>
+                  <Text fw={'bold'}>QR Code: {' '}<Tooltip
+                    label="Joiners can make payments with the host's QR code"
+                    styles={theme => ({
+                      tooltip: {
+                        color: 'white',
+                        fontWeight: '300',
+                        backgroundColor: theme.colors.orange[0],
+                      },
+                    })}
+                    withArrow
+                  >
+                    <IconAlertCircle size={15} />
+                  </Tooltip></Text>
                   <Group position="center">
                     { !isEmpty(sessionData.qrImages) ? <Text onClick={() => setOpenedModalImage(true)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Show</Text> : 'No' }
                   </Group>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Box, Button, Flex, Group, NumberInput, Spoiler, Text, Textarea, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import isEmpty from 'lodash/isEmpty'
@@ -15,6 +16,7 @@ interface AddOrderFormProps {
 }
 
 function AddOrderForm({ menuItem, sessionId }: AddOrderFormProps) {
+  const [lengthNote, handlerLengthNote] = useState(0)
   const { closeModal } = useModal()
   const addFoodOrderItem = useFoodStore(state => state.addFoodOrderItem)
 
@@ -28,9 +30,10 @@ function AddOrderForm({ menuItem, sessionId }: AddOrderFormProps) {
     },
     validate: {
       options: validateOptions(mandatoryOptions),
+      note: value => ((value.length <= 100) ? null : 'Note must be less 100 letters'),
+
     },
   })
-
   const submitHandler = form.onSubmit((values) => {
     const newOrderItem: FoodOrderItem = createNewOrderItem(values, menuItem)
 
@@ -49,6 +52,14 @@ function AddOrderForm({ menuItem, sessionId }: AddOrderFormProps) {
 
   const optionErrors: string[] = get(form.errors, 'options')
 
+  const handleNoteChange = (e, fileName) => {
+    e.preventDefault()
+    const value = e.target.value
+    if (value.length <= 100) {
+      form.setFieldValue(fileName, value)
+      handlerLengthNote(value.length)
+    }
+  }
   return (
     <Box maw={300} mx="auto">
       <form className="orderCustomization-form" onSubmit={submitHandler}>
@@ -84,6 +95,7 @@ function AddOrderForm({ menuItem, sessionId }: AddOrderFormProps) {
               <NumberInput
                 maw={60}
                 min={1}
+                max={100}
                 size="xs"
                 {...form.getInputProps('quantity')}
               />
@@ -97,7 +109,9 @@ function AddOrderForm({ menuItem, sessionId }: AddOrderFormProps) {
           label={<Title transform="uppercase" order={6}>Note</Title>}
           placeholder="No ice please!!!"
           {...form.getInputProps('note')}
+          onChange={e => handleNoteChange(e, 'note')}
         />
+        <Flex justify={'flex-end'} style={{ marginTop: '10px' }}>{lengthNote}/100</Flex>
 
         {renderOptions(menuItem, optionsChangedHandler, optionErrors)}
 

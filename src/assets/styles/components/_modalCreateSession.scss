@@ -14,6 +14,7 @@
         @include breakpoint-down("extra-smalldesktop") {
             flex-direction: column;
             align-items: flex-start;
+            gap: 0px;
             &__left, &__right{
                 width: 100%;
                 flex-direction: column;

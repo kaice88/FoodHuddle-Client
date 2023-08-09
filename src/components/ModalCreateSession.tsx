@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
-import { Button, FileButton, Flex, Group, Text, TextInput, Textarea } from '@mantine/core'
+import React, { useEffect, useState } from 'react'
+import { Button, FileButton, Flex, Group, Text, TextInput, Textarea, Tooltip } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import isEmpty from 'lodash/isEmpty'
+import { IconAlertCircle } from '@tabler/icons-react'
 import useSessionInfo from '../hooks/useSessionInfo'
 import ImagesUploaded from './ImagesUploaded'
 import { handleFormData } from '@/utils/utility'
@@ -15,6 +16,7 @@ interface FormValue {
 }
 
 const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessionId, close }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo } = useSessionInfo(sessionId)
 
   // ......Config form.................................................
@@ -36,7 +38,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
     },
   })
   const queryHostPaymentInfo = fetchQueryHostPaymentInfo(form)
-  const fetchEditSessionInfo = mutateEditSessionInfo(close)
+  const fetchEditSessionInfo = mutateEditSessionInfo(close, setIsLoading)
 
   useEffect(() => {
     const handlefetchSessionInfo = async () => {
@@ -48,6 +50,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
 
   // .....Handle submit................................
   const handleSubmitNewSession = async (values) => {
+    setIsLoading(true)
     const dataForm = new FormData()
     dataForm.append('title', values.title)
     dataForm.append('shop_link', values.shopLink)
@@ -116,7 +119,19 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
             direction="row"
           >
             <Text size="sm" fw={600}>
-              QR code
+              QR code {' '}<Tooltip
+                label="Joiners can make payments with the host's QR code"
+                styles={theme => ({
+                  tooltip: {
+                    color: 'white',
+                    fontWeight: '300',
+                    backgroundColor: theme.colors.orange[0],
+                  },
+                })}
+                withArrow
+              >
+                <IconAlertCircle size={15} />
+              </Tooltip>
             </Text>
             <Group position="center">
               <FileButton
@@ -161,7 +176,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
               padding: '10px',
             },
           })}
-          loading={mutateSessionInfo.isLoading || fetchEditSessionInfo.isLoading}
+          loading={isLoading}
         >
           Submit
         </Button>

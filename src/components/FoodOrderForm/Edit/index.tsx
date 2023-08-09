@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from '@mantine/form'
 import { Box, Button, Flex, Group, NumberInput, Textarea, Title } from '@mantine/core'
 import { find, get, isEmpty } from 'lodash'
@@ -16,6 +16,8 @@ interface EditOrderFormProps {
 }
 
 function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
+  const [lengthNote, handlerLengthNote] = useState(foodOrderItem.note ? foodOrderItem.note.length : 0)
+
   const { closeModal } = useModal()
   const currentMenu = useFoodStore(state => state.currentMenu)
   const menuItem = useMemo(() => {
@@ -37,6 +39,8 @@ function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
     },
     validate: {
       options: validateOptions(mandatoryOptions),
+      note: value => ((value.length <= 100) ? null : 'Note must be less 100 letters'),
+
     },
   })
 
@@ -57,6 +61,15 @@ function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
   })
 
   const optionErrors = get(form.errors, 'options')
+
+  const handleNoteChange = (e, fileName) => {
+    e.preventDefault()
+    const value = e.target.value
+    if (value.length <= 100) {
+      form.setFieldValue(fileName, value)
+      handlerLengthNote(value.length)
+    }
+  }
   return (
     <Box maw={300} mx="auto">
       <form onSubmit={submitHandler}>
@@ -86,6 +99,7 @@ function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
               <NumberInput
                 maw={60}
                 min={1}
+                max={100}
                 size="xs"
                 {...form.getInputProps('quantity')}
               />
@@ -99,7 +113,10 @@ function EditOrderForm({ foodOrderItem, sessionId }: EditOrderFormProps) {
           placeholder="No ice please!!!"
           {...form.getInputProps('note')}
           mt={16}
+          onChange={e => handleNoteChange(e, 'note')}
+
         />
+        <Flex justify={'flex-end'} style={{ marginTop: '10px' }}>{lengthNote}/100</Flex>
 
         {renderOptions(menuItem, optionsChangedHandler, optionErrors, foodOrderItem)}
 
