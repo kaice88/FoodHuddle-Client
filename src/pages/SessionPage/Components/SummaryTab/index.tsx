@@ -183,7 +183,6 @@ function SummaryTab({ sessionId, isHosted }) {
             <Group position="right" mt="md" style={{ margin: '10px' }}>
               <Button
                 type="submit"
-                size="15px"
                 styles={theme => ({
                   root: {
                     backgroundColor: theme.colors.orange[0],
@@ -193,6 +192,7 @@ function SummaryTab({ sessionId, isHosted }) {
                     padding: '10px',
                   },
                 })}
+                loading={fetchMutateBill.isLoading}
               >
             Save
               </Button>
