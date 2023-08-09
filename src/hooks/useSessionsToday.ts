@@ -15,7 +15,7 @@ interface SessionsTodayResponse {
 const fetchSessionsToday = async (tab: SessionsTodayPageTabs, page, status) => {
   const params = status ? `?${status}` : ''
   try {
-    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab))
+    const { data, status } = await axiosInstance.get<SessionsTodayResponse>(getTodaySessionsApiEndpoint(tab, page, params))
     if (status === 200) {
       if (tab === SessionsTodayPageTabs.ALL && page !== 'HISTORY')
         return data.data.filter(session => session.status === SessionStatuses.OPEN)
