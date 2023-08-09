@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AppShell } from '@mantine/core'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import Navbar from '../components/Navbar/Navbar'
 import Header from '../components/Header'
@@ -12,14 +12,14 @@ export default function Layout() {
   const [opened, setOpened] = useState(false)
   const { logout, isAuthenticated, getTokenDuration } = useAuth()
   const navigate = useNavigate()
-
+  const location = useLocation()
   const handleOpen = (): void => {
     setOpened(o => !o)
   }
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(LOGIN)
+      navigate(LOGIN, { state: { from: location.pathname } })
     }
     else {
       const tokenDuration = getTokenDuration()
