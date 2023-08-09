@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 const ImageCarousel = ({ images, setEmbla }) => {
   return (
-    <Carousel getEmblaApi={setEmbla} slideSize="80%" slideGap="50px" controlsOffset="xs" loop withIndicators>
+    <Carousel getEmblaApi={setEmbla} slideSize="80%" slideGap="50px" controlsOffset="xs" withIndicators>
       {images.map((item, index) => (
         <Carousel.Slide key={index}>
           <Image

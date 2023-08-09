@@ -133,7 +133,7 @@ function SessionInfo({ sessionData, sessionId, isHosted, location = '/sessions-t
                     onClose={() => setOpenedModalImage(false)}
                     centered
                   >
-                    <Carousel loop getEmblaApi={setEmbla} slideGap="150px" slideSize="70%" >
+                    <Carousel getEmblaApi={setEmbla} slideGap="150px" slideSize="70%" >
                       {
                         sessionData.qrImages.map((image, index) => {
                           return (

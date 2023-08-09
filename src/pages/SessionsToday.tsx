@@ -17,6 +17,7 @@ export default function SessionTodayPage() {
     data: sessions,
     activeTab,
     setActiveTab,
+    isLoading,
   } = useSessionsToday(SessionsTodayPageTabs.ALL)
 
   const { setSessionInfoData } = useSessionInfoStore()
@@ -82,7 +83,7 @@ export default function SessionTodayPage() {
         </Tabs.List>
 
         <Tabs.Panel value={activeTab} pt="xl">
-          <SessionList sessionsList={sessions} />
+          <SessionList isLoading={isLoading} sessionsList={sessions} />
         </Tabs.Panel>
       </Tabs>
     </>
