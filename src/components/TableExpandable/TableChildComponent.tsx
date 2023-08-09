@@ -1,5 +1,7 @@
-import { Table, Text, useMantineTheme } from '@mantine/core'
+import { Table, Text, Tooltip, useMantineTheme } from '@mantine/core'
 import isEmpty from 'lodash/isEmpty'
+import { IconAlertCircle } from '@tabler/icons-react'
+
 import MenuOptions from '../MenuOptions'
 import ItemName from '../ItemName'
 import { moneyFormat } from '../../utils'
@@ -46,7 +48,20 @@ function ChildTable({ className, dataChildTable, isTableGroupedByFood = true }) 
         <tr>
           <th>Name</th>
           <th>Price</th>
-          <th>Actual Price</th>
+          <th>Actual Price
+            <Tooltip
+              position="top-start"
+              label="Actual price edited by host"
+              styles={theme => ({
+                tooltip: {
+                  color: 'white',
+                  fontWeight: '300',
+                  backgroundColor: theme.fn.lighten(theme.colors.darkLavender[0], 0.3),
+                },
+              })}
+            >
+              <IconAlertCircle size={15} style={{ color: `${globalTheme.colors.darkLavender[0]}` }}/>
+            </Tooltip></th>
           <th>Options</th>
           <th>Note</th>
           <th>Quantity</th>
