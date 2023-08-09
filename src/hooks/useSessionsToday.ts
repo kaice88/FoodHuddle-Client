@@ -32,7 +32,6 @@ const useSessionTodayData = (tab: SessionsTodayPageTabs, page = 'TODAY', status)
   return query<SessionToday[], Error>(
     ['sessionsToday', tab, status, page],
     () => fetchSessionsToday(tab, page, status),
-    { refetchOnMount: 'always', cacheTime: 0 },
   )
 }
 
