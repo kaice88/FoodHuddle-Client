@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash'
 import { Button, Center, Flex, Loader, SimpleGrid, Text, Title } from '@mantine/core'
 import { IconMoodSad, IconShoppingBagCheck, IconShoppingCartOff } from '@tabler/icons-react'
 
+import { useMediaQuery } from '@mantine/hooks'
 import EditOrderForm from '../FoodOrderForm/Edit'
 import OrderItem from './OrderItem'
 import useFoodStore from '@/store/foodStore'
@@ -22,7 +23,7 @@ import { checkIfUserIsHost } from '@/utils/sessions'
 function OrderList() {
   const { sessionId } = useParams()
   const { sessionInfoData } = useSessionInfoStore()
-
+  const sm = useMediaQuery('(min-width: 699.3px)')
   const { status, host } = sessionInfoData
   const [setFoodOrderList, deleteFoodOrderItem, foodOrderList] = useFoodStore(state => [state.setFoodOrderList, state.deleteFoodOrderItem, state.foodOrderList])
   const { userProfile } = useAuth()
@@ -71,11 +72,11 @@ function OrderList() {
     </Center>
   }
   return (
-    <Flex direction="column" gap={16}>
+    <Flex direction="column" gap={16} sx={{ paddingInline: '16px' }}>
       <Title order={3}>
         <IconShoppingBagCheck /> What chu got?
       </Title>
-      <Center mih={150} pl={32} pr={32}>
+      <Center mih={150} sx={{ paddingInline: sm ? '32px' : '8px' }}>
         {content}
       </Center>
       <Center mt={16}>
