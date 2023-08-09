@@ -57,11 +57,11 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
     dataForm.append('description', values.description)
     dataForm.append('host_payment_info', values.hostPaymentInfo)
     if (isCreateFirst) {
-      await handleFormData(dataForm, values.qrImages, 'qr_images')
+      await handleFormData(dataForm, values.qrImages, 'qr_images', setIsLoading)
       mutateSessionInfo.mutate(dataForm)
     }
     else {
-      !isEmpty(values.qrImages) ? await handleFormData(dataForm, values.qrImages, 'qr_images') : dataForm.append('qr_images', [])
+      !isEmpty(values.qrImages) ? await handleFormData(dataForm, values.qrImages, 'qr_images', setIsLoading) : dataForm.append('qr_images', [])
       fetchEditSessionInfo.mutate(dataForm)
     }
   }
