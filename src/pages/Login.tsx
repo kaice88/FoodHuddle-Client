@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Button, Center, Title } from '@mantine/core'
 import { IconLogin } from '@tabler/icons-react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import Logo from '@/components/Logo'
 import useAuth from '@/hooks/useAuth'
@@ -10,13 +10,22 @@ import { SESSIONS_TODAY } from '@/constants/routes'
 export default function LoginPage() {
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
   const handleLogin = () => {
     login()
   }
 
   useEffect(() => {
-    if (isAuthenticated)
-      navigate(SESSIONS_TODAY)
+    if (isAuthenticated) {
+      const { state } = location
+
+      if (state && state.from)
+        navigate(state.from, { state: null })
+
+      else
+        navigate(SESSIONS_TODAY)
+    }
   }, [isAuthenticated])
 
   return (
