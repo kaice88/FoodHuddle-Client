@@ -17,7 +17,7 @@ interface FormValue {
 
 const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessionId, close }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo } = useSessionInfo(sessionId)
+  const { mutateEditSessionInfo, mutateSessionInfo, fetchQueryHostPaymentInfo } = useSessionInfo(sessionId, setIsLoading)
 
   // ......Config form.................................................
   const form = useForm<FormValue>({
@@ -38,7 +38,7 @@ const SessionInfoModal: React.FC = ({ isCreateFirst, sessionData, isEdit, sessio
     },
   })
   const queryHostPaymentInfo = fetchQueryHostPaymentInfo(form)
-  const fetchEditSessionInfo = mutateEditSessionInfo(close, setIsLoading)
+  const fetchEditSessionInfo = mutateEditSessionInfo(close)
 
   useEffect(() => {
     const handlefetchSessionInfo = async () => {

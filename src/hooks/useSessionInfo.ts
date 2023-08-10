@@ -5,7 +5,7 @@ import axiosInstance from '@/settings/axios'
 import { useRequestProcessor } from '@/settings/react-query'
 import useSessionInfoStore from '@/store/sessionInfoStore'
 
-function useSessionInfo(sessionId) {
+function useSessionInfo(sessionId, setIsLoading) {
   const { mutation, query } = useRequestProcessor()
   const { setSessionInfoData } = useSessionInfoStore()
 
@@ -40,7 +40,7 @@ function useSessionInfo(sessionId) {
     },
   )
 
-  const mutateEditSessionInfo = (close, setIsLoading) => mutation(
+  const mutateEditSessionInfo = close => mutation(
     ['sessionInfo'],
     async data =>
       await axiosInstance.put(REQUEST_EDIT_SESSION_INFO(sessionId), data,
@@ -79,10 +79,12 @@ function useSessionInfo(sessionId) {
     {
       onError: (error) => {
         notificationShow('error', 'Error: ', error.response.data.message)
+        setIsLoading(false)
       },
       onSuccess: (data) => {
         const { id, message } = data.data
         notificationShow('success', 'Success: ', message)
+        setIsLoading(false)
         navigate(`/sessions/${id}`, {
           state: {
             from: window.location.pathname,
