@@ -102,7 +102,7 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
         />
         <Flex justify={'flex-end'} style={{ marginTop: '10px' }}>{lengthNote}/300</Flex>
         <Flex justify="flex-end">
-          <Button mt="md" type="submit" loading={isLoading}>OK</Button>
+          <Button mt="md" type="submit" loading={isLoading}>Save</Button>
         </Flex>
       </form>
     </>)
