@@ -11,7 +11,8 @@ import { notificationShow } from '@/components/Notification'
 
 export default function PaymentModal({ id, closeModal, userPayment }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [lengthNote, handlerLengthNote] = useState(userPayment.note ? userPayment.note.length : 0)
+
+  const [lengthNote, handlerLengthNote] = useState(!isEmpty(userPayment) ? userPayment.note.length : 0)
 
   const [files, setFiles] = useState([])
   const { control, handleSubmit, setValue } = useForm({
