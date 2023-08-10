@@ -58,13 +58,21 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
       setIsLoading(false)
       notificationShow('success', 'SUCCESS', res.data.message)
       closeModal()
-    })
+    },
+    (error) => {
+      setIsLoading(false)
+      if (error.code === 'ERR_NETWORK')
+        notificationShow('error', 'ERROR', error.message)
+      else
+        notificationShow('error', 'ERROR', error.response?.data?.message || 'Something went wrong.')
+    },
+    )
   }
-  const handleNoteChange = (e, fileName) => {
+  const handleNoteChange = (e) => {
     e.preventDefault()
     const value = e.target.value
     if (value.length <= 300) {
-      setValue(fileName, value)
+      setValue('note', value)
       handlerLengthNote(value.length)
     }
   }
@@ -96,7 +104,7 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
             <Textarea {...field}
               placeholder="Your note"
               label="Note"
-              onChange={e => handleNoteChange(e, 'note')}
+              onChange={e => handleNoteChange(e)}
             />}
         />
         <Flex justify={'flex-end'} style={{ marginTop: '10px' }}>{lengthNote}/300</Flex>

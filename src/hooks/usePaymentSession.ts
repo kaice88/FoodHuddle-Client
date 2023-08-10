@@ -22,13 +22,13 @@ function usePaymentSession(id) {
     mutationFn: (data) => {
       return axios.put(REQUEST_USER_PAYMENT(id), data)
     },
-    onError: handleError,
   })
 
-  const requestPayment = (data, onSuccess) => {
+  const requestPayment = (data, onSuccess, onError) => {
     requestPaymentMutation.mutate(data,
       {
         onSuccess,
+        onError,
       })
   }
 
