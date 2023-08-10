@@ -1,6 +1,5 @@
 import Decimal from 'decimal.js'
 import axios from 'axios'
-import { notificationShow } from '@/components/Notification'
 
 export function moneyFormat(value,
   currency = 'USD',
@@ -22,33 +21,26 @@ function getFileNameFromPath(path) {
 }
 
 export async function handleFormData(dataForm, values, field, setIsLoading) {
-  try {
-    const promises = values?.map(async (file) => {
-      if (typeof file === 'object') {
-        dataForm.append(field, file)
+  const promises = values?.map(async (file) => {
+    if (typeof file === 'object') {
+      dataForm.append(field, file)
+    }
+    else {
+      try {
+        const res = await axios.get(file, { responseType: 'blob' })
+        const blob = res.data
+        const fileName = getFileNameFromPath(file)
+        const fileTransform = new File([blob], fileName, { type: blob.type })
+        dataForm.append(field, fileTransform)
       }
-      else {
-        try {
-          const res = await axios.get(file, { responseType: 'blob' })
-          const blob = res.data
-          const fileName = getFileNameFromPath(file)
-          const fileTransform = new File([blob], fileName, { type: blob.type })
-          dataForm.append(field, fileTransform)
-        }
-        catch (error) {
-          setIsLoading(false)
-          notificationShow('error', 'ERROR', error.message)
-        }
+      catch (error) {
+        setIsLoading(false)
       }
-    },
-    )
-    await Promise.all(promises)
-    return dataForm
-  }
-  catch (error) {
-    setIsLoading(false)
-    notificationShow('error', 'ERROR', error.message)
-  }
+    }
+  },
+  )
+  await Promise.all(promises)
+  return dataForm
 }
 
 export const calculatePaymentAmount = (foodOrders) => {
