@@ -28,11 +28,17 @@ export async function handleFormData(dataForm, values, field, setIsLoading) {
         dataForm.append(field, file)
       }
       else {
-        const res = await axios.get(file, { responseType: 'blob' })
-        const blob = res.data
-        const fileName = getFileNameFromPath(file)
-        const fileTransform = new File([blob], fileName, { type: blob.type })
-        dataForm.append(field, fileTransform)
+        try {
+          const res = await axios.get(file, { responseType: 'blob' })
+          const blob = res.data
+          const fileName = getFileNameFromPath(file)
+          const fileTransform = new File([blob], fileName, { type: blob.type })
+          dataForm.append(field, fileTransform)
+        }
+        catch (error) {
+          setIsLoading(false)
+          notificationShow('error', 'ERROR', error.message)
+        }
       }
     },
     )
