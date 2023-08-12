@@ -41,20 +41,20 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
     setIsLoading(true)
     const formData = new FormData()
     const evidence = data.evidence
+
     await Promise.all (evidence?.map(async (item) => {
       if (typeof item === 'object') {
         formData.append('evidence', item)
       }
       else {
-        const res = await ax.get(item, { responseType: 'blob' })
+        const res = await ax.get(`${item}fffff`, { responseType: 'blob' })
         const blob = res.data
-        const fileName = item.split('/').pop()
+        const fileName = `${item.split('/').pop()}`
         const fileTransform = new File([blob], fileName, { type: blob.type })
         formData.append('evidence', fileTransform)
       }
     }))
     formData.append('note', data.note)
-
     requestPayment(formData, (res) => {
       setIsLoading(false)
       notificationShow('success', 'SUCCESS', res.data.message)
@@ -68,6 +68,7 @@ export default function PaymentModal({ id, closeModal, userPayment }) {
         notificationShow('error', 'ERROR', error.response?.data?.message || 'Something went wrong.')
     },
     )
+    
   }
   const handleNoteChange = (e) => {
     e.preventDefault()

@@ -32,14 +32,17 @@ export default function YourPayment({ id }) {
 
   const RequestMessage = ({ status = PaymentStatuses.NONE }) => {
     let content = 'Request your payment now!'
-    if (status === PaymentStatuses.APPROVED)
-      content = 'Your payment request has been approved successfully!'
+    if (sessionInfoData.status === SessionStatuses.FINISHED) { content = 'This session has finished. You can\'t request your payment' }
+    else {
+      if (status === PaymentStatuses.APPROVED)
+        content = 'Your payment request has been approved successfully!'
 
-    else if (status === PaymentStatuses.REJECTED)
-      content = 'Your payment request has been rejected. Please remake the request!'
+      else if (status === PaymentStatuses.REJECTED)
+        content = 'Your payment request has been rejected. Please remake the request!'
 
-    else if (status === PaymentStatuses.PENDING)
-      content = 'Your payment request has been sent, awaiting approve!'
+      else if (status === PaymentStatuses.PENDING)
+        content = 'Your payment request has been sent, awaiting approve!'
+    }
 
     return <Text color={ PaymentStatusColors[status] ? theme.colors[PaymentStatusColors[status]][0] : 'blue'}>{content}</Text>
   }
@@ -51,7 +54,7 @@ export default function YourPayment({ id }) {
           { !isEmpty(userPaymentData) && <StatusBadge status={userPaymentData?.status} colorName={PaymentStatusColors[userPaymentData.status]}/> }
         </Flex>
         <Flex gap="lg" wrap="wrap" py={10}>
-          {!isEmpty(userPaymentData) ? <RequestMessage status={userPaymentData.status}/> : <RequestMessage />}
+          {!isEmpty(userPaymentData) ? <RequestMessage status={userPaymentData.status} /> : <RequestMessage />}
         </Flex>
         <Modal opened={opened}
           onClose={close}
