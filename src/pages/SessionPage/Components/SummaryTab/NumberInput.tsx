@@ -9,14 +9,8 @@ const NumberInputCustom = ({ field, form, label }) => {
       formatter ={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
       parser ={value => value.replace(/[^\d.]/g, '')}
       {...form.getInputProps(field)}
-      style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
       min={0}
+      className="item-field"
     />
   )
 }
