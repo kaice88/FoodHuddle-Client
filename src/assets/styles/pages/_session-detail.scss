@@ -54,6 +54,9 @@
   .menu {
     width: 100%;
     padding: $content-gutter;
+    @include breakpoint-down("extra-smallphone"){
+      
+    }
   }
   
   .mantine-Checkbox-body {
