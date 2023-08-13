@@ -30,7 +30,10 @@ function OrderList() {
 
   let content
   if (isEmpty(foodOrderList)) {
-    content = <Flex align="center" justify="center" direction="column"> <IconMoodSad size={60}/> <Title order={3}>You haven't chosen any food? Let have yourself something good!</Title></Flex>
+    content = <Flex align="center" justify="center" direction="column">
+      <IconMoodSad size={60}/>
+      <Title order={5}>You haven't chosen any food? Let have yourself something good!</Title>
+    </Flex>
   }
   else {
     content = <SimpleGrid className="orderList" key = {uuidv4()} cols={1} spacing="md" breakpoints={[{ minWidth: 'md', cols: 2 }]} >
@@ -67,7 +70,7 @@ function OrderList() {
     return <Center>
       <Flex direction="column" align="center" justify="center" gap="xl">
         <Loader variant="dots" size="lg"/>
-        <Title color="darkLavender" order={3}> Please wait for a sec cause your food is on the way! </Title>
+        <Title color="darkLavender" order={5}> Please wait for a sec cause your food is on the way! </Title>
       </Flex>
     </Center>
   }
